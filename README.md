@@ -190,4 +190,4 @@ Package Dependencies
 
 Python Package Index
 --------------------
-https://pypi.python.org/pypi/project-cylon
+See: https://pypi.python.org/pypi/project-cylon
