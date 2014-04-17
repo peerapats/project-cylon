@@ -15,13 +15,19 @@ How to install on Windows (manually)
 1. Install vc redist (Microsoft Visual C++ 2010 Redistributable Package).
 2. Install Python (use version 2.7). 
     * Download from: [python downloads](https://www.python.org/downloads/)
+
 3. Add following to PATH environment variable.
-    ```C:\Python27;C:\Python27\Scripts;C:\Python27\Lib\site-packages;```
+
+    ```
+    C:\Python27;C:\Python27\Scripts;C:\Python27\Lib\site-packages;
+    ```
 4. Install Python for Windows extension.
     * Download from: [pywin32](http://sourceforge.net/projects/pywin32/files/pywin32/)
     * Select latest build and correct Python version
+
 5. Install python setuptools. 
     * Download from: [setuptools](https://pypi.python.org/pypi/setuptools/0.9.6#installation-instructions)
+
 6. Run following command to install required packages.
 
     ```
@@ -32,7 +38,7 @@ How to install on Windows (manually)
     pip install colorama
     ```
 7. Install ansicon.
-    * Download from: [ansicon](https://github.com/adoxa/ansicon/downloads)
+	* Download from: [ansicon](https://github.com/adoxa/ansicon/downloads)
 	* Read installaion instructions from: [ANSI escape sequence support with ansicon](http://www.kevwebdev.com/blog/in-search-of-a-better-windows-console-using-ansicon-console2-and-git-bash.html#ansicon)
 
 8. Install project-cylon package.
@@ -164,10 +170,14 @@ You can run all tests via following batch / shell script.
 You can run test with following ```behave``` command at your project directory.
 
 * To run all feature files use:
-    ```behave --color --no-source --no-skipped --logging-level INFO```
+    	```
+	behave --color --no-source --no-skipped --logging-level INFO
+	```
 
 * To run with specified tags use:
-    ```behave --color --no-source --no-skipped --logging-level INFO --tags=@your_tag```
+    	```
+	behave --color --no-source --no-skipped --logging-level INFO --tags=@your_tag
+	```
 
 Package Dependencies
 --------------------
