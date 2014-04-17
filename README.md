@@ -91,17 +91,18 @@ Setup Thai font for Windows console
 2. Make Python able to run Thai
     * Edit ```C:\Python27\Lib\site.py```
     * Find the following 2 lines and comment them out:
-        ```
+
+	```python
         if hasattr(sys, "setdefaultencoding"):
             del sys.setdefaultencoding
-        ```
+	```
+    * Create ```sitecustomize.py``` file at ```C:\Python27\Lib\site-packages``` with the following content
 
-	* Create ```sitecustomize.py``` file at ```C:\Python27\Lib\site-packages``` with the following content
-        ```
-        import sys
+	```python
+	import sys
 	    reload(sys)
 	    sys.setdefaultencoding("utf-8")
-        ```
+	```
 
 3. Change Language for non-Unicode program to Thai (Region and Language -> Administrative -> Language for non-Unicode program)
 4. Restart machine
@@ -170,14 +171,16 @@ You can run all tests via following batch / shell script.
 You can run test with following ```behave``` command at your project directory.
 
 * To run all feature files use:
-    	```
-	behave --color --no-source --no-skipped --logging-level INFO
-	```
 
+    ```
+    behave --color --no-source --no-skipped --logging-level INFO
+    ```
 * To run with specified tags use:
-    	```
-	behave --color --no-source --no-skipped --logging-level INFO --tags=@your_tag
-	```
+
+    ```
+    behave --color --no-source --no-skipped --logging-level INFO --tags=@your_tag
+    ```
+* For another command options see: [Using Behave](http://pythonhosted.org/behave/behave.html)
 
 Package Dependencies
 --------------------
