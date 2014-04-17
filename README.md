@@ -93,8 +93,8 @@ Setup Thai font for Windows console
     * Find the following 2 lines and comment them out:
 
 	```python
-        if hasattr(sys, "setdefaultencoding"):
-            del sys.setdefaultencoding
+	if hasattr(sys, "setdefaultencoding"):
+	    del sys.setdefaultencoding
 	```
     * Create ```sitecustomize.py``` file at ```C:\Python27\Lib\site-packages``` with the following content
 
@@ -188,3 +188,6 @@ Package Dependencies
 * [behave](https://pypi.python.org/pypi/behave)
 * [selenium](https://pypi.python.org/pypi/selenium)
 
+Python Package Index
+--------------------
+https://pypi.python.org/pypi/project-cylon
