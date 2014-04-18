@@ -170,6 +170,18 @@ def step(context, ElementName):
     Element.VerifyNotVisible()
 
 
+@then ("The [{ElementName}] is checked")
+def step(context, ElementName):
+    Element = World.CurrentPage.FindElement(ElementName)
+    Element.VerifyIsChecked()
+
+
+@then ("The [{ElementName}] is unchecked")
+def step(context, ElementName):
+    Element = World.CurrentPage.FindElement(ElementName)
+    Element.VerifyIsUnchecked()
+
+
 @given ("The popup shows '{Value}'")
 @then ("The popup shows '{Value}'")
 def step(context, Value):

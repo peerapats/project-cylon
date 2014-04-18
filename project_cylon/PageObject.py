@@ -55,6 +55,11 @@ class Element:
         return element.is_displayed()
 
     @property
+    def Selected(self):
+        element = self.Get()
+        return element.is_selected()
+
+    @property
     def Value(self):
         element = self.Get()
         if element.tag_name in ['input', 'button']:
@@ -172,7 +177,7 @@ class Element:
         if self.Enabled:
             return True
 
-        Log.Failed("Verify element '%s' disabled" % self.name, "Disabled", "Enabled")
+        Log.Failed("Verify element '%s' enabled" % self.name, "Disabled", "Enabled")
         return False
 
     def VerifyDisabled(self):
@@ -196,12 +201,19 @@ class Element:
         Log.Failed("Verify element '%s' not visible" % self.name, "Visible", "Not visible")
         return False
 
-
     def VerifyIsChecked(self):
-        pass
+        if self.Selected:
+            return True
+
+        Log.Failed("Verify element '%s' checked" % self.name, "Unchecked", "Checked")
+        return False
 
     def VerifyIsUnchecked(self):
-        pass
+        if not self.Selected:
+            return True
+
+        Log.Failed("Verify element '%s' unchecked" % self.name, "Checked", "Unchecked")
+        return False
 
     def VerifyAttribute(self, attr, value):
         pass
