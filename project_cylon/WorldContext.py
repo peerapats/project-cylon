@@ -94,6 +94,25 @@ class WorldContext:
         self.current_page = None
         return None
 
+    def VerifyURL(self, URL, match_query=False):
+        self.driver.switch_to_window(self.driver.window_handles[-1])
+
+        url = URL
+
+        if match_query == False:
+            uri = urlparse(URL)
+            url = uri.scheme + '://' + uri.netloc + uri.path
+
+        ## wait for page load
+        wait = ui.WebDriverWait(self.driver, 15)
+        try:
+            wait.until(lambda driver : self.driver.current_url.lower().find(url.lower()) != -1)
+            return True
+        except:
+            Log.Failed("URL not matched", self.driver.current_url.lower(), url.lower())
+            return False
+
+
     @property
     def CurrentPage(self):
         return self.current_page

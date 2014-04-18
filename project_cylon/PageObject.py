@@ -31,6 +31,12 @@ class Element:
                 Log.Failed("Element not found: '%s' at xpath '%s'" % (self.name, self.xpath))
             return None
 
+    def GetItemsCount(self, logfail=True):
+        wait = ui.WebDriverWait(self.page.driver, 3)
+        elements = self.page.driver.find_elements_by_xpath(self.xpath)
+        return len(elements)
+        
+
     @property
     def Exists(self):
         element = self.Get(False)
@@ -44,12 +50,22 @@ class Element:
         return element.is_enabled()
 
     @property
+    def Visible(self):
+        element = self.Get()
+        return element.is_displayed()
+
+    @property
     def Value(self):
         element = self.Get()
         if element.tag_name in ['input', 'button']:
             return element.get_attribute('value')
         else:
             return element.get_attribute('innerHTML')
+
+    @property
+    def Count(self):
+        return self.GetItemsCount()
+    
 
     def SendKeys(self, value):
         element = self.Get()
@@ -155,12 +171,31 @@ class Element:
     def VerifyEnabled(self):
         if self.Enabled:
             return True
+
+        Log.Failed("Verify element '%s' disabled" % self.name, "Disabled", "Enabled")
         return False
 
     def VerifyDisabled(self):
         if not self.Enabled:
             return True
+
+        Log.Failed("Verify element '%s' disabled" % self.name, "Enabled", "Disabled")
         return False
+
+    def VerifyVisible(self):
+        if self.Visible:
+            return True
+
+        Log.Failed("Verify element '%s' visible" % self.name, "Not visible", "Visible")
+        return False
+
+    def VerifyNotVisible(self):
+        if not self.Visible:
+            return True
+
+        Log.Failed("Verify element '%s' not visible" % self.name, "Visible", "Not visible")
+        return False
+
 
     def VerifyIsChecked(self):
         pass
@@ -170,6 +205,13 @@ class Element:
 
     def VerifyAttribute(self, attr, value):
         pass
+
+    def VerifyItemsCount(self, count):
+        if self.Count == int(count):
+            return True
+
+        Log.Failed("Verify elements count '%s'" % self.name, self.Count, count)
+        return False
 
 
 class Page:
@@ -214,20 +256,20 @@ class Page:
         Log.Failed("Element not found", None, name)
         return None
 
-    def VerifyURL(self):
-        self.driver.switch_to_window(self.driver.window_handles[-1])
+    # def VerifyURL(self):
+    #     self.driver.switch_to_window(self.driver.window_handles[-1])
 
-        uri = urlparse(self.url)
-        url = uri.scheme + '://' + uri.netloc + uri.path
+    #     uri = urlparse(self.url)
+    #     url = uri.scheme + '://' + uri.netloc + uri.path
 
-        ## wait for page load
-        wait = ui.WebDriverWait(self.driver, 15)
-        try:
-            wait.until(lambda driver : self.driver.current_url.lower().find(url.lower()) != -1)
-            return True
-        except:
-            Log.Failed("URL not matched", self.driver.current_url.lower(), url.lower())
-            return False
+    #     ## wait for page load
+    #     wait = ui.WebDriverWait(self.driver, 15)
+    #     try:
+    #         wait.until(lambda driver : self.driver.current_url.lower().find(url.lower()) != -1)
+    #         return True
+    #     except:
+    #         Log.Failed("URL not matched", self.driver.current_url.lower(), url.lower())
+    #         return False
 
     def VerifyTitle(self):
         if self.title == self.driver.title:
@@ -235,5 +277,9 @@ class Page:
 
         Log.Failed("Title not matched", self.driver.title, self.title)
         return False
+
+    @property
+    def URL(self):
+        return self.url
 
         

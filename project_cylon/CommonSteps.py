@@ -77,7 +77,13 @@ def step(context):
 @then ("The system displays [{PageName}]")
 def step(context, PageName):
     Page = World.FindPage(PageName)
-    Page.VerifyURL()
+    World.VerifyURL(Page.URL, False)
+    #Page.VerifyURL()
+
+@given ("The system displays '{URL}'")
+@then ("The system displays '{URL}'")
+def doit(context, URL):
+    World.VerifyURL(URL, True)
 
 
 @given ("The [{ElementName}] shows '{Value}'")
@@ -150,7 +156,30 @@ def step(context, ElementName):
     Element.VerifyNotExists()
 
 
+@given ("The [{ElementName}] is visible")
+@then ("The [{ElementName}] is visible")
+def step(context, ElementName):
+    Element = World.CurrentPage.FindElement(ElementName)
+    Element.VerifyVisible()
+
+
+@given ("The [{ElementName}] is invisible")
+@then ("The [{ElementName}] is invisible")
+def step(context, ElementName):
+    Element = World.CurrentPage.FindElement(ElementName)
+    Element.VerifyNotVisible()
+
+
 @given ("The popup shows '{Value}'")
 @then ("The popup shows '{Value}'")
 def step(context, Value):
     World.VerifyPopupMessage(Value)
+
+
+@given ("The system displays '{Value}' items of [{ElementName}]")
+@then ("The system displays '{Value}' items of [{ElementName}]")
+def step(context, Value, ElementName):
+    Element = World.CurrentPage.FindElement(ElementName)
+    Element.VerifyItemsCount(Value)
+
+
