@@ -49,18 +49,29 @@ How to install on Windows (manually)
 
 How to install on Windows (via package manager)
 -----------------------------------------------
-1. We have suggest to use [chocolatey](https://chocolatey.org/) as your package manager, install by following command.
+1. We have suggest to use [chocolatey](https://chocolatey.org/) as your package manager, install by following command. (Should be run with Administrator Priviledge command prompt)
 
     ```
     @powershell -NoProfile -ExecutionPolicy unrestricted -Command "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%systemdrive%\chocolatey\bin
     ```
-2. install python 2.7 and pip.
+2. Install vc redist (Microsoft Visual C++ 2010 Redistributable Package).
+
+    ```
+    cinst vcredist2010
+    ```
+3. Install python 2.7 and pip.
 
     ```
     cinst python -Version 2.7.6
-    cinst pip
+    cinst easy.install
+    easy_install pip
     ```
-3. install required packages.
+4. Upgrade setuptools
+
+    ```
+    pip install setuptools --upgrade
+    ```
+5. Install required packages.
 
     ```
     pip install pyyaml
@@ -68,12 +79,12 @@ How to install on Windows (via package manager)
     pip install selenium
     pip install colorrama
     ```
-4. install ansicon.
+6. Install ansicon.
 
     ```
     cinst ansicon
     ```
-5. install project-cylon package.
+7. Install project-cylon package.
 
     ```
     pip install project-cylon
