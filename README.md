@@ -8,7 +8,7 @@ Project Cylon framework provide easy way to create web automation test without c
 
 Prerequisite
 ------------
-1. Ensure your test machine has Firefox installed.
+1. Ensure your test machine has [Firefox](http://www.mozilla.org/en-US/firefox/new/) installed.
 
 How to install on Windows (manually)
 ------------------------------------
@@ -77,7 +77,7 @@ How to install on Windows (via package manager)
     pip install pyyaml
     pip install behave
     pip install selenium
-    pip install colorrama
+    pip install colorama
     ```
 6. Install ansicon.
 
