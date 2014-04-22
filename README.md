@@ -169,7 +169,9 @@ Create test project
 1. Download test project template from: [example-test-v0.1.0.zip](https://bitbucket.org/gigapixel/projectcylon/downloads/example-test-v0.1.0.zip)
 2. Extract the zip file to any location (you can rename this folder as your test project name)
 3. Add / Edit ```.yaml``` files in ```pageobjects``` folder
-4. Add / Edit ```.feature``` file in ```features``` folder see example from: [feature files](http://pythonhosted.org/behave/tutorial.html#feature-files)
+    * see how to write page object in [wiki](https://github.com/gigapixel/project-cylon/wiki/Page-Object)
+4. Add / Edit ```.feature``` file in ```features``` folder 
+    * see example from: [feature files](http://pythonhosted.org/behave/tutorial.html#feature-files)
     * see all bundle keywords in [wiki](https://github.com/gigapixel/project-cylon/wiki/Bundle-Keywords) 
 5. Edit ```steps.py``` file in ```features/steps``` folder (optional)
 
