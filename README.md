@@ -10,8 +10,8 @@ Prerequisite
 ------------
 1. Ensure your test machine has [Firefox](http://www.mozilla.org/en-US/firefox/new/) installed.
 
-How to install on Windows (manually)
-------------------------------------
+How to install on Windows
+-------------------------
 1. Install vc redist (Microsoft Visual C++ 2010 Redistributable Package).
 2. Install Python (use version 2.7). 
     * Download from: [python downloads](https://www.python.org/downloads/)
@@ -42,49 +42,6 @@ How to install on Windows (manually)
 	* Read installaion instructions from: [ANSI escape sequence support with ansicon](http://www.kevwebdev.com/blog/in-search-of-a-better-windows-console-using-ansicon-console2-and-git-bash.html#ansicon)
 
 8. Install project-cylon package.
-
-    ```
-    pip install project-cylon
-    ```
-
-How to install on Windows (via package manager)
------------------------------------------------
-1. We have suggest to use [chocolatey](https://chocolatey.org/) as your package manager, install by following command. (Should be run with Administrator Priviledge command prompt)
-
-    ```
-    @powershell -NoProfile -ExecutionPolicy unrestricted -Command "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%systemdrive%\chocolatey\bin
-    ```
-2. Install vc redist (Microsoft Visual C++ 2010 Redistributable Package).
-
-    ```
-    cinst vcredist2010
-    ```
-3. Install python 2.7 and pip.
-
-    ```
-    cinst python -Version 2.7.6
-    cinst easy.install
-    easy_install pip
-    ```
-4. Upgrade setuptools
-
-    ```
-    pip install setuptools --upgrade
-    ```
-5. Install required packages.
-
-    ```
-    pip install pyyaml
-    pip install behave
-    pip install selenium
-    pip install colorama
-    ```
-6. Install ansicon.
-
-    ```
-    cinst ansicon
-    ```
-7. Install project-cylon package.
 
     ```
     pip install project-cylon
@@ -166,7 +123,7 @@ sudo pip install project-cylon
 
 Create test project
 -------------------
-1. Download test project template from: [example-test-v0.1.0.zip](https://bitbucket.org/gigapixel/projectcylon/downloads/example-test-v0.1.1.zip)
+1. Download test project template from: [example-test-v0.1.1.zip](https://bitbucket.org/gigapixel/projectcylon/downloads/example-test-v0.1.1.zip)
     * For Windows, you need to place project folder on drive C: (has known issue to import steps from different root)
 2. Extract the zip file to any location (you can rename this folder as your test project name)
 3. Add / Edit ```.yaml``` files in ```pageobjects``` folder
