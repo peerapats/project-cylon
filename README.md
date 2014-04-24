@@ -166,7 +166,8 @@ sudo pip install project-cylon
 
 Create test project
 -------------------
-1. Download test project template from: [example-test-v0.1.0.zip](https://bitbucket.org/gigapixel/projectcylon/downloads/example-test-v0.1.0.zip)
+1. Download test project template from: [example-test-v0.1.0.zip](https://bitbucket.org/gigapixel/projectcylon/downloads/example-test-v0.1.1.zip)
+    * For Windows, you need to place project folder on drive C: (has known issue to import steps from different root)
 2. Extract the zip file to any location (you can rename this folder as your test project name)
 3. Add / Edit ```.yaml``` files in ```pageobjects``` folder
     * see how to write page object in [wiki](https://github.com/gigapixel/project-cylon/wiki/Page-Object)
