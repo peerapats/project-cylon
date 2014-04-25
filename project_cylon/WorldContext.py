@@ -75,13 +75,15 @@ class WorldContext:
 
         for filename in glob.glob(path):
             content = open(filename, "r")
-            pageobject = yaml.load(content)
-            page = Page(self.driver, pageobject, site)
+            #pageobject = yaml.load(content)
+            docs = yaml.load_all(content)
+            for doc in docs:
+                page = Page(self.driver, doc, site)
 
-            if not page.name in self.pages:
-                self.pages[page.name] = page
-            else:
-                Log.Failed("Duplicate page name: '%s'" % page.name)
+                if not page.name in self.pages:
+                    self.pages[page.name] = page
+                else:
+                    Log.Failed("Duplicate page name: '%s'" % page.name)
                 
         return True
     
