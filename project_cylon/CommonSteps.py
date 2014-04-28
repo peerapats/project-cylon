@@ -77,13 +77,27 @@ def step(context):
 @then ("The system displays [{PageName}]")
 def step(context, PageName):
     Page = World.FindPage(PageName)
-    World.VerifyURL(Page.URL, False)
-    #Page.VerifyURL()
+    Page.VerifyPage()
+    #World.VerifyURL(Page.URL, False)
 
-@given ("The system displays '{URL}'")
-@then ("The system displays '{URL}'")
-def doit(context, URL):
-    World.VerifyURL(URL, True)
+
+#@given ("The system displays '{URL}'")
+#@then ("The system displays '{URL}'")
+#def step(context, URL):
+#    World.VerifyURL(URL, True)
+
+@given ("The system displays '{URL}'") # deprecated
+@then ("The system displays '{URL}'") # deprecated
+@given ("The system URL is '{URL}'")
+@then ("The system URL is '{URL}'")
+def step(context, URL):
+    World.VerifyURLIs(URL)
+
+
+@given ("The system URL contains '{URL}'")
+@then ("The system URL contains '{URL}'")
+def step(context, URL):
+    World.VerifyURLContains(URL)
 
 
 @given ("The [{ElementName}] shows '{Value}'")
@@ -188,10 +202,16 @@ def step(context, Value):
     World.VerifyPopupMessage(Value)
 
 
-@given ("The system displays '{Value}' items of [{ElementName}]")
-@then ("The system displays '{Value}' items of [{ElementName}]")
+@given ("The system displays '{Amount}' items of [{ElementName}]")
+@then ("The system displays '{Amount}' items of [{ElementName}]")
 def step(context, Value, ElementName):
     Element = World.CurrentPage.FindElement(ElementName)
     Element.VerifyItemsCount(Value)
+
+
+@then ("The [{ElementName}] tooltip is '{Value}'")
+def step(context, ElementName, Value):
+    Element = World.CurrentPage.FindElement(ElementName)
+    Element.VerifyTooltip(Value)
 
 

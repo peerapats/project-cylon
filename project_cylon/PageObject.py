@@ -68,6 +68,12 @@ class Element:
             return element.get_attribute('innerHTML')
 
     @property
+    def Tooltip(self):
+        element = self.Get()
+        return element.get_attribute('title')
+    
+
+    @property
     def Count(self):
         return self.GetItemsCount()
     
@@ -225,10 +231,17 @@ class Element:
         Log.Failed("Verify elements count '%s'" % self.name, self.Count, count)
         return False
 
+    def VerifyTooltip(self, value):
+        if self.Tooltip == value:
+            return True
+
+        Log.Failed("Value not matched", self.Tooltip, value)
+        return False
+
 
 class Page:
     name = ""
-    title = ""
+    #title = ""
     url = ""
     driver = None
 
@@ -237,7 +250,7 @@ class Page:
     def __init__(self, driver, pageobject, site="default"):
         self.driver = driver
         self.name = pageobject['page']['name']
-        self.title = pageobject['page']['title']
+        #self.title = pageobject['page']['title']
         self.url = pageobject['page']['url']
         
         self.elements = {}
@@ -268,30 +281,30 @@ class Page:
         Log.Failed("Element not found", None, name)
         return None
 
-    # def VerifyURL(self):
-    #     self.driver.switch_to_window(self.driver.window_handles[-1])
+    def VerifyPage(self):
+        self.driver.switch_to_window(self.driver.window_handles[-1])
 
-    #     uri = urlparse(self.url)
-    #     url = uri.scheme + '://' + uri.netloc + uri.path
+        uri = urlparse(self.url)
+        url = uri.scheme + '://' + uri.netloc + uri.path
 
-    #     ## wait for page load
-    #     wait = ui.WebDriverWait(self.driver, 15)
-    #     try:
-    #         wait.until(lambda driver : self.driver.current_url.lower().find(url.lower()) != -1)
-    #         return True
-    #     except:
-    #         Log.Failed("URL not matched", self.driver.current_url.lower(), url.lower())
-    #         return False
-
-    def VerifyTitle(self):
-        if self.title == self.driver.title:
+        ## wait for page load
+        wait = ui.WebDriverWait(self.driver, 15)
+        try:
+            wait.until(lambda driver : self.driver.current_url.lower().find(url.lower()) != -1)
             return True
+        except:
+            Log.Failed("URL not matched", self.driver.current_url.lower(), url.lower())
+            return False
 
-        Log.Failed("Title not matched", self.driver.title, self.title)
-        return False
+    # def VerifyTitle(self):
+    #     if self.title == self.driver.title:
+    #         return True
+
+    #     Log.Failed("Title not matched", self.driver.title, self.title)
+    #     return False
 
     @property
     def URL(self):
         return self.url
 
-        
+    
