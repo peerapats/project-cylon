@@ -204,9 +204,9 @@ def step(context, Value):
 
 @given ("The system displays '{Amount}' items of [{ElementName}]")
 @then ("The system displays '{Amount}' items of [{ElementName}]")
-def step(context, Value, ElementName):
+def step(context, Amount, ElementName):
     Element = World.CurrentPage.FindElement(ElementName)
-    Element.VerifyItemsCount(Value)
+    Element.VerifyItemsCount(Amount)
 
 
 @then ("The [{ElementName}] tooltip is '{Value}'")
