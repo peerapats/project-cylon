@@ -56,7 +56,7 @@ class WorldContext:
     pages = {}
 
     current_page = None
-    
+
     def OpenBrowser(self, browser="firefox"):
         if browser.lower() == 'firefox':
             self.driver = webdriver.Firefox()
@@ -76,7 +76,7 @@ class WorldContext:
         for filename in glob.glob(path):
             content = open(filename, "r")
             docs = yaml.load_all(content)
-            
+
             for doc in docs:
                 page = Page(self.driver, doc, site)
 
@@ -84,9 +84,10 @@ class WorldContext:
                     self.pages[page.name] = page
                 else:
                     Log.Failed("Duplicate page name: '%s'" % page.name)
-                
+
         return True
-    
+
+
     def FindPage(self, name):
         if name in self.pages:
             self.current_page = self.pages[name]
@@ -96,23 +97,15 @@ class WorldContext:
         self.current_page = None
         return None
 
-    # def VerifyURL(self, URL, match_query=False):
-    #     self.driver.switch_to_window(self.driver.window_handles[-1])
 
-    #     url = URL
+    def FindElement(self, identifier):
+        element = self.CurrentPage.FindElement(identifier)
 
-    #     if match_query == False:
-    #         uri = urlparse(URL)
-    #         url = uri.scheme + '://' + uri.netloc + uri.path
+        if element is not None:
+            return element
+        else:
+            return Element(self.driver, identifier)
 
-    #     ## wait for page load
-    #     wait = ui.WebDriverWait(self.driver, 15)
-    #     try:
-    #         wait.until(lambda driver : self.driver.current_url.lower().find(url.lower()) != -1)
-    #         return True
-    #     except:
-    #         Log.Failed("URL not matched", self.driver.current_url.lower(), url.lower())
-    #         return False
 
     def VerifyURLIs(self, URL):
         self.driver.switch_to_window(self.driver.window_handles[-1])
@@ -167,4 +160,3 @@ class WorldContext:
         return False
 
 World = WorldContext.Instance()
-

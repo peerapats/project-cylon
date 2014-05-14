@@ -13,29 +13,77 @@ from Logger import *
 
 class Element:
     name = ""
-    xpath = ""
-    page = None
+    identifier = ""
+    driver = None
 
-    def __init__(self, page, element):  
-        self.name = element['name']
-        self.xpath = element['xpath']
-        self.page = page
+    def __init__(self, driver, identifier, name='noname'):
+        self.driver = driver
+        self.name = name
+        self.identifier = identifier
 
-    def Get(self, logfail=True):
-        wait = ui.WebDriverWait(self.page.driver, 3)
+
+    def FindByXPath(self):
+        try: return self.driver.find_element_by_xpath(self.identifier)
+        except: return None
+
+    def FindById(self):
         try:
-            element = self.page.driver.find_element_by_xpath(self.xpath)
-            return element
+            return self.driver.find_element_by_id(self.identifier)
         except:
-            if logfail:
-                Log.Failed("Element not found: '%s' at xpath '%s'" % (self.name, self.xpath))
             return None
 
-    def GetItemsCount(self, logfail=True):
-        wait = ui.WebDriverWait(self.page.driver, 3)
-        elements = self.page.driver.find_elements_by_xpath(self.xpath)
+    def FindByName(self):
+        try:
+            return self.driver.find_element_by_name(self.identifier)
+        except:
+            return None
+
+    def FindByClassName(self):
+        try:
+            return self.driver.find_element_by_class_name(self.identifier)
+        except:
+            return None
+
+    def FindByLinkText(self):
+        try:
+            return self.driver.find_element_by_link_text(self.identifier)
+        except:
+            return None
+
+
+    def Get(self, logError=True):
+        wait = ui.WebDriverWait(self.driver, 3)
+
+        element = self.FindByXPath()
+        if element is not None:
+            return element
+
+        # element = self.FindById()
+        # if element is not None:
+        #     return element
+        #
+        # element = self.FindByName()
+        # if element is not None:
+        #     return element
+
+        # element = self.FindByClassName()
+        # if element is not None:
+        #     return element
+        #
+        # element = self.FindByLinkText()
+        # if element is not None:
+        #     return element
+
+        if logError:
+            Log.Failed("The element '%s' not found at identifier '%s'" % (self.name, self.identifier))
+        return None
+
+
+    def GetItemsCount(self):
+        wait = ui.WebDriverWait(self.driver, 3)
+        elements = self.driver.find_elements_by_xpath(self.identifier)
         return len(elements)
-        
+
 
     @property
     def Exists(self):
@@ -71,12 +119,12 @@ class Element:
     def Tooltip(self):
         element = self.Get()
         return element.get_attribute('title')
-    
+
 
     @property
     def Count(self):
         return self.GetItemsCount()
-    
+
 
     def SendKeys(self, value):
         element = self.Get()
@@ -86,7 +134,7 @@ class Element:
     def SendKeysByScript(self, value):
         element = self.Get()
         script = "arguments[0].value = '" + value + "'"
-        self.page.driver.execute_script(script, element)
+        self.driver.execute_script(script, element)
         return True
 
     def Click(self):
@@ -101,8 +149,18 @@ class Element:
 
     def MouseOver(self):
         element = self.Get()
-        action = ActionChains(self.page.driver).move_to_element(element)
+        action = ActionChains(self.driver).move_to_element(element)
         action.perform()
+        return True
+
+    def Check(self):
+        if not self.Selected:
+            self.Click()
+        return True
+
+    def Uncheck(self):
+        if self.Selected:
+            self.Click()
         return True
 
     ##
@@ -114,6 +172,13 @@ class Element:
             return True
 
         Log.Failed("Value not matched", self.Value, value)
+        return False
+
+    def VerifyValueIsNot(self, value):
+        if self.Value != value:
+            return True
+
+        Log.Failed("Value is matched", self.Value, value)
         return False
 
     def VerifyValueContains(self, value):
@@ -221,9 +286,6 @@ class Element:
         Log.Failed("Verify element '%s' unchecked" % self.name, "Checked", "Unchecked")
         return False
 
-    def VerifyAttribute(self, attr, value):
-        pass
-
     def VerifyItemsCount(self, count):
         if self.Count == int(count):
             return True
@@ -241,7 +303,6 @@ class Element:
 
 class Page:
     name = ""
-    #title = ""
     url = ""
     driver = None
 
@@ -252,18 +313,18 @@ class Page:
         self.name = pageobject['page']['name']
         #self.title = pageobject['page']['title']
         self.url = pageobject['page']['url']
-        
+
         self.elements = {}
 
         if "elements" in pageobject:
-            for object in pageobject['elements']:
-                element = Element(self, object)
-                
+            for item in pageobject['elements']:
+                element = Element(self.driver, item['xpath'], item['name'])
+
                 if not element.name in self.elements:
                     self.elements[element.name] = element
                 else:
                     Log.Warning("%s\nDuplicate element name: '%s'" % (self.name, element.name))
-                
+
         if "site_url" in pageobject and site != "default":
             if site in pageobject['site_url']:
                 self.url = pageobject['site_url'][site]
@@ -278,7 +339,7 @@ class Page:
         if name in self.elements:
             return self.elements[name]
 
-        Log.Failed("Element not found", None, name)
+        #Log.Failed("Element not found", None, name)
         return None
 
     def VerifyPage(self):
@@ -295,16 +356,3 @@ class Page:
         except:
             Log.Failed("URL not matched", self.driver.current_url.lower(), url.lower())
             return False
-
-    # def VerifyTitle(self):
-    #     if self.title == self.driver.title:
-    #         return True
-
-    #     Log.Failed("Title not matched", self.driver.title, self.title)
-    #     return False
-
-    @property
-    def URL(self):
-        return self.url
-
-    
