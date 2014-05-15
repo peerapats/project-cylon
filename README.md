@@ -13,7 +13,7 @@ Prerequisite
 How to install on Windows
 -------------------------
 1. Install vc redist (Microsoft Visual C++ 2010 Redistributable Package).
-2. Install Python (use version 2.7). 
+2. Install Python (use version 2.7).
     * Download from: [python downloads](https://www.python.org/downloads/)
 
 3. Add following to PATH environment variable.
@@ -25,7 +25,7 @@ How to install on Windows
     * Download from: [pywin32](http://sourceforge.net/projects/pywin32/files/pywin32/)
     * Select latest build and correct Python version
 
-5. Install python setuptools. 
+5. Install python setuptools.
     * Download from: [setuptools](https://pypi.python.org/pypi/setuptools/0.9.6#installation-instructions)
 
 6. Run following command to install required packages.
@@ -128,9 +128,9 @@ Create test project
 2. Extract the zip file to any location (you can rename this folder as your test project name)
 3. Add / Edit ```.yaml``` files in ```pageobjects``` folder
     * see how to write page object in [wiki](https://github.com/gigapixel/project-cylon/wiki/Page-Object)
-4. Add / Edit ```.feature``` file in ```features``` folder 
+4. Add / Edit ```.feature``` file in ```features``` folder
     * see example from: [feature files](http://pythonhosted.org/behave/tutorial.html#feature-files)
-    * see all bundle keywords in [wiki](https://github.com/gigapixel/project-cylon/wiki/Bundle-Keywords) 
+    * see all bundle keywords in [wiki](https://github.com/gigapixel/project-cylon/wiki/Bundle-Keywords)
 5. Edit ```steps.py``` file in ```features/steps``` folder (optional)
 
 Run test features
@@ -163,3 +163,7 @@ Package Dependencies
 Python Package Index
 --------------------
 See: https://pypi.python.org/pypi/project-cylon
+
+Changelog
+---------
+See: [Changelog](https://github.com/gigapixel/project-cylon/blob/master/CHANGELOG.md)
