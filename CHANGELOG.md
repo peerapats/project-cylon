@@ -1,5 +1,21 @@
 # Changelog
 
-## 0.2.3 - 2014-05-14
+## 0.3.1 - 2014-05-20
+- Added [Page Analysis](https://github.com/gigapixel/project-cylon/wiki/Page-Analysis) feature.
+- Added new keyword.
+  ```
+  Then The [...] value is between '...' and '...'
+  ```
+- Fixed wait time when check element does not exist.
+- Fixed following keywords to support numeric value.
+  ```
+  Then The [...] value is more than '...'
+  Then The [...] value is more than or equal '...'
+  Then The [...] value is less than '...'
+  Then The [...] value is less than or equal '...'
+  Then The [...] value is between '...' and '...'
+  ```
+- Updated verify failure message.
 
+## 0.2.3 - 2014-05-14
 - First stable release.

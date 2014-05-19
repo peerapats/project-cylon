@@ -63,7 +63,7 @@ class WorldContext:
         elif browser.lower() == 'chrome':
             self.driver = webdriver.Chrome()
 
-        self.driver.implicitly_wait(15)
+        self.driver.implicitly_wait(15) ## set default wait time
 
     def CloseBrowser(self):
         for handle in self.driver.window_handles:
@@ -107,12 +107,8 @@ class WorldContext:
             return Element(self.driver, identifier)
 
 
-    def VerifyURLIs(self, URL):
+    def VerifyURLIs(self, url):
         self.driver.switch_to_window(self.driver.window_handles[-1])
-        url = URL
-
-        ## wait for page load
-        wait = ui.WebDriverWait(self.driver, 15)
 
         if url.lower() == self.driver.current_url.lower():
             return True
@@ -121,12 +117,8 @@ class WorldContext:
         return False
 
 
-    def VerifyURLContains(self, URL):
+    def VerifyURLContains(self, url):
         self.driver.switch_to_window(self.driver.window_handles[-1])
-        url = URL
-
-        ## wait for page load
-        wait = ui.WebDriverWait(self.driver, 15)
 
         if url.lower() in self.driver.current_url.lower():
             return True
@@ -156,7 +148,7 @@ class WorldContext:
         if popup.text == message:
             return True
 
-        Log.Failed("Value not matched", popup.text, message)
+        Log.Failed("Verify popup message is?", popup.text, message)
         return False
 
 World = WorldContext.Instance()

@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='project-cylon',
-      version='0.2.3',
+      version='0.3.1',
       description='Web automated testing framework using behave and selenium',
       long_description=
       """

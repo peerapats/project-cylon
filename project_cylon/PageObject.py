@@ -9,6 +9,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 import selenium.webdriver.support.ui as ui
 
 from Logger import *
+from Parser import *
 
 
 class Element:
@@ -21,68 +22,51 @@ class Element:
         self.name = name
         self.identifier = identifier
 
-
     def FindByXPath(self):
         try: return self.driver.find_element_by_xpath(self.identifier)
         except: return None
 
     def FindById(self):
-        try:
-            return self.driver.find_element_by_id(self.identifier)
-        except:
-            return None
+        try: return self.driver.find_element_by_id(self.identifier)
+        except: return None
 
     def FindByName(self):
-        try:
-            return self.driver.find_element_by_name(self.identifier)
-        except:
-            return None
+        try: return self.driver.find_element_by_name(self.identifier)
+        except: return None
 
     def FindByClassName(self):
-        try:
-            return self.driver.find_element_by_class_name(self.identifier)
-        except:
-            return None
+        try: return self.driver.find_element_by_class_name(self.identifier)
+        except: return None
 
     def FindByLinkText(self):
-        try:
-            return self.driver.find_element_by_link_text(self.identifier)
-        except:
-            return None
-
+        try: return self.driver.find_element_by_link_text(self.identifier)
+        except: return None
 
     def Get(self, logError=True):
-        wait = ui.WebDriverWait(self.driver, 3)
+        element = None
 
-        element = self.FindByXPath()
-        if element is not None:
-            return element
+        ## set wait time to 0 in case not found
+        self.driver.implicitly_wait(0)
 
-        # element = self.FindById()
-        # if element is not None:
-        #     return element
-        #
-        # element = self.FindByName()
-        # if element is not None:
-        #     return element
+        if self.name == "noname":
+            element = self.FindById()
+            if element is None: element = self.FindByName()
+            if element is None: element = self.FindByClassName()
+            if element is None: element = self.FindByLinkText()
+        else:
+            element = self.FindByXPath()
 
-        # element = self.FindByClassName()
-        # if element is not None:
-        #     return element
-        #
-        # element = self.FindByLinkText()
-        # if element is not None:
-        #     return element
+        ## set wait time back
+        self.driver.implicitly_wait(15)
 
-        if logError:
+        if logError and element is None:
             Log.Failed("The element '%s' not found at identifier '%s'" % (self.name, self.identifier))
-        return None
+        return element
 
 
-    def GetItemsCount(self):
-        wait = ui.WebDriverWait(self.driver, 3)
+    def GetItems(self):
         elements = self.driver.find_elements_by_xpath(self.identifier)
-        return len(elements)
+        return elements
 
 
     @property
@@ -120,10 +104,9 @@ class Element:
         element = self.Get()
         return element.get_attribute('title')
 
-
     @property
     def Count(self):
-        return self.GetItemsCount()
+        return len(self.GetItems())
 
 
     def SendKeys(self, value):
@@ -171,133 +154,180 @@ class Element:
         if self.Value == value:
             return True
 
-        Log.Failed("Value not matched", self.Value, value)
+        Log.Failed("Verify value is?", self.Value, value)
         return False
 
     def VerifyValueIsNot(self, value):
         if self.Value != value:
             return True
 
-        Log.Failed("Value is matched", self.Value, value)
+        Log.Failed("Verify value is not?", self.Value, value)
         return False
 
     def VerifyValueContains(self, value):
         if value in self.Value:
             return True
 
-        Log.Failed("Value not matched", self.Value, value)
+        Log.Failed("Verify value contains?", self.Value, value)
         return False
 
     def VerifyValueMoreThan(self, value):
-        if self.Value > value:
+        actual = Parser.Parse(self.Value)
+        expect = Parser.Parse(value)
+
+        if actual > expect:
             return True
 
-        Log.Failed("Value not matched", self.Value, value)
+        Log.Failed(
+            "Verify value is more than?",
+            "value = %s" % actual,
+            "value > %s" % expect
+        )
         return False
 
     def VerifyValueMoreThanOrEqual(self, value):
-        if self.Value >= value:
+        actual = Parser.Parse(self.Value)
+        expect = Parser.Parse(value)
+
+        if actual >= expect:
             return True
 
-        Log.Failed("Value not matched", self.Value, value)
+        Log.Failed(
+            "Verify value is more than or equal?",
+            "value = %s" % actual,
+            "value >= %s" % expect
+        )
         return False
 
     def VerifyValueLessThan(self, value):
-        if self.Value < value:
+        actual = Parser.Parse(self.Value)
+        expect = Parser.Parse(value)
+
+        if actual < expect:
             return True
 
-        Log.Failed("Value not matched", self.Value, value)
+        Log.Failed(
+            "Verify value is less than?",
+            "value = %s" % actual,
+            "value < %s" % expect
+        )
         return False
 
     def VerifyValueLessThanOrEqual(self, value):
-        if self.Value <= value:
+        actual = Parser.Parse(self.Value)
+        expect = Parser.Parse(value)
+
+        if actual <= expect:
             return True
 
-        Log.Failed("Value not matched", self.Value, value)
+        Log.Failed(
+            "Verify value is less than or equal?",
+            "value = %s" % actual,
+            "value <= %s" % expect
+        )
+        return False
+
+    def VerifyValueBetween(self, value1, value2):
+        actual = Parser.Parse(self.Value)
+        value1 = Parser.Parse(value1)
+        value2 = Parser.Parse(value2)
+
+        if (actual >= value1 and actual <= value2) or (actual <= value1 and actual >= value2):
+            return True
+
+        Log.Failed(
+            "Verify value is between?",
+            "value = %s" % actual,
+            "value is between %s and %s" % (value1, value2)
+        )
         return False
 
     def VerifyValueIsBlank(self):
         if self.Value == '':
             return True
 
-        Log.Failed("Value not matched", self.Value, "<blank>")
+        Log.Failed("Verify value is empty?", self.Value, "<blank>")
         return False
 
     def VerifyHasValue(self):
         if not self.Value == '':
             return True
 
-        Log.Failed("Value not matched", self.Value, "<any value>")
+        Log.Failed("Verify value is not empty?", self.Value, "<any value>")
         return False
 
     def VerifyExists(self):
         if self.Exists:
             return True
 
-        Log.Failed("Verify element '%s' exists" % self.name, "Not exists", "Exists")
+        Log.Failed("Verify element '%s' exists?" % self.name, "not exists", "exists")
         return False
 
     def VerifyNotExists(self):
         if not self.Exists:
             return True
 
-        Log.Failed("Verify element '%s' not exists" % self.name, "Exists", "Not exists")
+        Log.Failed("Verify element '%s' not exists?" % self.name, "exists", "not exists")
         return False
 
     def VerifyEnabled(self):
         if self.Enabled:
             return True
 
-        Log.Failed("Verify element '%s' enabled" % self.name, "Disabled", "Enabled")
+        Log.Failed("Verify element '%s' enabled?" % self.name, "disabled", "enabled")
         return False
 
     def VerifyDisabled(self):
         if not self.Enabled:
             return True
 
-        Log.Failed("Verify element '%s' disabled" % self.name, "Enabled", "Disabled")
+        Log.Failed("Verify element '%s' disabled?" % self.name, "enabled", "disabled")
         return False
 
     def VerifyVisible(self):
         if self.Visible:
             return True
 
-        Log.Failed("Verify element '%s' visible" % self.name, "Not visible", "Visible")
+        Log.Failed("Verify element '%s' visible?" % self.name, "not visible", "visible")
         return False
 
     def VerifyNotVisible(self):
         if not self.Visible:
             return True
 
-        Log.Failed("Verify element '%s' not visible" % self.name, "Visible", "Not visible")
+        Log.Failed("Verify element '%s' not visible?" % self.name, "visible", "not visible")
         return False
 
     def VerifyIsChecked(self):
         if self.Selected:
             return True
 
-        Log.Failed("Verify element '%s' checked" % self.name, "Unchecked", "Checked")
+        Log.Failed("Verify element '%s' checked?" % self.name, "unchecked", "checked")
         return False
 
     def VerifyIsUnchecked(self):
         if not self.Selected:
             return True
 
-        Log.Failed("Verify element '%s' unchecked" % self.name, "Checked", "Unchecked")
+        Log.Failed("Verify element '%s' unchecked?" % self.name, "checked", "unchecked")
         return False
 
     def VerifyItemsCount(self, count):
         if self.Count == int(count):
             return True
 
-        Log.Failed("Verify elements count '%s'" % self.name, self.Count, count)
+        Log.Failed(
+            "Verify amount of '%s' is?" % self.name,
+            "amount = %s" % self.Count,
+            "amount = %s" % count
+        )
         return False
 
     def VerifyTooltip(self, value):
         if self.Tooltip == value:
             return True
 
-        Log.Failed("Value not matched", self.Tooltip, value)
+        Log.Failed("Verify tooltip text is?", self.Tooltip, value)
         return False
 
 
@@ -311,7 +341,6 @@ class Page:
     def __init__(self, driver, pageobject, site="default"):
         self.driver = driver
         self.name = pageobject['page']['name']
-        #self.title = pageobject['page']['title']
         self.url = pageobject['page']['url']
 
         self.elements = {}
@@ -348,11 +377,8 @@ class Page:
         uri = urlparse(self.url)
         url = uri.scheme + '://' + uri.netloc + uri.path
 
-        ## wait for page load
-        wait = ui.WebDriverWait(self.driver, 15)
-        try:
-            wait.until(lambda driver : self.driver.current_url.lower().find(url.lower()) != -1)
+        if url.lower() in self.driver.current_url.lower():
             return True
-        except:
-            Log.Failed("URL not matched", self.driver.current_url.lower(), url.lower())
-            return False
+
+        Log.Failed("URL not matched", self.driver.current_url.lower(), url.lower())
+        return False
