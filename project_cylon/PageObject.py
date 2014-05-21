@@ -9,7 +9,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 import selenium.webdriver.support.ui as ui
 
 from Logger import *
-from Parser import *
+#from Parser import *
+from CustomOperators import *
 
 
 class Element:
@@ -21,6 +22,14 @@ class Element:
         self.driver = driver
         self.name = name
         self.identifier = identifier
+
+    def __get_element_value(self, element):
+        if element.tag_name in ['input', 'button']:
+            return element.get_attribute('value')
+        elif element.tag_name == 'select':
+            return Select(element).first_selected_option.get_attribute('value')
+        else:
+            return element.get_attribute('innerHTML')
 
     def FindByXPath(self):
         try: return self.driver.find_element_by_xpath(self.identifier)
@@ -94,10 +103,7 @@ class Element:
     @property
     def Value(self):
         element = self.Get()
-        if element.tag_name in ['input', 'button']:
-            return element.get_attribute('value')
-        else:
-            return element.get_attribute('innerHTML')
+        return self.__get_element_value(element)
 
     @property
     def Tooltip(self):
@@ -172,10 +178,10 @@ class Element:
         return False
 
     def VerifyValueMoreThan(self, value):
-        actual = Parser.Parse(self.Value)
-        expect = Parser.Parse(value)
+        actual = self.Value
+        expect = value
 
-        if actual > expect:
+        if actual |more_than| expect:
             return True
 
         Log.Failed(
@@ -186,10 +192,10 @@ class Element:
         return False
 
     def VerifyValueMoreThanOrEqual(self, value):
-        actual = Parser.Parse(self.Value)
-        expect = Parser.Parse(value)
+        actual = self.Value
+        expect = value
 
-        if actual >= expect:
+        if actual |more_than_or_equal| expect:
             return True
 
         Log.Failed(
@@ -200,10 +206,10 @@ class Element:
         return False
 
     def VerifyValueLessThan(self, value):
-        actual = Parser.Parse(self.Value)
-        expect = Parser.Parse(value)
+        actual = self.Value
+        expect = value
 
-        if actual < expect:
+        if actual |less_than| expect:
             return True
 
         Log.Failed(
@@ -214,10 +220,10 @@ class Element:
         return False
 
     def VerifyValueLessThanOrEqual(self, value):
-        actual = Parser.Parse(self.Value)
-        expect = Parser.Parse(value)
+        actual = self.Value
+        expect = value
 
-        if actual <= expect:
+        if actual |less_than_or_equal| expect:
             return True
 
         Log.Failed(
@@ -228,11 +234,13 @@ class Element:
         return False
 
     def VerifyValueBetween(self, value1, value2):
-        actual = Parser.Parse(self.Value)
-        value1 = Parser.Parse(value1)
-        value2 = Parser.Parse(value2)
+        actual = self.Value
+        #value1 = value1
+        #value2 = value2
 
-        if (actual >= value1 and actual <= value2) or (actual <= value1 and actual >= value2):
+        if (actual |more_than_or_equal| value1) and (actual |less_than_or_equal| value2):
+            return True
+        if (actual |less_than_or_equal| value1) and (actual |more_than_or_equal| value2):
             return True
 
         Log.Failed(
@@ -329,6 +337,28 @@ class Element:
 
         Log.Failed("Verify tooltip text is?", self.Tooltip, value)
         return False
+
+    # def VerifyValueSortedAscending(self):
+    #     unsorted_values = []
+    #     elements = self.GetItems()
+    #
+    #     for element in elements:
+    #         unsorted_values.append(self.__get_element_value(element))
+    #
+    #     sorted_values = natural_sort(unsorted_values)
+    #
+    #     if unsorted_values == sorted_values:
+    #         return True
+    #
+    #     Log.Failed(
+    #         "Verify value sorted ascending?",
+    #         "[%s]" % ','.join(unsorted_values),
+    #         "[%s]" % ','.join(sorted_values)
+    #     )
+    #     return False
+
+    # def VerifyValueSortedDescending(self):
+    #     return False
 
 
 class Page:

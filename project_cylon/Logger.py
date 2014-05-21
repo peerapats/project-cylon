@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import platform
 
 if platform.system() == 'Windows':
@@ -8,7 +9,7 @@ else:
 
 class Log:
     UseColor = True ## before changing to true, run "pip install colorama" in commandline
-    
+
     ColorCodes = {
         'black':    '0;30', 'bright gray':  '0;37',
         'blue':     '0;34', 'white':        '1;37',
@@ -50,7 +51,7 @@ class Log:
 
         if actual != "--" and expect != "--":
             details = "%s\nactual: '%s'\nexpect: '%s'\n" % (message, actual, expect)
-        
+
         #cls.printcc('red', details)
         print details
         raise "(Failed)"
@@ -65,6 +66,3 @@ class Log:
     # def switchColor(color):
     #     """Switch console color."""
     #     sys.stdout.write("\033[" + codeCodes[color] + "m")
-
-
-    

@@ -1,6 +1,10 @@
 # Changelog
 
-## 0.3.1 - 2014-05-20
+## 0.3.2 - 2014-05-21
+- Fixed keywords to verify more than and les than value to compare with natural alphanumeric.
+- Fixed code to get current selected value from select list.
+
+## 0.3.1 - 2014-05-19
 - Added [Page Analysis](https://github.com/gigapixel/project-cylon/wiki/Page-Analysis) feature.
 - Added new keyword.
   ```

@@ -5,6 +5,7 @@ from project_cylon.WorldContext import *
 ##
 ## Given step definitions
 ##
+@step ("User has [{PageName}] page opened")
 @step ("User has [{PageName}] page open")
 @step ("User has [{PageName}] open")
 def step_impl(context, PageName):
