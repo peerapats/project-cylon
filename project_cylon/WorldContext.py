@@ -11,6 +11,7 @@ from selenium.common.exceptions import *
 from Logger import *
 from PageObject import *
 
+
 class Singleton:
     """
     A non-thread-safe helper class to ease implementing singletons.
@@ -107,23 +108,34 @@ class WorldContext:
             return Element(self.driver, identifier)
 
 
-    def VerifyURLIs(self, url):
-        self.driver.switch_to_window(self.driver.window_handles[-1])
+    def CreateDummyPage(self, url):
+        pageobject = {}
+        pageobject['page'] = {}
+        pageobject['page']['name'] = 'noname'
+        pageobject['page']['url'] = url
 
-        if url.lower() == self.driver.current_url.lower():
+        return pageobject
+
+
+    def VerifyURLIs(self, url):
+        page = Page(self.driver, self.CreateDummyPage(url))
+        page.WaitForPageLoaded()
+
+        if url == self.driver.current_url:
             return True
 
-        Log.Failed("URL not matched", self.driver.current_url.lower(), url.lower())
+        Log.Failed("Verify url is?", self.driver.current_url, url)
         return False
 
 
     def VerifyURLContains(self, url):
-        self.driver.switch_to_window(self.driver.window_handles[-1])
+        page = Page(self.driver, self.CreateDummyPage(url))
+        page.WaitForPageLoaded()
 
-        if url.lower() in self.driver.current_url.lower():
+        if url in self.driver.current_url:
             return True
 
-        Log.Failed("URL not matched", self.driver.current_url.lower(), url.lower())
+        Log.Failed("Verify url contains?", self.driver.current_url, url)
         return False
 
 

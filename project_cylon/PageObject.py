@@ -9,7 +9,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 import selenium.webdriver.support.ui as ui
 
 from Logger import *
-#from Parser import *
 from CustomOperators import *
 
 
@@ -392,6 +391,7 @@ class Page:
 
     def Go(self):
         self.driver.get(self.url)
+        self.WaitForPageLoaded()
         return True
 
     def FindElement(self, name):
@@ -402,13 +402,19 @@ class Page:
         return None
 
     def VerifyPage(self):
+        return self.WaitForPageLoaded()
+
+    def WaitForPageLoaded(self, timeout=15):
         self.driver.switch_to_window(self.driver.window_handles[-1])
 
         uri = urlparse(self.url)
-        url = uri.scheme + '://' + uri.netloc + uri.path
+        url = uri.scheme + '://' + uri.hostname + uri.path
 
-        if url.lower() in self.driver.current_url.lower():
+        ## wait until browser shows expected url
+        wait = ui.WebDriverWait(self.driver, timeout)
+        try:
+            wait.until(lambda driver : self.driver.current_url.find(url) != -1)
             return True
-
-        Log.Failed("URL not matched", self.driver.current_url.lower(), url.lower())
-        return False
+        except:
+            Log.Failed("Page load timeout (%s sec)." % timeout, self.driver.current_url, url)
+            return False

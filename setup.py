@@ -1,8 +1,8 @@
 from setuptools import setup
 
 setup(name='project-cylon',
-      version='0.3.2',
-      description='Web automated testing framework using behave and selenium',
+      version='0.3.3',
+      description='Generic web automation testing framework',
       long_description=
       """
       Project Cylon framework provide easy way to create web automation test without coding skill, just focus on the test scenario.

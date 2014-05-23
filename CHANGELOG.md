@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.3 - 2014-05-23
+- Fixed to support http authentication url (e.g. 'http://user:pass@site.com').
+- Fixed wait for page load before verify url.
+
 ## 0.3.2 - 2014-05-21
 - Fixed keywords to verify more than and les than value to compare with natural alphanumeric.
 - Fixed code to get current selected value from select list.

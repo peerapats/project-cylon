@@ -1,6 +1,6 @@
 Project Cylon
 =============
-Web Automated Testing Framework using Behave and Selenium
+Generic Web Automation Testing Framework.
 
 About
 -----
