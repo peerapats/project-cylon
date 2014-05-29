@@ -53,12 +53,12 @@ You can run test with following ```behave``` command at your project directory.
 * To run all feature files use:
 
     ```
-    behave --quiet
+    behave --quiet --no-skipped
     ```
 * To run with specified tags use:
 
     ```
-    behave --quiet  --tags=@your_tag
+    behave --quiet --no-skipped --tags=@your_tag
     ```
 * For another command options see: [Using Behave](http://pythonhosted.org/behave/behave.html)
 
@@ -74,4 +74,5 @@ See: https://pypi.python.org/pypi/project-cylon
 
 Support Editor Plugin
 ---------------------
-For Atom editor user, please see [project-cylon-snippets](https://atom.io/packages/project-cylon-snippets)
+* For [Atom](https://atom.io) text editor, please see [project-cylon-snippets](https://atom.io/packages/project-cylon-snippets) package.
+* For [Sublime](http://www.sublimetext.com) text editor, please download [sublime-cylon-keywords](https://dl.dropboxusercontent.com/u/34601197/sublime-cylon-keywords.zip) plugin.
