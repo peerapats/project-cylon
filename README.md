@@ -6,124 +6,24 @@ About
 -----
 Project Cylon framework provide easy way to create web automation test without coding skill, just focus on the test scenario.
 
+Changelog
+---------
+See: [Changelog](https://github.com/gigapixel/project-cylon/blob/master/CHANGELOG.md)
+
 Prerequisite
 ------------
 1. Ensure your test machine has [Firefox](http://www.mozilla.org/en-US/firefox/new/) installed.
 
-How to install on Windows
--------------------------
-1. Install vc redist (Microsoft Visual C++ 2010 Redistributable Package).
-2. Install Python (use version 2.7).
-    * Download from: [python downloads](https://www.python.org/downloads/)
-
-3. Add following to PATH environment variable.
-
-    ```
-    C:\Python27;C:\Python27\Scripts;C:\Python27\Lib\site-packages;
-    ```
-4. Install Python for Windows extension.
-    * Download from: [pywin32](http://sourceforge.net/projects/pywin32/files/pywin32/)
-    * Select latest build and correct Python version
-
-5. Install python setuptools.
-    * Download from: [setuptools](https://pypi.python.org/pypi/setuptools/0.9.6#installation-instructions)
-
-6. Run following command to install required packages.
-
-    ```
-    easy_install pip
-    pip install pyyaml
-    pip install behave
-    pip install selenium
-    pip install colorama
-    ```
-7. Install ansicon.
-	* Download from: [ansicon](https://github.com/adoxa/ansicon/downloads)
-	* Read installaion instructions from: [ANSI escape sequence support with ansicon](http://www.kevwebdev.com/blog/in-search-of-a-better-windows-console-using-ansicon-console2-and-git-bash.html#ansicon)
-
-8. Install project-cylon package.
-
-    ```
-    pip install project-cylon
-    ```
-
-Setup Thai font for Windows console
------------------------------------
-1. Install Thai Font for Windows console
-    * Download [ThaiLang4CMD.zip](https://bitbucket.org/gigapixel/projectcylon/downloads/ThaiLang4CMD.zip)
-    * Install font ```Courmon.ttf``` to windows fonts folder
-    * Run ```ThaiLangInDOS.reg```
-    * Restart machine
-    * Run cmd windows and set font to ```Courier Mono Thai``` and set font size to 24
-
-2. Make Python able to run Thai
-    * Edit ```C:\Python27\Lib\site.py```
-    * Find the following 2 lines and comment them out:
-
-	```python
-	if hasattr(sys, "setdefaultencoding"):
-	    del sys.setdefaultencoding
-	```
-    * Create ```sitecustomize.py``` file at ```C:\Python27\Lib\site-packages``` with the following content
-
-	```python
-	import sys
-	    reload(sys)
-	    sys.setdefaultencoding("utf-8")
-	```
-
-3. Change Language for non-Unicode program to Thai (Region and Language -> Administrative -> Language for non-Unicode program)
-4. Restart machine
-
-How to install on Mac
----------------------
-1. We have suggest to use [homebrew](http://brew.sh/) as your package manager, install by following command.
-
-    ```
-    ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
-    ```
-2. After installation completed use following command to check your system and update homebrew.
-
-    ```
-    brew doctor
-    brew update
-    ```
-3. Install python on your machine.
-
-    ```
-    brew install python
-    ```
-4. After python installation completed you should have pip, use it to install required packages.
-
-    ```
-    pip install pyyaml
-    pip install behave
-    pip install selenium
-    ```
-5. Install project-cylon package.
-
-    ```
-    pip install project-cylon
-    ```
-
-How to install on Linux
------------------------
-Almost Linux already bundle with Python, so you can install required packages by following command.
-```
-sudo easy_install pip
-sudo pip install pyyaml
-sudo pip install behave
-sudo pip install selenium
-```
-
-Then install project-cylon package.
-```
-sudo pip install project-cylon
-```
+How to install
+--------------
+Please see installation guide for your systems.
+* [Windows](https://github.com/gigapixel/project-cylon/wiki/Installation-on-Windows)
+* [Mac OSX](https://github.com/gigapixel/project-cylon/wiki/Installation-on-Mac-OSX)
+* [Linux](https://github.com/gigapixel/project-cylon/wiki/Installation-on-Linux)
 
 Create test project
 -------------------
-1. Download test project template from: [example-test-v0.1.1.zip](https://bitbucket.org/gigapixel/projectcylon/downloads/example-test-v0.1.1.zip)
+1. Download test project template from: [project-cylon-demo.zip](https://github.com/gigapixel/project-cylon-demo/archive/master.zip)
     * For Windows, you need to place project folder on drive C: (has known issue to import steps from different root)
 2. Extract the zip file to any location (you can rename this folder as your test project name)
 3. Add / Edit ```.yaml``` files in ```pageobjects``` folder
@@ -145,12 +45,12 @@ You can run test with following ```behave``` command at your project directory.
 * To run all feature files use:
 
     ```
-    behave --color --no-source --no-skipped --logging-level INFO
+    behave --quiet
     ```
 * To run with specified tags use:
 
     ```
-    behave --color --no-source --no-skipped --logging-level INFO --tags=@your_tag
+    behave --quiet  --tags=@your_tag
     ```
 * For another command options see: [Using Behave](http://pythonhosted.org/behave/behave.html)
 
@@ -164,6 +64,6 @@ Python Package Index
 --------------------
 See: https://pypi.python.org/pypi/project-cylon
 
-Changelog
----------
-See: [Changelog](https://github.com/gigapixel/project-cylon/blob/master/CHANGELOG.md)
+Support Editor Plugin
+---------------------
+For Atom editor user, please see [project-cylon-snippets](https://atom.io/packages/project-cylon-snippets)
