@@ -1,10 +1,17 @@
-Project Cylon
+Project-Cylon
 =============
-Generic Web Automation Testing Framework.
+Generic Web Acceptance Testing Framework.
 
 About
 -----
-Project Cylon framework provide easy way to create web automation test without coding skill, just focus on the test scenario.
+Project-Cylon framework provide easier way to create web acceptance testing.
+Without coding skill, user can write test scenario by focusing on systems behaviour.
+
+This project powered by most popular tools [Selenium](http://docs.seleniumhq.org/) and [Behave](http://pythonhosted.org/behave/).
+
+![alt text](http://docs.seleniumhq.org/images/big-logo.png)
+![alt text](https://raw.githubusercontent.com/behave/behave/master/docs/_static/behave_logo.png)
+
 
 Changelog
 ---------
@@ -17,6 +24,7 @@ Prerequisite
 How to install
 --------------
 Please see installation guide for your systems.
+
 * [Windows](https://github.com/gigapixel/project-cylon/wiki/Installation-on-Windows)
 * [Mac OSX](https://github.com/gigapixel/project-cylon/wiki/Installation-on-Mac-OSX)
 * [Linux](https://github.com/gigapixel/project-cylon/wiki/Installation-on-Linux)

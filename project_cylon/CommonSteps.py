@@ -5,6 +5,7 @@ from project_cylon.WorldContext import *
 ##
 ## Given step definitions
 ##
+#@step ("ผู้ใช้เปิดหน้าเว็บ [{PageName}]")
 @step ("User has [{PageName}] page opened") ##->given
 @step ("User has [{PageName}] page open")
 @step ("User has [{PageName}] open")
@@ -15,6 +16,7 @@ def step_impl(context, PageName):
 ##
 ## When step definitions
 ##
+#@step ("ผู้ใช้กรอกข้อมูล '{Value}' ลงใน [{ElementName}]")
 @step ("User enters '{Value}' to the [{ElementName}]") ##->when
 @step ("User enters '{Value}' to [{ElementName}]")
 def step_impl(context, ElementName, Value):
