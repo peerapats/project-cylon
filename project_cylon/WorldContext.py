@@ -114,11 +114,13 @@ class WorldContext:
         pageobject['page']['name'] = 'noname'
         pageobject['page']['url'] = url
 
-        return pageobject
+        page = Page(self.driver, pageobject)
+
+        return page
 
 
     def VerifyURLIs(self, url):
-        page = Page(self.driver, self.CreateDummyPage(url))
+        page = self.CreateDummyPage(url)
         page.WaitForPageLoaded()
 
         if url == self.driver.current_url:
@@ -129,7 +131,7 @@ class WorldContext:
 
 
     def VerifyURLContains(self, url):
-        page = Page(self.driver, self.CreateDummyPage(url))
+        page = self.CreateDummyPage(url)
         page.WaitForPageLoaded()
 
         if url in self.driver.current_url:

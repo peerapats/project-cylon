@@ -1,14 +1,14 @@
 from setuptools import setup
 
 setup(name='project-cylon',
-      version='0.3.3',
-      description='Generic web automation testing framework',
+      version='0.4.0',
+      description='Generic Web Acceptance Testing Framework',
       long_description=
       """
-      Project Cylon framework provide easy way to create web automation test without coding skill, just focus on the test scenario.
+      Project-Cylon framework provide easy way to create web automation test without coding skill, just focus on the test scenario.
       """,
       url='https://github.com/gigapixel/project-cylon',
-      author='Pongrapee Jencharat, Kamol Chalermviriya and Peerapat Sungkasem',
+      author='Pongrapee J., Kamol C. and Peerapat S.',
       author_email='gigapixel7@gmail.com',
       license='MIT',
       classifiers=[

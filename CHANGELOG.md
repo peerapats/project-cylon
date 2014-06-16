@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.4.0 - 2014-06-16
+- Added keywords to support url path
+  ```
+  Given User has [ProductDetail/product1] page opened
+  Then The browser shows [ProductDetail/product1] page
+  ```
+
+  To use above pattern you need to define `url_paths:` in page object file like this.
+  ```yaml
+  page:
+    name: ProductDetail
+    url: http://yoursite.com/product
+    url_paths:
+    - name: product1
+      path: /PID00001
+    - name: product2
+      path: /PID00002
+  ```
+
 ## 0.3.3 - 2014-05-23
 - Fixed to support http authentication url (e.g. ```http://user:pass@site.com```).
 - Fixed wait for page load before verify url.

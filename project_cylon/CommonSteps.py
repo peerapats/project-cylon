@@ -5,6 +5,13 @@ from project_cylon.WorldContext import *
 ##
 ## Given step definitions
 ##
+
+@step ("User has [{PageName}/{PathName}] page opened") ##->given
+def step_impl(context, PageName, PathName):
+    Page = World.FindPage(PageName)
+    Page.Go(PathName)
+
+
 #@step ("ผู้ใช้เปิดหน้าเว็บ [{PageName}]")
 @step ("User has [{PageName}] page opened") ##->given
 @step ("User has [{PageName}] page open")
@@ -12,6 +19,13 @@ from project_cylon.WorldContext import *
 def step_impl(context, PageName):
     Page = World.FindPage(PageName)
     Page.Go()
+
+
+@step ("User browse to url '{URL}'")
+def step_impl(context, URL):
+    Page = World.CreateDummyPage(URL)
+    Page.Go()
+
 
 ##
 ## When step definitions
@@ -22,6 +36,7 @@ def step_impl(context, PageName):
 def step_impl(context, ElementName, Value):
     Element = World.FindElement(ElementName)
     Element.SendKeys(Value)
+
 
 @step ("User enters date '{Value}' to the [{ElementName}]") ##->when
 @step ("User enters date '{Value}' to [{ElementName}]")
@@ -37,6 +52,7 @@ def step_impl(context, ElementName):
     Element.SendKeysByScript("")
 
 
+#@step ("ผู้ใช้คลิกเลือก [{ElementName}]")
 @step ("User selects the [{ElementName}]") ##->when
 @step ("User clicks the [{ElementName}]") ##->when
 @step ("User clicks [{ElementName}] link")
@@ -46,6 +62,7 @@ def step_impl(context, ElementName):
     Element.Click()
 
 
+#@step ("ผู้ใช้เลือก '{Value}' ใน [{ElementName}]")
 @step ("User selects '{Value}' on the [{ElementName}]") ##->when
 @step ("User selects '{Value}' in [{ElementName}]")
 def step_impl(context, Value, ElementName):
@@ -79,6 +96,7 @@ def step_impl(context, FilePath, ElementName):
     Element.SendKeys(FilePath)
 
 
+#@step ("ผู้ใช้กรอกข้อมูล '{Value}' ลงในหน้าต่างแจ้งเตือน")
 @step ("User enters '{Value}' to the popup")
 def step_impl(context, Value):
     World.SendKeysToPopup(Value)
@@ -98,6 +116,12 @@ def step_impl(context):
 ##
 ## Then step definitions
 ##
+@step ("The browser shows [{PageName}/{PathName}] page") ##->then
+def step_impl(context, PageName, PathName):
+    Page = World.FindPage(PageName)
+    Page.VerifyPage(PathName)
+
+
 @step ("The browser shows [{PageName}] page") ##->then
 @step ("The system displays [{PageName}]")
 def step_impl(context, PageName):

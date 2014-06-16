@@ -234,8 +234,6 @@ class Element:
 
     def VerifyValueBetween(self, value1, value2):
         actual = self.Value
-        #value1 = value1
-        #value2 = value2
 
         if (actual |more_than_or_equal| value1) and (actual |less_than_or_equal| value2):
             return True
@@ -363,6 +361,7 @@ class Element:
 class Page:
     name = ""
     url = ""
+    url_paths = {}
     driver = None
 
     elements = {}
@@ -372,6 +371,17 @@ class Page:
         self.name = pageobject['page']['name']
         self.url = pageobject['page']['url']
 
+        if "url_paths" in pageobject['page']:
+            for item in pageobject['page']['url_paths']:
+                name = item['name']
+                path = item['path']
+
+                if not name in self.url_paths:
+                    self.url_paths[name] = path
+                else:
+                    Log.Warning("%s\nDuplicate url path name: '%s'" % (self.name, name))
+
+        ## load elements
         self.elements = {}
 
         if "elements" in pageobject:
@@ -389,9 +399,28 @@ class Page:
             else:
                 Log.Warning("Not found site url '%s' in '%s'" % (site, self.name))
 
-    def Go(self):
-        self.driver.get(self.url)
-        self.WaitForPageLoaded()
+
+    def GetURL(self, pathname=""):
+        url = ""
+
+        if pathname == "":
+            url = self.url
+        elif pathname in self.url_paths:
+            domain = self.url
+            path = self.url_paths[pathname]
+
+            if domain[-1] == '/': domain = domain[:-1]
+            if path[0] == '/': path = path[1:]
+
+            url = domain + '/' + path
+        else: Log.Warning("Not found url path '%s' in '%s'" % (pathname, self.name))
+
+        return url
+
+
+    def Go(self, pathname=""):
+        url = self.GetURL(pathname)
+        self.driver.get(url)
         return True
 
     def FindElement(self, name):
@@ -401,14 +430,17 @@ class Page:
         #Log.Failed("Element not found", None, name)
         return None
 
-    def VerifyPage(self):
-        return self.WaitForPageLoaded()
+    def VerifyPage(self, pathname=""):
+        return self.WaitForPageLoaded(pathname)
 
-    def WaitForPageLoaded(self, timeout=15):
+    def WaitForPageLoaded(self, pathname="", timeout=15):
         self.driver.switch_to_window(self.driver.window_handles[-1])
 
-        uri = urlparse(self.url)
-        url = uri.scheme + '://' + uri.hostname + uri.path
+        url = self.GetURL(pathname)
+
+        if "://" in url:
+            uri = urlparse(url)
+            url = uri.scheme + '://' + uri.hostname + uri.path
 
         ## wait until browser shows expected url
         wait = ui.WebDriverWait(self.driver, timeout)
