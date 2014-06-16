@@ -2,7 +2,7 @@
 
 ## 0.4.0 - 2014-06-16
 - Added keywords to support url path
-  ```
+  ```feature
   Given User has [ProductDetail/product1] page opened
   Then The browser shows [ProductDetail/product1] page
   ```
