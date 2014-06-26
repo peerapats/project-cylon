@@ -1,13 +1,61 @@
 # Changelog
 
+## 0.5.0 - 2014-06-26
+- Added following keywords to support multi-line content
+
+  ```feature
+  When user enters following lines to the [element]
+      """
+      This keyword can enters multi-line content to element.
+      1. line 1 content
+      2. line 2 content
+      """
+
+  Then the [element] value is
+      """
+      any multi-line content...
+      """
+
+  Then the [element] value contains
+      """
+      any multi-line content...
+      """
+  ```
+
+- Added accept fail keyword feature
+
+  This feature allow scenario to continue running when the specified step was failed
+
+  To use this feature just add `, accept fail` sentence after normal keyword for example:
+
+  ```feature
+  Then the [option1] is selected, accept fail
+  Then user enters 'some text' to the [textbox] ## enters text to textbox either option1 was selected or not
+
+  ```
+
+- Added conditional keyword feature
+
+  This feature allow to combine two steps as conditional and execution step,
+  these two steps separated by `, ` (comma and one space)
+
+  If conditional step was passed it will continue running the execution step, else it will ignore for example:
+
+  ```feature
+  When the [input] value is '1', user selects the [option1]
+  When the [input] value is '2', user selects the [option2]
+  ```
+
 ## 0.4.0 - 2014-06-16
 - Added keywords to support url path
+
   ```feature
   Given User has [ProductDetail/product1] page opened
   Then The browser shows [ProductDetail/product1] page
   ```
 
   To use above pattern you need to define `url_paths:` in page object file like this.
+
   ```yaml
   page:
     name: ProductDetail
@@ -34,6 +82,7 @@
   ```feature
   Then The [...] value is between '...' and '...'
   ```
+
 - Fixed wait time when check element does not exist.
 - Fixed following keywords to support numeric value.
 
