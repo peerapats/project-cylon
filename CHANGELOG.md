@@ -16,7 +16,7 @@
       any multi-line content...
       """
 
-  Then the [comment area] value contains
+  Then the [element] value contains
       """
       any multi-line content...
       """
