@@ -9,7 +9,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 import selenium.webdriver.support.ui as ui
 
 from Logger import *
-from CustomOperators import *
 
 
 class Element:
@@ -22,91 +21,130 @@ class Element:
         self.name = name
         self.identifier = identifier
 
-    def __get_element_value(self, element):
-        if element.tag_name in ['input', 'button']:
+    def __find_by_xpath(self):
+        try: return self.driver.find_element_by_xpath(self.identifier)
+        except: return None
+
+    def __find_by_id(self):
+        try: return self.driver.find_element_by_id(self.identifier)
+        except: return None
+
+    def __find_by_name(self):
+        try: return self.driver.find_element_by_name(self.identifier)
+        except: return None
+
+    def __find_by_class_name(self):
+        try: return self.driver.find_element_by_class_name(self.identifier)
+        except: return None
+
+    def __find_by_link_text(self):
+        try: return self.driver.find_element_by_link_text(self.identifier)
+        except: return None
+
+    def __get_instance(self):
+        element = None
+        self.driver.implicitly_wait(0) ## set wait time to 0 in case not found
+
+        if self.name == "noname":
+            element = self.__find_by_id()
+            if element is None: element = self.__find_by_name()
+            if element is None: element = self.__find_by_class_name()
+            if element is None: element = self.__find_by_link_text()
+        else:
+            element = self.__find_by_xpath()
+
+        self.driver.implicitly_wait(15) ## set wait time back
+        return element
+
+    # def __get_element_value(self, element):
+    #     if element.tag_name in ['input', 'button', 'textarea']:
+    #         return element.get_attribute('value')
+    #     elif element.tag_name == 'select':
+    #         return Select(element).first_selected_option.get_attribute('value')
+    #     else:
+    #         return element.get_attribute('innerHTML')
+
+    def __get_value(self):
+        element = self.GetInstance()
+
+        if element.tag_name in ['input', 'button', 'textarea']:
             return element.get_attribute('value')
         elif element.tag_name == 'select':
             return Select(element).first_selected_option.get_attribute('value')
         else:
             return element.get_attribute('innerHTML')
 
-    def FindByXPath(self):
-        try: return self.driver.find_element_by_xpath(self.identifier)
-        except: return None
+    def GetInstance(self):
+        element = self.__get_instance()
 
-    def FindById(self):
-        try: return self.driver.find_element_by_id(self.identifier)
-        except: return None
-
-    def FindByName(self):
-        try: return self.driver.find_element_by_name(self.identifier)
-        except: return None
-
-    def FindByClassName(self):
-        try: return self.driver.find_element_by_class_name(self.identifier)
-        except: return None
-
-    def FindByLinkText(self):
-        try: return self.driver.find_element_by_link_text(self.identifier)
-        except: return None
-
-    def Get(self, logError=True):
-        element = None
-
-        ## set wait time to 0 in case not found
-        self.driver.implicitly_wait(0)
-
-        if self.name == "noname":
-            element = self.FindById()
-            if element is None: element = self.FindByName()
-            if element is None: element = self.FindByClassName()
-            if element is None: element = self.FindByLinkText()
+        if not element is None:
+            return element
         else:
-            element = self.FindByXPath()
-
-        ## set wait time back
-        self.driver.implicitly_wait(15)
-
-        if logError and element is None:
             Log.Failed("The element '%s' not found at identifier '%s'" % (self.name, self.identifier))
-        return element
+
+        # element = None
+        #
+        # ## set wait time to 0 in case not found
+        # self.driver.implicitly_wait(0)
+        #
+        # if self.name == "noname":
+        #     element = self.__find_by_id()
+        #     if element is None: element = self.__find_by_name()
+        #     if element is None: element = self.__find_by_class_name()
+        #     if element is None: element = self.__find_by_link_text()
+        # else:
+        #     element = self.__find_by_xpath()
+        #
+        # ## set wait time back
+        # self.driver.implicitly_wait(15)
+        #
+        # if logError and element is None:
+        #     Log.Failed("The element '%s' not found at identifier '%s'" % (self.name, self.identifier))
+        # return element
 
 
     def GetItems(self):
         elements = self.driver.find_elements_by_xpath(self.identifier)
         return elements
 
+    @property
+    def Name(self):
+        return self.name
+
+    @property
+    def Identifier(self):
+        return self.identifier
 
     @property
     def Exists(self):
-        element = self.Get(False)
+        element = self.__get_instance()
         if not element is None:
             return True
-        return False
+        else:
+            return False
 
     @property
     def Enabled(self):
-        element = self.Get()
+        element = self.GetInstance()
         return element.is_enabled()
 
     @property
     def Visible(self):
-        element = self.Get()
+        element = self.GetInstance()
         return element.is_displayed()
 
     @property
     def Selected(self):
-        element = self.Get()
+        element = self.GetInstance()
         return element.is_selected()
 
     @property
     def Value(self):
-        element = self.Get()
-        return self.__get_element_value(element)
+        return self.__get_value()
 
     @property
-    def Tooltip(self):
-        element = self.Get()
+    def TooltipText(self):
+        element = self.GetInstance()
         return element.get_attribute('title')
 
     @property
@@ -115,28 +153,28 @@ class Element:
 
 
     def SendKeys(self, value):
-        element = self.Get()
+        element = self.GetInstance()
         element.send_keys(value)
         return True
 
     def SendKeysByScript(self, value):
-        element = self.Get()
+        element = self.GetInstance()
         script = "arguments[0].value = '" + value + "'"
         self.driver.execute_script(script, element)
         return True
 
     def Click(self):
-        element = self.Get()
+        element = self.GetInstance()
         element.click()
         return True
 
     def Select(self, value):
-        element = Select(self.Get())
+        element = Select(self.GetInstance())
         element.select_by_visible_text(value)
         return True
 
     def MouseOver(self):
-        element = self.Get()
+        element = self.GetInstance()
         action = ActionChains(self.driver).move_to_element(element)
         action.perform()
         return True
@@ -151,9 +189,10 @@ class Element:
             self.Click()
         return True
 
-    ##
-    ## !!Verification method will raise error when failed, don't use for condition logic
-    ##
+    ###
+    ### !!Verification method will raise error when failed, don't use for condition logic
+    ### (deprecated in v0.5.0 and will be remove in v1.0.0)
+    ###
 
     def VerifyValueIs(self, value):
         if self.Value == value:

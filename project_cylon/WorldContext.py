@@ -157,6 +157,11 @@ class WorldContext:
         self.driver.switch_to_alert().send_keys(value)
         return True
 
+    def GetPopupMessage(self):
+        popup = self.driver.switch_to_alert()
+        return popup.text
+
+    ## deprecated in v0.5.0
     def VerifyPopupMessage(self, message):
         popup = self.driver.switch_to_alert()
         if popup.text == message:
