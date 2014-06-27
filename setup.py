@@ -21,6 +21,7 @@ setup(name='project-cylon',
         'Topic :: Software Development :: Testing'
       ],
       packages=['project_cylon'],
+      scripts=['bin/cylon'],
       install_requires=[
           'pyyaml',
           'behave',
