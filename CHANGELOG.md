@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5.6 - 2014-06-30
+- Fixed cylon CLI to working on Windows
+
 ## 0.5.5 - 2014-06-30
 - Added cylon CLI feature (experimental)
 
@@ -14,8 +17,6 @@
   run all                           Run test with all feature.
   run tags <tags>                   Run test with specified tags.
   ```
-
-  NOTE: This feature doesn't work on Windows yet!!
 
 ## 0.5.0 - 2014-06-26
 - Added following keywords to support multi-line content
