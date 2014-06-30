@@ -15,6 +15,8 @@
   run tags <tags>                   Run test with specified tags.
   ```
 
+  NOTE: This feature doesn't work on Windows yet!!
+
 ## 0.5.0 - 2014-06-26
 - Added following keywords to support multi-line content
 
