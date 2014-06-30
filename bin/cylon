@@ -33,6 +33,9 @@ def new_project(directory):
         new_file(directory, "runall.sh", textwrap.dedent(content))
 
         ## create runall.bat
+        content = get_batch_runall_content()
+        new_file(directory, "runall.bat", textwrap.dedent(content))
+
         abs_path = os.path.abspath(directory)
         print  "New project created in: %s" % abs_path
 
@@ -63,17 +66,15 @@ def new_pageobject(filename):
         filename = "%s.yaml" % filename
 
     content = """
-    --- # Example Page
+    --- ## %s
     page:
-      name: Example Page
+      name: %s
       url: http://yoursite.com
 
     elements:
-    - name: element1
-      xpath: //*[@id="element1"]
-    - name: element2
-      xpath: //*[@id="element2"]
-    """
+    - name: title
+      xpath: /html/head/title
+    """ % (filename, filename.replace(".yaml", ""))
 
     new_file(target, filename, textwrap.dedent(content))
 
@@ -102,7 +103,12 @@ def run_all():
 
 def run_tags(tags):
     print "Running with tags: %s" % tags
-    os.system("behave --color --quiet --no-skipped --tags=%s" % tags)
+
+    argtags = ""
+    for tag in tags:
+        argtags = "%s --tags=%s" % (argtags, tag)
+
+    os.system("behave --color --quiet --no-skipped %s" % argtags.strip())
 
 
 ###
@@ -218,14 +224,14 @@ try:
 
     if command == "new":
         sub = sys.argv[2].lower()
-        name = sys.argv[3].lower()
+        filename = sys.argv[3]
 
         if sub == "project":
-            new_project(name)
+            new_project(filename)
         elif sub == "feature":
-            new_feature(name)
-        elif sub == "pageobject":
-            new_pageobject(name)
+            new_feature(filename)
+        elif sub in ["page", "pageobject"]:
+            new_pageobject(filename)
 
     elif command == "run":
         sub = sys.argv[2].lower()
@@ -233,7 +239,7 @@ try:
         if sub == "all":
             run_all()
         elif sub == "tags":
-            tags = sys.argv[3]
+            tags = sys.argv[3:]
             run_tags(tags)
 
 except: print_instruction()
