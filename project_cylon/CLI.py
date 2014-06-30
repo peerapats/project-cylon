@@ -215,31 +215,31 @@ def get_instruction():
     """
     return content
 
-
 ###
 ### start script
 ###
-try:
-    command = sys.argv[1].lower()
+def main():
+    try:
+        command = sys.argv[1].lower()
 
-    if command == "new":
-        sub = sys.argv[2].lower()
-        filename = sys.argv[3]
+        if command == "new":
+            sub = sys.argv[2].lower()
+            filename = sys.argv[3]
 
-        if sub == "project":
-            new_project(filename)
-        elif sub == "feature":
-            new_feature(filename)
-        elif sub in ["page", "pageobject"]:
-            new_pageobject(filename)
+            if sub == "project":
+                new_project(filename)
+            elif sub == "feature":
+                new_feature(filename)
+            elif sub in ["page", "pageobject"]:
+                new_pageobject(filename)
 
-    elif command == "run":
-        sub = sys.argv[2].lower()
+        elif command == "run":
+            sub = sys.argv[2].lower()
 
-        if sub == "all":
-            run_all()
-        elif sub == "tags":
-            tags = sys.argv[3:]
-            run_tags(tags)
+            if sub == "all":
+                run_all()
+            elif sub == "tags":
+                tags = sys.argv[3:]
+                run_tags(tags)
 
-except: print_instruction()
+    except: print_instruction()
