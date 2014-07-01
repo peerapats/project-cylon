@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.5.6 - 2014-06-30
+- Fixed cylon CLI to working on Windows
+
+## 0.5.5 - 2014-06-30
+- Added cylon CLI feature (experimental)
+
+  ```
+  Usage:
+  cylon <command> [arguments]
+
+  Commands:
+  new project <name>                Create new project directory.
+  new feature <name>                Create new feature file.
+  new pageobject <name>             Create new pageobject file.
+  run all                           Run test with all feature.
+  run tags <tags>                   Run test with specified tags.
+  ```
+
 ## 0.5.0 - 2014-06-26
 - Added following keywords to support multi-line content
 
