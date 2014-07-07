@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-
 from behave import *
 
 from Logger import *
+from WorldContext import *
 from CustomOperators import *
 
-from WorldContext import *
-
+import datetime
 
 """
 For create combination steps
@@ -81,9 +80,29 @@ def step_impl(context, ElementName):
 
 @step ("user enters date '{Value}' to the [{ElementName}]") ##->when
 @step ("user enters date '{Value}' to [{ElementName}]")
-def step_impl(context, ElementName, Value):
+def step_impl(context, Value, ElementName):
+    inputdate = Value
+    today = datetime.date.today()
+
+    if Value.lower() == 'today':
+        inputdate = "%s 00:00:00" % today
+    elif Value.lower() == 'tomorrow':
+        tomorrow = today + datetime.timedelta(days=1)
+        inputdate = "%s 00:00:00" % tomorrow
+
     Element = World.FindElement(ElementName)
-    Element.SendKeysByScript(Value)
+    Element.SendKeysByScript(inputdate)
+
+
+@step ("user enters date next '{Value}' days to the [{ElementName}]") ##->when
+def step_impl(context, Value, ElementName):
+    today = datetime.date.today()
+
+    next_n_days = today + datetime.timedelta(days=int(Value))
+    inputdate = "%s 00:00:00" % next_n_days
+
+    Element = World.FindElement(ElementName)
+    Element.SendKeysByScript(inputdate)
 
 
 @step ("user clears value on the [{ElementName}]") ##->when

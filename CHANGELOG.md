@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.7 - 2014-07-07
+- Added keywords to enters date, Example:
+  ```feature
+  When user enters date 'today' to the [date input]
+  When user enters date 'tomorrow' to the [date input]
+  When user enters date next '3' days to the [date input]
+
+  When user enters date '2014-07-07 00:00:00' to the [date input] # specific date time
+  ```
+
 ## 0.5.6 - 2014-06-30
 - Fixed cylon CLI to working on Windows
 
