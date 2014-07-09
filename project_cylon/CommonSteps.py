@@ -5,6 +5,7 @@ from Logger import *
 from WorldContext import *
 from CustomOperators import *
 
+import re
 import datetime
 
 """
@@ -64,6 +65,22 @@ def step_impl(context, URL):
 """
 When step definitions
 """
+
+@step ("user login with '{AccountName}' account")
+def step_impl(context, AccountName):
+    account = World.FindAccount(AccountName)
+
+    page = World.CurrentPage
+    page.WaitForPageLoaded()
+
+    user_fields = "username input|username-input|username_input"
+    pass_fields = "password input|password-input|password_input"
+    login_buttons = "login button|login-button|login_button"
+
+    World.FindElement(user_fields).SendKeys(account.username)
+    World.FindElement(pass_fields).SendKeys(account.password)
+    World.FindElement(login_buttons).Click()
+
 
 @step ("user enters '{Value}' to the [{ElementName}]") ##->when
 @step ("user enters '{Value}' to [{ElementName}]")
@@ -199,6 +216,15 @@ def step_impl(context, URL):
 @step ("the system URL contains '{URL}'")
 def step_impl(context, URL):
     World.VerifyURLContains(URL)
+
+    ## using regex
+    # actual = World.driver.current_url
+    # expect = re.compile(URL)
+    #
+    # if expect.match(actual):
+    #     return True
+    # else:
+    #     Log.Failed("Verify url contains?", actual, URL)
 
 
 @step ("the [{ElementName}] value is '{Value}'") ##->then

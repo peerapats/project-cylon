@@ -139,6 +139,18 @@ def get_settings_content():
     """
     return content
 
+def get_accounts_content():
+    content = """
+    ### Define user accounts to use with login keyword ###
+    ---
+    accounts:
+
+    - name: pcms admin
+      username: test@domain.com
+      password: 123456
+    ...
+    """
+
 def get_steps_content():
     content = """
     ###
@@ -161,6 +173,7 @@ def get_environment_content():
     def before_all(context):
         World.OpenBrowser(settings['RUN_ON_BROWSER'])
         World.LoadPageObjects("./pageobjects/*.yaml", settings['SITE_URL'])
+        #World.LoadAccounts("accounts.yaml")
 
     def after_all(context):
         World.CloseBrowser()
