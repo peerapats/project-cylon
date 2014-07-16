@@ -1,7 +1,24 @@
 # Changelog
 
+## 1.0.0 - 2014-07-16
+- Fixed wait time when find element.
+- Updated core libraries.
+- Addded unit test to core libraries.
+- Added CLI command to update project files.
+
+  ```
+  Commands:
+  ...
+  update project                  Update project files to compatible
+                                  with current version.
+  ```
+
+NOTE: _Existing projects need to run update command above._
+
+
 ## 0.5.7 - 2014-07-07
 - Added keywords to enters date, Example:
+
   ```feature
   When user enters date 'today' to the [date input]
   When user enters date 'tomorrow' to the [date input]
