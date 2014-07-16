@@ -439,6 +439,14 @@ class Page:
                 Log.Warning("Not found site url '%s' in '%s'" % (site, self.name))
 
 
+    def __find_element(self, name):
+        names = name.split("|")
+        for name in names:
+            if name in self.elements:
+                return self.elements[name]
+        return None
+
+
     def GetURL(self, pathname=""):
         url = ""
 
@@ -463,11 +471,16 @@ class Page:
         return True
 
     def FindElement(self, name):
-        if name in self.elements:
-            return self.elements[name]
-
-        #Log.Failed("Element not found", None, name)
-        return None
+        element = self.__find_element(name)
+        if element is not None:
+            return element
+        else:
+            Log.Failed("Element not found in list: '%s'" % name)
+        # names = name.split("|")
+        # for name in names:
+        #     if name in self.elements:
+        #         return self.elements[name]
+        # return None
 
     def VerifyPage(self, pathname=""):
         return self.WaitForPageLoaded(pathname)

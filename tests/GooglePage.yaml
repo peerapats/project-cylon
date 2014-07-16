@@ -1,0 +1,15 @@
+---
+page:
+  name: google
+  url: http://www.google.com
+  url_paths:
+  - name: login
+    path: /login
+
+elements:
+- name: search input
+  xpath: identifier
+
+site_url:
+    dev: http://www.dev.google.com
+...

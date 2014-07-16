@@ -9,6 +9,7 @@ from selenium import webdriver
 from selenium.common.exceptions import *
 
 from Logger import *
+from Account import *
 from PageObject import *
 
 
@@ -55,6 +56,7 @@ class Singleton:
 class WorldContext:
     driver = None
     pages = {}
+    accounts = {}
 
     current_page = None
 
@@ -88,6 +90,29 @@ class WorldContext:
 
         return True
 
+    def LoadAccounts(self, filename):
+        self.accounts = {}
+
+        content = open(filename, "r")
+        doc = yaml.load(content)
+
+        for acc in doc['accounts']:
+            name = acc["name"]
+            username = acc["username"]
+            password = acc["password"]
+
+            account = Account(name, username, password)
+            self.accounts[name] = account
+
+        return True
+
+
+    def FindAccount(self, name):
+        if name in self.accounts:
+            return self.accounts[name]
+
+        Log.Failed("Account not found in list: '%s'" % name)
+        return None
 
     def FindPage(self, name):
         if name in self.pages:
@@ -100,7 +125,8 @@ class WorldContext:
 
 
     def FindElement(self, identifier):
-        element = self.CurrentPage.FindElement(identifier)
+        #element = self.CurrentPage.FindElement(identifier)
+        element = self.current_page.__find_element(identifier)
 
         if element is not None:
             return element

@@ -1,450 +1,500 @@
 # -*- coding: utf-8 -*-
 from behave import *
 
-from Logger import *
-from WorldContext import *
 from CustomOperators import *
 
+from World import World as world
+from Logger import Logger as log
+
+import re
 import datetime
 
 """
 For create combination steps
 """
 
-@step ("{Execution}, accept fail")
-def step_impl(context, Execution):
+@step ("{execution}, accept fail")
+def step_impl(context, execution):
     try:
-        context.execute_steps(u"""When %s""" % Condition)
+        context.execute_steps(u"""When %s""" % execution)
     except: pass
 
 
-@step ("{Condition}, {Execution}")
-def step_impl(context, Condition, Execution):
+@step ("{condition}, {execution}")
+def step_impl(context, condition, execution):
     try:
-        runResult = False
-        context.execute_steps(u"""When %s""" % Condition)
-        runResult = True
+        result = False
+        context.execute_steps(u"""When %s""" % condition)
+        result = True
     except: pass
 
-    if runResult == True:
-        context.execute_steps(u"""Then %s""" % Execution)
+    if result == True:
+        context.execute_steps(u"""Then %s""" % execution)
 
 
 # @step ("[remote] {Statement}")
 # def step_impl(context, Statement):
-#     World.driver = World.secondary_driver
+#     world.driver = world.secondary_driver
 #     context.execute_steps(u"""When %s""" % Statement)
-#     World.driver = World.primary_driver
+#     world.driver = world.primary_driver
 
 
 """
 Given step definitions
 """
 
-@step ("user has [{PageName}/{PathName}] page opened") ##->given
-def step_impl(context, PageName, PathName):
-    Page = World.FindPage(PageName)
-    Page.Go(PathName)
+@step ("user has [{page_name}/{path_name}] page opened") ##->given
+def step_impl(context, page_name, path_name):
+    page = world.find_page(page_name)
+    page.go(path_name)
 
 
-@step ("user has [{PageName}] page opened") ##->given
-@step ("user has [{PageName}] page open")
-@step ("user has [{PageName}] open")
-def step_impl(context, PageName):
-    Page = World.FindPage(PageName)
-    Page.Go()
+@step ("user has [{page_name}] page opened") ##->given
+@step ("user has [{page_name}] page open")
+@step ("user has [{page_name}] open")
+def step_impl(context, page_name):
+    page = world.find_page(page_name)
+    page.go()
 
 
-@step ("user browse to url '{URL}'") ##->given
-def step_impl(context, URL):
-    Page = World.CreateDummyPage(URL)
-    Page.Go()
+@step ("user browse to url '{url}'") ##->given
+def step_impl(context, url):
+    page = Page(url=url)
+    page.go()
 
 
 """
 When step definitions
 """
 
-@step ("user enters '{Value}' to the [{ElementName}]") ##->when
-@step ("user enters '{Value}' to [{ElementName}]")
-def step_impl(context, ElementName, Value):
-    Element = World.FindElement(ElementName)
-    Element.SendKeys(Value)
+# @step ("user login with '{AccountName}' account")
+# def step_impl(context, AccountName):
+#     account = world.FindAccount(AccountName)
+#
+#     page = world.Currentpage
+#     page.WaitForpageLoaded()
+#
+#     user_fields = "username input|username-input|username_input"
+#     pass_fields = "password input|password-input|password_input"
+#     login_buttons = "login button|login-button|login_button"
+#
+#     world.find_element(user_fields).SendKeys(account.username)
+#     world.find_element(pass_fields).SendKeys(account.password)
+#     world.find_element(login_buttons).Click()
 
 
-@step ("user enters following lines to the [{ElementName}]")
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
-    Element.SendKeys(context.text)
+@step ("user enters '{value}' to the [{element_name}]") ##->when
+@step ("user enters '{value}' to [{element_name}]")
+def step_impl(context, element_name, value):
+    element = world.find_element(element_name)
+    element.send_keys_by_script(value)
+    #element.send_keys(value)
 
 
-@step ("user enters date '{Value}' to the [{ElementName}]") ##->when
-@step ("user enters date '{Value}' to [{ElementName}]")
-def step_impl(context, Value, ElementName):
-    inputdate = Value
+@step ("user enters following lines to the [{element_name}]")
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
+    element.send_keys(context.text)
+
+
+@step ("user enters date '{value}' to the [{element_name}]") ##->when
+@step ("user enters date '{value}' to [{element_name}]")
+def step_impl(context, value, element_name):
+    inputdate = value
     today = datetime.date.today()
 
-    if Value.lower() == 'today':
+    if value.lower() == 'today':
         inputdate = "%s 00:00:00" % today
-    elif Value.lower() == 'tomorrow':
+    elif value.lower() == 'tomorrow':
         tomorrow = today + datetime.timedelta(days=1)
         inputdate = "%s 00:00:00" % tomorrow
 
-    Element = World.FindElement(ElementName)
-    Element.SendKeysByScript(inputdate)
+    element = world.find_element(element_name)
+    element.send_keys_by_script(inputdate)
 
 
-@step ("user enters date next '{Value}' days to the [{ElementName}]") ##->when
-def step_impl(context, Value, ElementName):
+@step ("user enters date next '{value}' days to the [{element_name}]") ##->when
+def step_impl(context, value, element_name):
     today = datetime.date.today()
 
-    next_n_days = today + datetime.timedelta(days=int(Value))
+    next_n_days = today + datetime.timedelta(days=int(value))
     inputdate = "%s 00:00:00" % next_n_days
 
-    Element = World.FindElement(ElementName)
-    Element.SendKeysByScript(inputdate)
+    element = world.find_element(element_name)
+    element.send_keys_by_script(inputdate)
 
 
-@step ("user clears value on the [{ElementName}]") ##->when
-@step ("user clears input [{ElementName}]")
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
-    Element.SendKeysByScript("")
+@step ("user clears value on the [{element_name}]") ##->when
+@step ("user clears input [{element_name}]")
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
+    element.send_keys_by_script("")
 
 
-@step ("user selects the [{ElementName}]") ##->when
-@step ("user clicks the [{ElementName}]") ##->when
-@step ("user clicks [{ElementName}] link")
-@step ("user clicks [{ElementName}] button")
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
-    Element.Click()
+@step ("user selects the [{element_name}]") ##->when
+@step ("user clicks the [{element_name}]") ##->when
+@step ("user clicks [{element_name}] link")
+@step ("user clicks [{element_name}] button")
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
+    element.click()
 
 
-@step ("user selects '{Value}' on the [{ElementName}]") ##->when
-@step ("user selects '{Value}' in [{ElementName}]")
-def step_impl(context, Value, ElementName):
-    Element = World.FindElement(ElementName)
-    Element.Select(Value)
+@step ("user selects '{value}' on the [{element_name}]") ##->when
+@step ("user selects '{value}' in [{element_name}]")
+def step_impl(context, value, element_name):
+    element = world.find_element(element_name)
+    element.select(value)
 
 
-@step ("user checks the [{ElementName}]") ##->when
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
-    Element.Check()
+@step ("user checks the [{element_name}]") ##->when
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
+    element.check()
 
 
-@step ("user unchecks the [{ElementName}]") ##->when
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
-    Element.Uncheck()
+@step ("user unchecks the [{element_name}]") ##->when
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
+    element.uncheck()
 
 
-@step ("user moves mouse over the [{ElementName}]") ##->when
-@step ("user moves mouse over [{ElementName}]")
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
-    Element.MouseOver()
+@step ("user moves mouse over the [{element_name}]") ##->when
+@step ("user moves mouse over [{element_name}]")
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
+    element.mouse_over()
 
 
-@step ("user uploads file '{FilePath}' to the [{ElementName}]") ##->when
-@step ("user uploads file '{FilePath}' to [{ElementName}]")
-def step_impl(context, FilePath, ElementName):
-    Element = World.FindElement(ElementName)
-    Element.SendKeys(FilePath)
+@step ("user uploads file '{file_path}' to the [{element_name}]") ##->when
+@step ("user uploads file '{file_path}' to [{element_name}]")
+def step_impl(context, file_path, element_name):
+    element = world.find_element(element_name)
+    element.send_keys_by_script(file_path)
 
 
-#@step ("ผู้ใช้กรอกข้อมูล '{Value}' ลงในหน้าต่างแจ้งเตือน")
-@step ("user enters '{Value}' to the popup")
-def step_impl(context, Value):
-    World.SendKeysToPopup(Value)
+@step ("user enters '{value}' to the popup")
+def step_impl(context, value):
+    alert = world.get_alert()
+    alert.send_keys(value)
+    #world.SendKeysToPopup(value)
 
 
 @step ("user accept the popup")
 @step ('user clicks "OK" on the popup')
 def step_impl(context):
-    World.AcceptPopup()
+    alert = world.get_alert()
+    alert.accept()
+    #world.AcceptPopup()
 
 
 @step ("user cancel the popup")
 @step ('user clicks "Cancel" on the popup')
 def step_impl(context):
-    World.DismissPopup()
+    alert = world.get_alert()
+    alert.dismiss()
+    #world.DismissPopup()
 
 """
 Then step definitions
 """
 
-@step ("the browser shows [{PageName}/{PathName}] page") ##->then
-def step_impl(context, PageName, PathName):
-    Page = World.FindPage(PageName)
-    Page.VerifyPage(PathName)
+@step ("the browser shows [{page_name}/{path_name}] page") ##->then
+def step_impl(context, page_name, path_name):
+    page = world.find_page(page_name)
+    page.wait_for_loading(path_name)
+    #page.Verifypage(path_name)
 
 
-@step ("the browser shows [{PageName}] page") ##->then
-@step ("the system displays [{PageName}]")
-def step_impl(context, PageName):
-    Page = World.FindPage(PageName)
-    Page.VerifyPage()
+@step ("the browser shows [{page_name}] page") ##->then
+@step ("the system displays [{page_name}]")
+def step_impl(context, page_name):
+    page = world.find_page(page_name)
+    page.wait_for_loading()
+    #page.Verifypage()
 
 
-@step ("the page url is '{URL}'") ##->then
-@step ("the system URL is '{URL}'")
-@step ("the system displays '{URL}'")
-def step_impl(context, URL):
-    World.VerifyURLIs(URL)
+@step ("the page url is '{url}'") ##->then
+@step ("the system url is '{url}'")
+@step ("the system displays '{url}'")
+def step_impl(context, url):
+    page = Page(url=url)
+    page.wait_for_loading()
 
-
-@step ("the page url contains '{URL}'") ##->then
-@step ("the system URL contains '{URL}'")
-def step_impl(context, URL):
-    World.VerifyURLContains(URL)
-
-
-@step ("the [{ElementName}] value is '{Value}'") ##->then
-@step ("the [{ElementName}] shows '{Value}'")
-def step_impl(context, ElementName, Value):
-    Element = World.FindElement(ElementName)
-
-    if Element.Value == Value:
+    if url == world.driver.current_url:
         return True
     else:
-        Log.Failed("Verify value is?", Element.Value, Value)
+        log.failed("Verify url is?", world.driver.current_url, url)
+
+    #world.VerifyurlIs(url)
 
 
-@step ("the [{ElementName}] value is") ##->then
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
+@step ("the page url contains '{url}'") ##->then
+@step ("the system url contains '{url}'")
+def step_impl(context, url):
+    page = Page(url=url)
+    page.wait_for_loading()
 
-    if Element.Value == context.text:
+    if url in world.driver.current_url:
         return True
     else:
-        Log.Failed("Verify value is? (multi-line)", Element.Value, context.text)
+        log.failed("Verify url contains?", world.driver.current_url, url)
+    #world.VerifyurlContains(url)
+
+    ## using regex
+    # actual = world.driver.current_url
+    # expect = re.compile(url)
+    #
+    # if expect.match(actual):
+    #     return True
+    # else:
+    #     log.failed("Verify url contains?", actual, url)
 
 
-@step ("the [{ElementName}] value is not '{Value}'") ##->then
-def step_impl(context, ElementName, Value):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] value is '{value}'") ##->then
+@step ("the [{element_name}] shows '{value}'")
+def step_impl(context, element_name, value):
+    element = world.find_element(element_name)
 
-    if Element.Value != Value:
+    if element.value == value:
         return True
     else:
-        Log.Failed("Verify value is not?", Element.Value, Value)
+        log.failed("Verify value is?", element.value, value)
 
 
-@step ("the [{ElementName}] value contains '{Value}'") ##->then
-@step ("the [{ElementName}] contains '{Value}'")
-def step_impl(context, ElementName, Value):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] value is") ##->then
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
 
-    if Value in Element.Value:
+    if element.value == context.text:
         return True
     else:
-        Log.Failed("Verify value contains?", Element.Value, Value)
+        log.failed("Verify value is? (multi-line)", element.value, context.text)
 
 
-@step ("the [{ElementName}] value contains") ##->then
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] value is not '{value}'") ##->then
+def step_impl(context, element_name, value):
+    element = world.find_element(element_name)
 
-    if context.text in Element.Value:
+    if element.value != value:
         return True
     else:
-        Log.Failed("Verify value contains? (multi-line)", Element.Value, Value)
+        log.failed("Verify value is not?", element.value, value)
 
 
-@step ("the [{ElementName}] value is more than '{Value}'") ##->then
-@step ("the [{ElementName}] more than '{Value}'")
-def step_impl(context, ElementName, Value):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] value contains '{value}'") ##->then
+@step ("the [{element_name}] contains '{value}'")
+def step_impl(context, element_name, value):
+    element = world.find_element(element_name)
 
-    if Element.Value |more_than| Value:
+    if value in element.value:
         return True
     else:
-        Log.Failed(
+        log.failed("Verify value contains?", element.value, value)
+
+
+@step ("the [{element_name}] value contains") ##->then
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
+
+    if context.text in element.value:
+        return True
+    else:
+        log.failed("Verify value contains? (multi-line)", element.value, value)
+
+
+@step ("the [{element_name}] value is more than '{value}'") ##->then
+@step ("the [{element_name}] more than '{value}'")
+def step_impl(context, element_name, value):
+    element = world.find_element(element_name)
+
+    if element.value |more_than| value:
+        return True
+    else:
+        log.failed(
             "Verify value is more than?",
-            "value = %s" % Element.Value,
-            "value > %s" % Value
+            "value = %s" % element.value,
+            "value > %s" % value
         )
 
 
-@step ("the [{ElementName}] value is more than or equal '{Value}'") ##->then
-@step ("the [{ElementName}] more than or equal '{Value}'")
-def step_impl(context, ElementName, Value):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] value is more than or equal '{value}'") ##->then
+@step ("the [{element_name}] more than or equal '{value}'")
+def step_impl(context, element_name, value):
+    element = world.find_element(element_name)
 
-    if Element.Value |more_than_or_equal| Value:
+    if element.value |more_than_or_equal| value:
         return True
     else:
-        Log.Failed(
+        log.failed(
             "Verify value is more than or equal?",
-            "value = %s" % Element.Value,
-            "value >= %s" % Value
+            "value = %s" % element.value,
+            "value >= %s" % value
         )
 
 
-@step ("the [{ElementName}] value is less than '{Value}'") ##->then
-@step ("the [{ElementName}] less than '{Value}'")
-def step_impl(context, ElementName, Value):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] value is less than '{value}'") ##->then
+@step ("the [{element_name}] less than '{value}'")
+def step_impl(context, element_name, value):
+    element = world.find_element(element_name)
 
-    if Element.Value |less_than| Value:
+    if element.value |less_than| value:
         return True
     else:
-        Log.Failed(
+        log.failed(
             "Verify value is less than?",
-            "value = %s" % Element.Value,
-            "value < %s" % Value
+            "value = %s" % element.value,
+            "value < %s" % value
         )
 
 
-@step ("the [{ElementName}] value is less than or equal '{Value}'") ##->then
-@step ("the [{ElementName}] less than or equal '{Value}'")
-def step_impl(context, ElementName, Value):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] value is less than or equal '{value}'") ##->then
+@step ("the [{element_name}] less than or equal '{value}'")
+def step_impl(context, element_name, value):
+    element = world.find_element(element_name)
 
-    if Element.Value |less_than_or_equal| Value:
+    if element.value |less_than_or_equal| value:
         return True
     else:
-        Log.Failed(
+        log.failed(
             "Verify value is less than or equal?",
-            "value = %s" % Element.Value,
-            "value <= %s" % Value
+            "value = %s" % element.value,
+            "value <= %s" % value
         )
 
 
-@step ("the [{ElementName}] value is between '{Value1}' and '{Value2}'") ##->then
-def step_impl(context, ElementName, Value1, Value2):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] value is between '{value1}' and '{value2}'") ##->then
+def step_impl(context, element_name, value1, value2):
+    element = world.find_element(element_name)
 
-    if (Element.Value |more_than_or_equal| Value1) and (Element.Value |less_than_or_equal| Value2):
+    if (element.value |more_than_or_equal| value1) and (element.value |less_than_or_equal| value2):
         return True
-    elif (Element.Value |less_than_or_equal| Value1) and (Element.Value |more_than_or_equal| Value2):
+    elif (element.value |less_than_or_equal| value1) and (element.value |more_than_or_equal| value2):
         return True
     else:
-        Log.Failed(
+        log.failed(
             "Verify value is between?",
-            "value = %s" % Element.Value,
-            "value is between %s and %s" % (Value1, Value2)
+            "value = %s" % element.value,
+            "value is between %s and %s" % (value1, value2)
         )
 
 
-@step ("the [{ElementName}] value is empty") ##->then
-@step ("the [{ElementName}] is blank")
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] value is empty") ##->then
+@step ("the [{element_name}] is blank")
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
 
-    if Element.Value == "":
+    if element.value == "":
         return True
     else:
-        Log.Failed("Verify value is empty?", Element.Value, "<blank>")
+        log.failed("Verify value is empty?", element.value, "<blank>")
 
 
-@step ("the [{ElementName}] value is not empty") ##->then
-@step ("the [{ElementName}] has a value")
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] value is not empty") ##->then
+@step ("the [{element_name}] has a value")
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
 
-    if Element.Value != "":
+    if element.value != "":
         return True
-    Log.Failed("Verify value is not empty?", Element.Value, "<any value>")
+    log.failed("Verify value is not empty?", element.value, "<any value>")
 
 
-@step ("the [{ElementName}] exists") ##->then
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] exists") ##->then
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
 
-    if Element.Exists:
-        return True
-    else:
-        Log.Failed("Verify element '%s' exists?" % Element.Name, "not exists", "exists")
-
-
-@step ("the [{ElementName}] does not exist") ##->then
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
-
-    if not Element.Exists:
+    if element.exists:
         return True
     else:
-        Log.Failed("Verify element '%s' exists?" % Element.Name, "not exists", "exists")
+        log.failed("Verify element '%s' exists?" % element.name, "not exists", "exists")
 
 
-@step ("the [{ElementName}] is visible") ##->then
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] does not exist") ##->then
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
 
-    if Element.Visible:
+    if not element.exists:
         return True
     else:
-        Log.Failed("Verify element '%s' visible?" % Element.Name, "not visible", "visible")
+        log.failed("Verify element '%s' exists?" % element.name, "not exists", "exists")
 
 
-@step ("the [{ElementName}] is invisible") ##->then
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] is visible") ##->then
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
 
-    if not Element.Visible:
+    if element.visible:
         return True
     else:
-        Log.Failed("Verify element '%s' not visible?" % Element.Name, "visible", "not visible")
+        log.failed("Verify element '%s' visible?" % element.name, "not visible", "visible")
 
 
-@step ("the [{ElementName}] is selected") ##->then
-@step ("the [{ElementName}] is checked") ##->then
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] is invisible") ##->then
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
 
-    if Element.Selected:
+    if not element.visible:
         return True
     else:
-        Log.Failed("Verify element '%s' checked?" % Element.Name, "unchecked", "checked")
+        log.failed("Verify element '%s' not visible?" % element.name, "visible", "not visible")
 
 
-@step ("the [{ElementName}] is not selected") ##->then
-@step ("the [{ElementName}] is unchecked") ##->then
-def step_impl(context, ElementName):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] is selected") ##->then
+@step ("the [{element_name}] is checked") ##->then
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
 
-    if not Element.Selected:
+    if element.selected:
         return True
     else:
-        Log.Failed("Verify element '%s' unchecked?" % Element.name, "checked", "unchecked")
+        log.failed("Verify element '%s' checked?" % element.name, "unchecked", "checked")
 
 
-@step ("the popup message shows '{Value}'") ##->then
-@step ("the popup shows '{Value}'")
-def step_impl(context, Value):
-    #World.VerifyPopupMessage(Value)
-    Message = World.GetPopupMessage()
+@step ("the [{element_name}] is not selected") ##->then
+@step ("the [{element_name}] is unchecked") ##->then
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
 
-    if Message == Value:
+    if not element.selected:
         return True
     else:
-        Log.Failed("Verify popup message is?", Message, Value)
+        log.failed("Verify element '%s' unchecked?" % element.name, "checked", "unchecked")
 
 
-@step ("the page has '{Amount}' items of [{ElementName}]") ##->then
-@step ("the system displays '{Amount}' items of [{ElementName}]")
-def step_impl(context, Amount, ElementName):
-    Element = World.FindElement(ElementName)
+@step ("the popup message shows '{value}'") ##->then
+@step ("the popup shows '{value}'")
+def step_impl(context, value):
+    #world.VerifyPopupMessage(value)
+    alert = world.get_alert()
 
-    if Element.Count == int(Amount):
+    if alert.text == value:
         return True
     else:
-        Log.Failed(
-            "Verify amount of '%s' is?" % Element.Name,
-            "amount = %s" % Element.Count,
-            "amount = %s" % Amount
+        log.failed("Verify popup message is?", alert.text, value)
+
+
+@step ("the page has '{amount}' items of [{element_name}]") ##->then
+@step ("the system displays '{amount}' items of [{element_name}]")
+def step_impl(context, amount, element_name):
+    element = world.find_element(element_name)
+
+    if element.count == int(amount):
+        return True
+    else:
+        log.failed(
+            "Verify amount of '%s' is?" % element.name,
+            "amount = %s" % element.count,
+            "amount = %s" % amount
         )
 
 
-@step ("the [{ElementName}] tooltip text is '{Value}'") ##->then
-@step ("the [{ElementName}] tooltip is '{Value}'")
-def step_impl(context, ElementName, Value):
-    Element = World.FindElement(ElementName)
+@step ("the [{element_name}] tooltip text is '{value}'") ##->then
+@step ("the [{element_name}] tooltip is '{value}'")
+def step_impl(context, element_name, value):
+    element = world.find_element(element_name)
 
-    if Element.TooltipText == Value:
+    if element.title == value:
         return True
     else:
-        Log.Failed("Verify tooltip text is?", Element.TooltipText, Value)
+        log.failed("Verify tooltip text is?", element.title, value)
