@@ -74,13 +74,13 @@ class TestElement:
 
         assert element.value == "value from @innerHTML"
 
-    def test_None_element_value_return_empty_value(self):
-        driver = WebDriverMock()
-
-        element = Element("id", None)
-        element.driver = driver
-
-        assert element.value == ""
+    # def test_None_element_value_return_empty_value(self):
+    #     driver = WebDriverMock()
+    #
+    #     element = Element("id", None)
+    #     element.driver = driver
+    #
+    #     assert element.value == ""
 
     def test_tooltip_text_return_tooltip_text(self):
         driver = WebDriverMock()

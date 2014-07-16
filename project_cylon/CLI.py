@@ -94,6 +94,24 @@ def new_file(target, filename, content=""):
     abs_path = os.path.abspath(target)
     print '%s created in: "%s".' % (filename, abs_path)
 
+def update_file(target, filename, content=""):
+    new_file = open("%s/%s" % (target, filename), 'w')
+    new_file.write(content)
+    new_file.close()
+
+    abs_path = os.path.abspath(target)
+    print '%s updated in: "%s".' % (filename, abs_path)
+
+###
+### command: cylon update ...
+###
+def update_project():
+    target = "./features"
+
+    ## update environment.py
+    content = get_environment_content()
+    update_file(target, "environment.py", textwrap.dedent(content))
+
 ###
 ### command: cylon run ...
 ###
@@ -109,7 +127,6 @@ def run_tags(tags):
         argtags = "%s --tags=%s" % (argtags, tag)
 
     os.system("behave --color --quiet --no-skipped %s" % argtags.strip())
-
 
 ###
 ### print instruction
@@ -161,24 +178,42 @@ def get_steps_content():
 
 def get_environment_content():
     content = """
-    import sys
-    import yaml
-
-    from project_cylon.WorldContext import *
+    from selenium import webdriver
+    from project_cylon.PageFactory import *
     from project_cylon.CommonSteps import *
-
-    content = open("./settings.yaml", "r")
-    settings = yaml.load(content)
+    from project_cylon.World import World as world
 
     def before_all(context):
-        World.OpenBrowser(settings['RUN_ON_BROWSER'])
-        World.LoadPageObjects("./pageobjects/*.yaml", settings['SITE_URL'])
-        #World.LoadAccounts("accounts.yaml")
+        world.driver = webdriver.Firefox()
+        world.pages = PageFactory.create_pages("./pageobjects/*.yaml", world.driver, "default")
 
     def after_all(context):
-        World.CloseBrowser()
+        for handle in world.driver.window_handles:
+            world.driver.switch_to_window(handle)
+            world.driver.close()
     """
     return content
+
+# def get_environment_content():
+#     content = """
+#     import sys
+#     import yaml
+#
+#     from project_cylon.WorldContext import *
+#     from project_cylon.CommonSteps import *
+#
+#     content = open("./settings.yaml", "r")
+#     settings = yaml.load(content)
+#
+#     def before_all(context):
+#         World.OpenBrowser(settings['RUN_ON_BROWSER'])
+#         World.LoadPageObjects("./pageobjects/*.yaml", settings['SITE_URL'])
+#         #World.LoadAccounts("accounts.yaml")
+#
+#     def after_all(context):
+#         World.CloseBrowser()
+#     """
+#     return content
 
 def get_shell_runall_content():
     content = """
@@ -223,6 +258,10 @@ def get_instruction():
     new project <name>                Create new project directory.
     new feature <name>                Create new feature file.
     new pageobject <name>             Create new pageobject file.
+
+    update project                    Update project files to compatible
+                                      with current version.
+
     run all                           Run test with all feature.
     run tags <tags>                   Run test with specified tags.
     """
@@ -254,5 +293,10 @@ def main():
             elif sub == "tags":
                 tags = sys.argv[3:]
                 run_tags(tags)
+        elif command == "update":
+            sub = sys.argv[2].lower()
+
+            if sub == "project":
+                update_project()
 
     except: print_instruction()
