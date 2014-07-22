@@ -45,11 +45,15 @@ class Page:
 
 
     def find_element(self, name):
-        names = name.split("|")
-        for name in names:
-            if name in self.elements:
-                return self.elements[name]
-        return None
+        #names = name.split("|")
+        #for name in names:
+        if name in self.elements:
+            element = self.elements[name]
+            element.driver = self.driver
+
+            return element
+        else:
+            return None
 
 
     def get_url(self, pathname=""):

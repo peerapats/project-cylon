@@ -1,27 +1,28 @@
 # -*- coding: utf-8 -*-
+import sys
 
 class Logger:
 
-    capture_stdout = False
+    @classmethod
+    def tracebacklimit(cls, value=1000):
+        sys.tracebacklimit = int(value)
 
     @classmethod
-    def warning(cls, message):
-        print "WARN: %s\n" % message
-        #if cls.capture_stdout: raise "(warning)"
+    def warning(cls, message, fields={}):
+        message = "WARN: %s\n" % message
+
+        for key, value in fields.iteritems():
+            message += "%s: '%s'\n" % (key, value)
+
+        print message
+        raise RuntimeError
 
     @classmethod
     def failed(cls, message, actual="--", expect="--"):
-        details = message
+        message = "FAIL: %s\n" % message
 
         if actual != "--" and expect != "--":
-            #details = "%s\nactual: '%s'\nexpect: '%s'\n" % (message, actual, expect)
-            details = """
-            %s
-            actual: '%s'
-            expect: '%s'
-            """ % (message, actual, expect)
+            message += "actual: '%s'\nexpect: '%s'\n" % (actual, expect)
 
-        print "FAIL: %s" % details
-
-        #if cls.capture_stdout: raise "(failed)"
-        raise "(stdout)"
+        print message
+        raise RuntimeError

@@ -14,14 +14,14 @@ class TestWorld:
 
     def test_find_page_return_Page(self):
         driver = WebDriverMock()
-        world.pages = PageFactory.create_pages("./tests/*.yaml", driver, "default")
+        world.pages = PageFactory.create_pages("./tests/*.yaml", "default")
 
         page = world.find_page("google")
         assert page.name == "google"
 
     def test_find_element_by_name_return_Element(self):
         driver = WebDriverMock()
-        world.pages = PageFactory.create_pages("./tests/*.yaml", driver, "default")
+        world.pages = PageFactory.create_pages("./tests/*.yaml", "default")
 
         element = world.find_element("search input")
         assert element.name == "search input"
@@ -29,7 +29,7 @@ class TestWorld:
 
     def test_find_element_without_name_return_Element(self):
         driver = WebDriverMock()
-        world.pages = PageFactory.create_pages("./tests/*.yaml", driver, "default")
+        world.pages = PageFactory.create_pages("./tests/*.yaml", "default")
 
         element = world.find_element("q")
         assert element.name == "!!undefined"

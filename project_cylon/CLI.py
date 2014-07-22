@@ -178,21 +178,48 @@ def get_steps_content():
 
 def get_environment_content():
     content = """
-    from selenium import webdriver
+    from project_cylon.Logger import *
     from project_cylon.PageFactory import *
     from project_cylon.CommonSteps import *
+
     from project_cylon.World import World as world
 
     def before_all(context):
-        world.driver = webdriver.Firefox()
-        world.pages = PageFactory.create_pages("./pageobjects/*.yaml", world.driver, "default")
+        browser = "firefox"
+
+        site_config = "default"
+        pageobject_files = "./pageobjects/*.yaml"
+
+        Logger.tracebacklimit(0)
+
+        if PageFactory.check_yaml_syntax(pageobject_files) == True:
+            world.pages = PageFactory.create_pages(pageobject_files, site_config)
+            world.open_browser(browser)
+        else:
+            Logger.failed("Stop running.")
 
     def after_all(context):
-        for handle in world.driver.window_handles:
-            world.driver.switch_to_window(handle)
-            world.driver.close()
+        world.close_browser()
     """
     return content
+
+# def get_environment_content():
+#     content = """
+#     from selenium import webdriver
+#     from project_cylon.PageFactory import *
+#     from project_cylon.CommonSteps import *
+#     from project_cylon.World import World as world
+#
+#     def before_all(context):
+#         world.driver = webdriver.Firefox()
+#         world.pages = PageFactory.create_pages("./pageobjects/*.yaml", world.driver, "default")
+#
+#     def after_all(context):
+#         for handle in world.driver.window_handles:
+#             world.driver.switch_to_window(handle)
+#             world.driver.close()
+#     """
+#     return content
 
 # def get_environment_content():
 #     content = """

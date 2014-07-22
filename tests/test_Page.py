@@ -62,5 +62,5 @@ class TestPage:
         page = Page("google", "http://www.google.com")
         page.driver = driver
 
-        with pytest.raises(TypeError):
+        with pytest.raises(RuntimeError):
             page.wait_for_loading(timeout=0)

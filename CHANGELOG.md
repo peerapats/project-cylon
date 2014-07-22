@@ -1,8 +1,15 @@
 # Changelog
 
+## 1.0.1 - 2014-07-22
+- Added to check yaml syntax before run.
+- Fixed console logs more readable.
+- Updated code style follow [PEP8](http://legacy.python.org/dev/peps/pep-0008/).
+
+
 ## 1.0.0 - 2014-07-16
 - Fixed wait time when find element.
 - Updated core libraries.
+- Updated code style follow PEP8
 - Addded unit test to core libraries.
 - Added CLI command to update project files.
 

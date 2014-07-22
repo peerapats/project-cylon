@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='project-cylon',
-      version='1.0.0',
+      version='1.0.1',
       description='Generic Web Acceptance Testing Framework',
       long_description=
       """
@@ -21,7 +21,10 @@ setup(name='project-cylon',
         'Topic :: Software Development :: Testing'
       ],
       packages=['project_cylon'],
-      entry_points = {'console_scripts': ['cylon=project_cylon.CLI:main']},
+      entry_points={
+          'console_scripts': [
+          'cylon=project_cylon.CLI:main', 'behook=project_cylon.behook:main'
+      ]},
       install_requires=[
           'pyyaml',
           'behave',

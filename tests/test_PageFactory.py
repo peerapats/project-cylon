@@ -12,7 +12,7 @@ class TestPageFactory:
         content = open("./tests/GooglePage.yaml", "r")
         doc = yaml.load(content)
 
-        page = PageFactory.create_page(doc, None)
+        page = PageFactory.create_page(doc)
         assert page.name == "google"
         assert page.url == "http://www.google.com"
         assert page.get_url("login") == "http://www.google.com/login"
