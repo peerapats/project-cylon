@@ -5,6 +5,7 @@
 - Fixed console logs more readable.
 - Updated code style follow [PEP8](http://legacy.python.org/dev/peps/pep-0008/).
 
+NOTE: Existing projects need to run `cylon update project` command.
 
 ## 1.0.0 - 2014-07-16
 - Fixed wait time when find element.
