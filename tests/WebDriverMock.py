@@ -1,55 +1,54 @@
+from Mocker import *
+
 from AlertMock import *
 from WebElementMock import *
 
-
-class WebDriverMock:
-
-    window_handles = []
-    current_url = ""
+class WebDriverMock(Mocker):
 
     def __init__(self):
-        self.window_handles = [1, 2, 3]
-        pass
+        super(WebDriverMock, self).__init__()
 
-    def __find_element_by_dummy(self, identifier):
-        if identifier == None:
-            return None
+    @property
+    def current_url(self):
+        return self.call("current_url")
 
-        element = WebElementMock()
-        element.tag_name = identifier
-
-        return element
-
-    def get(self, url):
-        pass
-
-    def switch_to_window(self, handle):
-        pass
+    @property
+    def window_handles(self):
+        return self.call("window_handles")
 
     def find_element_by_id(self, identifier):
-        return self.__find_element_by_dummy(identifier)
+        return self.call("find_element_by_id")
+
+    def find_element_by_name(self, identifier):
+        return self.call("find_element_by_name")
+
+    def find_element_by_class_name(self, identifier):
+        return self.call("find_element_by_class_name")
+
+    def find_element_by_link_text(self, identifier):
+        return self.call("find_element_by_link_text")
 
     def find_element_by_xpath(self, identifier):
-        return self.__find_element_by_dummy(identifier)
+        return self.call("find_element_by_xpath")
 
     def find_elements_by_xpath(self, identifier):
-        element1 = WebElementMock()
-        element2 = WebElementMock()
-
-        elements = []
-        elements.append(element1)
-        elements.append(element2)
-
-        return elements
+        return self.call("find_elements_by_xpath")
 
     def execute(self, command, target):
+        self.call("execute")
         pass
 
     def execute_script(self, script, element):
+        self.call("execute_script")
         pass
 
-    def implicitly_wait(self, timeout):
+    def get(self, url):
+        self.call("get")
+        pass
+
+    def switch_to_window(self, handle):
+        self.call("switch_to_window")
         pass
 
     def switch_to_alert(self):
-        return AlertMock()
+        return self.call("switch_to_alert")

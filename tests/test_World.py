@@ -13,14 +13,12 @@ from project_cylon.World import World as world
 class TestWorld:
 
     def test_find_page_return_Page(self):
-        driver = WebDriverMock()
         world.pages = PageFactory.create_pages("./tests/*.yaml", "default")
 
         page = world.find_page("google")
         assert page.name == "google"
 
     def test_find_element_by_name_return_Element(self):
-        driver = WebDriverMock()
         world.pages = PageFactory.create_pages("./tests/*.yaml", "default")
 
         element = world.find_element("search input")
@@ -28,7 +26,6 @@ class TestWorld:
         assert element.identifier == "identifier"
 
     def test_find_element_without_name_return_Element(self):
-        driver = WebDriverMock()
         world.pages = PageFactory.create_pages("./tests/*.yaml", "default")
 
         element = world.find_element("q")
@@ -36,6 +33,13 @@ class TestWorld:
         assert element.identifier == "q"
 
     def test_alert_return_Alert(self):
-        world.driver = WebDriverMock()
+        instance = AlertMock()
+        instance.expect("text", "alert message!!")
+
+        driver = WebDriverMock()
+        driver.expect("switch_to_alert", instance)
+
+        world.driver = driver
+
         alert = world.get_alert()
         assert alert.text == "alert message!!"

@@ -12,7 +12,7 @@ class Logger:
         message = "WARN: %s\n" % message
 
         for key, value in fields.iteritems():
-            message += "%s: '%s'\n" % (key, value)
+            message += "  %s: '%s'\n" % (key, value)
 
         print message
         raise RuntimeError

@@ -1,40 +1,37 @@
+from Mocker import *
 
-class WebElementMock:
-
-    id = ""
-    tag_name = ""
+class WebElementMock(Mocker):
 
     def __init__(self):
-        self.id = ""
-        self.tag_name = ""
+        super(WebElementMock, self).__init__()
 
-    def __eq__(self, other):
-        return self.id == other.id and self.tag_name == other.tag_name
+    @property
+    def id(self):
+        return self.call("id")
 
-    def find_elements(self, by, identifier):
-        option1 = WebElementMock()
-        option2 = WebElementMock()
-
-        options = []
-        options.append(option1)
-        options.append(option2)
-
-        return options
+    @property
+    def tag_name(self):
+        return self.call("tag_name")
 
     def get_attribute(self, attribute):
-        return "value from @%s" % attribute
+        return self.call("get_attribute")
 
     def is_enabled(self):
-        return True
+        return self.call("is_enabled")
 
     def is_displayed(self):
-        return True
+        return self.call("is_displayed")
 
     def is_selected(self):
-        return True
+        return self.call("is_selected")
 
     def send_keys(self, value):
+        self.call("send_keys")
         pass
 
     def click(self):
+        self.call("click")
         pass
+
+    def find_elements(self, by, identifier):
+        return self.call("find_elements")

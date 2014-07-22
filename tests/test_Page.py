@@ -45,10 +45,12 @@ class TestPage:
         page.driver = driver
 
         assert page.go() == True
+        assert page.driver.called("get") == 1
 
     def test_wait_for_loading_return_True(self):
         driver = WebDriverMock()
-        driver.current_url = "http://www.google.com"
+        driver.expect("window_handles", [1, 2, 3])
+        driver.expect("current_url", "http://www.google.com")
 
         page = Page("google", "http://www.google.com")
         page.driver = driver
@@ -57,7 +59,8 @@ class TestPage:
 
     def test_wait_for_loading_return_False(self):
         driver = WebDriverMock()
-        driver.current_url = "http://www.google.co.th"
+        driver.expect("window_handles", [1, 2, 3])
+        driver.expect("current_url", "http://www.google.co.th")
 
         page = Page("google", "http://www.google.com")
         page.driver = driver

@@ -68,6 +68,17 @@ class PageFactory:
 
         if "elements" in doc:
             for item in doc['elements']:
+                if not "name" in item:
+                    log.warning("Found unnamed element!", {
+                        'page': page.name
+                    })
+
+                if not "xpath" in item:
+                    log.warning("XPath not specified!", {
+                        'page': page.name,
+                        'element': item['name']
+                    })
+
                 element = Element(item['name'], item['xpath'])
                 element.driver = page.driver
 
