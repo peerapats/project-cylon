@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.2 - 2014-07-24
+- Fixed running crash when check element visible.
+
 ## 1.0.1 - 2014-07-22
 - Added to check yaml syntax before run.
 - Fixed console logs more readable.

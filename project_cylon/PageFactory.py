@@ -70,12 +70,12 @@ class PageFactory:
             for item in doc['elements']:
                 if not "name" in item:
                     log.warning("Found unnamed element!", {
-                        'page': page.name
+                        'page': doc['page']['name']
                     })
 
                 if not "xpath" in item:
                     log.warning("XPath not specified!", {
-                        'page': page.name,
+                        'page': doc['page']['name'],
                         'element': item['name']
                     })
 

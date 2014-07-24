@@ -79,28 +79,37 @@ class Element:
     @property
     def exists(self):
         element = self.get_instance()
-        if not element is None:
-            return True
-        else:
+        if element is None:
             return False
+        else:
+            return True
 
     @property
     def enabled(self):
         #element = self.get_instance()
         element = self.wait_for_present()
-        return element.is_enabled()
+        if element is None:
+            return False
+        else:
+            return element.is_enabled()
 
     @property
     def visible(self):
         #element = self.get_instance()
         element = self.wait_for_present()
-        return element.is_displayed()
+        if element is None:
+            return False
+        else:
+            return element.is_displayed()
 
     @property
     def selected(self):
         #element = self.get_instance()
         element = self.wait_for_present()
-        return element.is_selected()
+        if element is None:
+            return False
+        else:
+            return element.is_selected()
 
     @property
     def count(self):
