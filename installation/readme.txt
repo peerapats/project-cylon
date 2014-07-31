@@ -1,0 +1,1 @@
+The installation file has been moved to https://github.com/kamolcu/project-cylon-installation
