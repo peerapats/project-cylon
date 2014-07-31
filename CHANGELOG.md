@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.4 - 2014-07-31
+- Fixed NoneType error on check url keywords.
+
 ## 1.0.3 - 2014-07-31
 - Fixed NameError Page on check url keywords.
 

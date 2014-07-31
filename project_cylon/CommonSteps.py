@@ -62,6 +62,7 @@ def step_impl(context, page_name):
 @step ("user browse to url '{url}'") ##->given
 def step_impl(context, url):
     page = Page(url=url)
+    page.driver = world.driver
     page.go()
 
 
@@ -221,6 +222,7 @@ def step_impl(context, page_name):
 @step ("the system displays '{url}'")
 def step_impl(context, url):
     page = Page(url=url)
+    page.driver = world.driver
     page.wait_for_loading()
 
     if url == world.driver.current_url:
@@ -235,6 +237,7 @@ def step_impl(context, url):
 @step ("the system url contains '{url}'")
 def step_impl(context, url):
     page = Page(url=url)
+    page.driver = world.driver
     page.wait_for_loading()
 
     if url in world.driver.current_url:
