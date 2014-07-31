@@ -3,6 +3,8 @@ from behave import *
 
 from CustomOperators import *
 
+from Page import *
+
 from World import World as world
 from Logger import Logger as log
 
