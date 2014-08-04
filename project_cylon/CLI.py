@@ -203,6 +203,17 @@ def get_environment_content():
     """
     return content
 
+def get_options_string(options):
+    command = ""
+    for option in options:
+        option = "--" + option
+        command = "%s %s" % (command, option)
+    return command
+
+def run_with_options(options):
+    os.system("behook --color --quiet --no-skipped %s" % options)
+
+
 # def get_environment_content():
 #     content = """
 #     from selenium import webdriver
@@ -279,7 +290,7 @@ def get_batch_runall_content():
 def get_instruction():
     content = """
     Usage:
-    cylon <command> [arguments]
+    cylon <command> [options]
 
     Commands:
     new project <name>                Create new project directory.
@@ -291,6 +302,10 @@ def get_instruction():
 
     run all                           Run test with all feature.
     run tags <tags>                   Run test with specified tags.
+    run [options]                     Run with specified options.
+
+    Options:
+    tags=<tags>                       Specified tags to run.
     """
     return content
 
@@ -320,6 +335,11 @@ def main():
             elif sub == "tags":
                 tags = sys.argv[3:]
                 run_tags(tags)
+            else:
+                options = sys.argv[2:]
+                command = get_options_string(options)
+                run_with_options(command)
+
         elif command == "update":
             sub = sys.argv[2].lower()
 
