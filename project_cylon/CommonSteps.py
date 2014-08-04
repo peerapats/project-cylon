@@ -166,7 +166,7 @@ def step_impl(context, element_name):
 @step ("user moves mouse over [{element_name}]")
 def step_impl(context, element_name):
     element = world.find_element(element_name)
-    element.mouse_over()
+    element.move_mouse_over()
 
 
 @step ("user uploads file '{file_path}' to the [{element_name}]") ##->when
