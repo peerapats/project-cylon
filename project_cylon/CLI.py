@@ -16,9 +16,13 @@ def new_project(directory):
         os.makedirs("%s/pageobjects" % directory)
         os.makedirs("%s/features/steps" % directory)
 
+        ## create config.yaml
+        content = get_config_content()
+        new_file(directory, "config.yaml", textwrap.dedent(content))
+
         ## create settings.yaml
-        content = get_settings_content()
-        new_file(directory, "settings.yaml", textwrap.dedent(content))
+        #content = get_settings_content()
+        #new_file(directory, "settings.yaml", textwrap.dedent(content))
 
         ## create environment.py
         content = get_environment_content()
@@ -106,11 +110,15 @@ def update_file(target, filename, content=""):
 ### command: cylon update ...
 ###
 def update_project():
-    target = "./features"
+    ## update config.yaml
+    content = get_config_content()
+    update_file("./", "config.yaml", textwrap.dedent(content))
+
+    #target = "./features"
 
     ## update environment.py
     content = get_environment_content()
-    update_file(target, "environment.py", textwrap.dedent(content))
+    update_file("./features", "environment.py", textwrap.dedent(content))
 
 ###
 ### command: cylon run ...
@@ -138,23 +146,38 @@ def print_instruction():
 ###
 ### get content functions
 ###
-def get_settings_content():
+def get_config_content():
     content = """
-    ### Default project settings ###
-    ---
-    #
-    # Browser to run test (!now support only firefox).
-    #
-    RUN_ON_BROWSER: firefox
+    --- ## run configurations
 
-    #
-    # Switch page URL to the specified site.
-    # To use this option you need to add "site_url:" section in your page object.
-    #
-    SITE_URL: default
+    sites:
+      ## at least we must have "default" site, dont't delete it ##
+      default: http://www.yoursite.com
+
+      ## add your sites domain here ##
+      # develop: http://dev.yoursite.com
+
     ...
     """
     return content
+
+# def get_settings_content():
+#     content = """
+#     ### Default project settings ###
+#     ---
+#     #
+#     # Browser to run test (!now support only firefox).
+#     #
+#     RUN_ON_BROWSER: firefox
+#
+#     #
+#     # Switch page URL to the specified site.
+#     # To use this option you need to add "site_url:" section in your page object.
+#     #
+#     SITE_URL: default
+#     ...
+#     """
+#     return content
 
 def get_accounts_content():
     content = """
@@ -185,15 +208,19 @@ def get_environment_content():
     from project_cylon.World import World as world
 
     def before_all(context):
-        browser = "firefox"
-
-        site_config = "default"
-        pageobject_files = "./pageobjects/*.yaml"
-
         Logger.tracebacklimit(0)
 
+        browser = "firefox"
+        pageobject_files = "./pageobjects/*.yaml"
+
+        site = "default"
+        if context.config.site is not None:
+            site = context.config.site
+
+        domain = PageFactory.get_domain("./config.yaml", site)
+
         if PageFactory.check_yaml_syntax(pageobject_files) == True:
-            world.pages = PageFactory.create_pages(pageobject_files, site_config)
+            world.pages = PageFactory.create_pages(pageobject_files, domain)
             world.open_browser(browser)
         else:
             Logger.failed("Stop running.")
@@ -202,6 +229,33 @@ def get_environment_content():
         world.close_browser()
     """
     return content
+
+# def get_environment_content():
+#     content = """
+#     from project_cylon.Logger import *
+#     from project_cylon.PageFactory import *
+#     from project_cylon.CommonSteps import *
+#
+#     from project_cylon.World import World as world
+#
+#     def before_all(context):
+#         browser = "firefox"
+#
+#         site_config = "default"
+#         pageobject_files = "./pageobjects/*.yaml"
+#
+#         Logger.tracebacklimit(0)
+#
+#         if PageFactory.check_yaml_syntax(pageobject_files) == True:
+#             world.pages = PageFactory.create_pages(pageobject_files, site_config)
+#             world.open_browser(browser)
+#         else:
+#             Logger.failed("Stop running.")
+#
+#     def after_all(context):
+#         world.close_browser()
+#     """
+#     return content
 
 def get_options_string(options):
     command = ""
@@ -212,46 +266,6 @@ def get_options_string(options):
 
 def run_with_options(options):
     os.system("behook --color --quiet --no-skipped %s" % options)
-
-
-# def get_environment_content():
-#     content = """
-#     from selenium import webdriver
-#     from project_cylon.PageFactory import *
-#     from project_cylon.CommonSteps import *
-#     from project_cylon.World import World as world
-#
-#     def before_all(context):
-#         world.driver = webdriver.Firefox()
-#         world.pages = PageFactory.create_pages("./pageobjects/*.yaml", world.driver, "default")
-#
-#     def after_all(context):
-#         for handle in world.driver.window_handles:
-#             world.driver.switch_to_window(handle)
-#             world.driver.close()
-#     """
-#     return content
-
-# def get_environment_content():
-#     content = """
-#     import sys
-#     import yaml
-#
-#     from project_cylon.WorldContext import *
-#     from project_cylon.CommonSteps import *
-#
-#     content = open("./settings.yaml", "r")
-#     settings = yaml.load(content)
-#
-#     def before_all(context):
-#         World.OpenBrowser(settings['RUN_ON_BROWSER'])
-#         World.LoadPageObjects("./pageobjects/*.yaml", settings['SITE_URL'])
-#         #World.LoadAccounts("accounts.yaml")
-#
-#     def after_all(context):
-#         World.CloseBrowser()
-#     """
-#     return content
 
 def get_shell_runall_content():
     content = """
@@ -306,6 +320,7 @@ def get_instruction():
 
     Options:
     tags=<tags>                       Specified tags to run.
+    site=<site>                       Specified site to run (see in config.yaml).
     """
     return content
 
@@ -330,9 +345,9 @@ def main():
         elif command == "run":
             sub = sys.argv[2].lower()
 
-            if sub == "all":
+            if sub == "all": ##deprecated
                 run_all()
-            elif sub == "tags":
+            elif sub == "tags": ##deprecated
                 tags = sys.argv[3:]
                 run_tags(tags)
             else:

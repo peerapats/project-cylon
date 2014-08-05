@@ -15,33 +15,37 @@ class Page:
     driver = None
 
     name = ""
+    route = ""
+
     url = ""
     url_paths = {}
 
     elements = {}
 
-    site = ""
-    site_config = {}
+    #site = ""
+    #site_config = {}
 
     def __init__(self, name="!!undefined", url="!!undefined"):
         self.name = name
+        self.route = ""
+
         self.url = url
         self.url_paths = {}
 
         self.elements = {}
 
-        self.site = "default"
-        self.site_config = {}
+        #self.site = "default"
+        #self.site_config = {}
 
 
-    def switch_site(self, site):
-        if self.site == "default":
-            return True
-
-        if self.site in self.site_config:
-            self.url = self.site_config[self.site]
-        else:
-            log.warning("Not found site config '%s' in '%s'" % (self.site, self.name))
+    # def switch_site(self, site):
+    #     if self.site == "default":
+    #         return True
+    #
+    #     if self.site in self.site_config:
+    #         self.url = self.site_config[self.site]
+    #     else:
+    #         log.warning("Not found site config '%s' in '%s'" % (self.site, self.name))
 
 
     def find_element(self, name):
@@ -68,7 +72,7 @@ class Page:
             if domain[-1] == '/': domain = domain[:-1]
             if path[0] == '/': path = path[1:]
 
-            url = domain + '/' + path
+            url = "%s/%s" % (domain, path)
         else:
             log.warning("Not found url path '%s' in '%s'" % (pathname, self.name))
 

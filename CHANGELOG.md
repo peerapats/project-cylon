@@ -1,7 +1,39 @@
 # Changelog
 
+## 1.1.0 - 2014-08-05
+- Added site config in config.yaml file, example.
+
+  ```
+  sites:
+    default: http://www.yoursite.com
+    develop: http://dev.yoursite.com
+  ```
+
+- Added route config in pageobject file, example.
+
+  ```
+  ...
+  page:
+    name: home
+    route: /
+  ...
+  ```
+
+- Fixed cylon command to run with configure site, example.
+
+  ```
+  cylon run site=develop
+  ```
+
+- Drop command `cylon run all` use `cylon run` instead.
+- Drop command `cylon run tags <tags>` use `cylon run tags=<tags>` instead.
+- Drop support for `site_url:` config in pageobject file.
+- Drop support for `settings.yaml` file.
+
+NOTE: Existing projects need to run `cylon update project` command.
+
 ## 1.0.5 - 2014-08-04
-- Fixed bug on "move mouse over ..." step. 
+- Fixed bug on "move mouse over ..." step.
 
 ## 1.0.4 - 2014-07-31
 - Fixed NoneType error on check url keywords.

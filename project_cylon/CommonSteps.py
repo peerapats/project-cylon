@@ -61,7 +61,8 @@ def step_impl(context, page_name):
 
 @step ("user browse to url '{url}'") ##->given
 def step_impl(context, url):
-    page = Page(url=url)
+    page = Page()
+    page.url = url
     page.driver = world.driver
     page.go()
 
