@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1 - 2014-08-07
+- Fixed `AttributeError: 'Configuration' object has no attribute 'site'`
+
+NOTE: Need to run `cylon update project` command.
+
 ## 1.1.0 - 2014-08-05
 - Added site config in config.yaml file, example.
 

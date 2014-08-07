@@ -214,7 +214,7 @@ def get_environment_content():
         pageobject_files = "./pageobjects/*.yaml"
 
         site = "default"
-        if context.config.site is not None:
+        if hasattr(context.config, 'site'):
             site = context.config.site
 
         domain = PageFactory.get_domain("./config.yaml", site)
