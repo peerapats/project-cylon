@@ -30,7 +30,6 @@ NOTE: Need to run `cylon update project` command.
   cylon run site=develop
   ```
 
-- Drop command `cylon run all` use `cylon run` instead.
 - Drop command `cylon run tags <tags>` use `cylon run tags=<tags>` instead.
 - Drop support for `site_url:` config in pageobject file.
 - Drop support for `settings.yaml` file.
