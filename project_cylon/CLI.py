@@ -4,6 +4,8 @@ import os
 import sys
 import textwrap
 
+import subprocess
+
 ###
 ### command: cylon new ...
 ###
@@ -19,10 +21,6 @@ def new_project(directory):
         ## create config.yaml
         content = get_config_content()
         new_file(directory, "config.yaml", textwrap.dedent(content))
-
-        ## create settings.yaml
-        #content = get_settings_content()
-        #new_file(directory, "settings.yaml", textwrap.dedent(content))
 
         ## create environment.py
         content = get_environment_content()
@@ -111,10 +109,9 @@ def update_file(target, filename, content=""):
 ###
 def update_project():
     ## update config.yaml
-    content = get_config_content()
-    update_file("./", "config.yaml", textwrap.dedent(content))
-
-    #target = "./features"
+    if not os.path.exists("./config.yaml"):
+        content = get_config_content()
+        update_file("./", "config.yaml", textwrap.dedent(content))
 
     ## update environment.py
     content = get_environment_content()
@@ -123,18 +120,28 @@ def update_project():
 ###
 ### command: cylon run ...
 ###
-def run_all():
-    print "Running all features..."
-    os.system("behave --color --quiet --no-skipped")
+def get_options_string(options):
+    command = ""
+    for option in options:
+        option = "--" + option
+        command = "%s %s" % (command, option)
+    return command
 
-def run_tags(tags):
-    print "Running with tags: %s" % tags
+def run_behook(options=""):
+    return subprocess.call("behook --color --quiet --no-skipped %s" % options, shell=True)
 
-    argtags = ""
-    for tag in tags:
-        argtags = "%s --tags=%s" % (argtags, tag)
+# def run_all():
+#     print "Running all features..."
+#     os.system("behave --color --quiet --no-skipped")
 
-    os.system("behave --color --quiet --no-skipped %s" % argtags.strip())
+# def run_tags(tags):
+#     print "Running with tags: %s" % tags
+#
+#     argtags = ""
+#     for tag in tags:
+#         argtags = "%s --tags=%s" % (argtags, tag)
+#
+#     os.system("behave --color --quiet --no-skipped %s" % argtags.strip())
 
 ###
 ### print instruction
@@ -161,35 +168,17 @@ def get_config_content():
     """
     return content
 
-# def get_settings_content():
+# def get_accounts_content():
 #     content = """
-#     ### Default project settings ###
+#     ### Define user accounts to use with login keyword ###
 #     ---
-#     #
-#     # Browser to run test (!now support only firefox).
-#     #
-#     RUN_ON_BROWSER: firefox
+#     accounts:
 #
-#     #
-#     # Switch page URL to the specified site.
-#     # To use this option you need to add "site_url:" section in your page object.
-#     #
-#     SITE_URL: default
+#     - name: pcms admin
+#       username: test@domain.com
+#       password: 123456
 #     ...
 #     """
-#     return content
-
-def get_accounts_content():
-    content = """
-    ### Define user accounts to use with login keyword ###
-    ---
-    accounts:
-
-    - name: pcms admin
-      username: test@domain.com
-      password: 123456
-    ...
-    """
 
 def get_steps_content():
     content = """
@@ -214,7 +203,8 @@ def get_environment_content():
         pageobject_files = "./pageobjects/*.yaml"
 
         site = "default"
-        if hasattr(context.config, 'site'):
+
+        if hasattr(context.config, 'site') and context.config.site is not None:
             site = context.config.site
 
         domain = PageFactory.get_domain("./config.yaml", site)
@@ -256,16 +246,6 @@ def get_environment_content():
 #         world.close_browser()
 #     """
 #     return content
-
-def get_options_string(options):
-    command = ""
-    for option in options:
-        option = "--" + option
-        command = "%s %s" % (command, option)
-    return command
-
-def run_with_options(options):
-    os.system("behook --color --quiet --no-skipped %s" % options)
 
 def get_shell_runall_content():
     content = """
@@ -315,7 +295,6 @@ def get_instruction():
                                       with current version.
 
     run all                           Run test with all feature.
-    run tags <tags>                   Run test with specified tags.
     run [options]                     Run with specified options.
 
     Options:
@@ -345,15 +324,14 @@ def main():
         elif command == "run":
             sub = sys.argv[2].lower()
 
-            if sub == "all": ##deprecated
-                run_all()
-            elif sub == "tags": ##deprecated
-                tags = sys.argv[3:]
-                run_tags(tags)
+            if sub == "all":
+                args = sys.argv[3:]
             else:
-                options = sys.argv[2:]
-                command = get_options_string(options)
-                run_with_options(command)
+                args = sys.argv[2:]
+
+            options = get_options_string(args)
+            return run_behook(options)
+
 
         elif command == "update":
             sub = sys.argv[2].lower()

@@ -9,4 +9,4 @@ configuration.parser.add_argument('--site', help="Specify site to run")
 
 ## command that run behave.
 def main():
-    __main__.main()
+    return __main__.main()

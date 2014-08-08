@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.2 - 2014-08-08
+- Fixed `IndexError: string index out of range` when run without `site=<site>` option.
+- Fixed cylon command to has return code when test failed.
+
+NOTE: Need to run `cylon update project` command.
+
 ## 1.1.1 - 2014-08-07
 - Fixed `AttributeError: 'Configuration' object has no attribute 'site'`
 

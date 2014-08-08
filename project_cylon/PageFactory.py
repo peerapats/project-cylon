@@ -130,10 +130,11 @@ class PageFactory:
         if site in doc['sites']:
             return doc['sites'][site]
         else:
-            return ""
+            log.failed("Not found site '%s' in config.yaml" % site)
 
     @classmethod
     def build_url(cls, domain, path):
+        if domain == "": return domain
         if domain[-1] == '/': domain = domain[:-1]
         if path[0] == '/': path = path[1:]
 
