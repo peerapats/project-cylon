@@ -410,7 +410,7 @@ def step_impl(context, element_name):
 def step_impl(context, element_name):
     element = world.find_element(element_name)
 
-    if element.exists:
+    if element.wait_for_exist():
         return True
     else:
         log.failed("Verify element '%s' exists?" % element.name, "not exists", "exists")
@@ -420,7 +420,7 @@ def step_impl(context, element_name):
 def step_impl(context, element_name):
     element = world.find_element(element_name)
 
-    if not element.exists:
+    if element.wait_for_not_exist():
         return True
     else:
         log.failed("Verify element '%s' exists?" % element.name, "not exists", "exists")
@@ -430,7 +430,7 @@ def step_impl(context, element_name):
 def step_impl(context, element_name):
     element = world.find_element(element_name)
 
-    if element.visible:
+    if element.wait_for_visible():
         return True
     else:
         log.failed("Verify element '%s' visible?" % element.name, "not visible", "visible")
@@ -440,7 +440,7 @@ def step_impl(context, element_name):
 def step_impl(context, element_name):
     element = world.find_element(element_name)
 
-    if not element.visible:
+    if element.wait_for_invisible():
         return True
     else:
         log.failed("Verify element '%s' not visible?" % element.name, "visible", "not visible")

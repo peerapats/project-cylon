@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.3 - 2014-08-26
+- Fixed following keywords to wait for expected state (timeout 8 seconds).
+
+  ```feature
+  Then the [...] exists
+  Then the [...] does not exist
+  Then the [...] is visible
+  Then the [...] is invisible
+  ```
+
 ## 1.1.2 - 2014-08-08
 - Fixed `IndexError: string index out of range` when run without `site=<site>` option.
 - Fixed cylon command to has return code when test failed.

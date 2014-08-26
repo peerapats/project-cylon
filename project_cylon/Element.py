@@ -25,6 +25,53 @@ class Element:
 
         return element
 
+    def wait_for_exist(self, timeout=8):
+        for n in range(0, timeout):
+            element = self.get_instance()
+
+            if element is not None:
+                return True
+            time.sleep(1)
+
+        return False
+
+    def wait_for_not_exist(self, timeout=8):
+        for n in range(0, timeout):
+            element = self.get_instance()
+
+            if element is None:
+                return True
+            time.sleep(1)
+
+        return False
+
+    def wait_for_visible(self, timeout=8):
+        element = self.wait_for_present()
+
+        if element is None:
+            return False
+
+        for n in range(0, timeout):
+            if element.is_displayed():
+                break
+            time.sleep(1)
+
+        return element.is_displayed()
+
+    def wait_for_invisible(self, timeout=8):
+        result = False
+        element = self.wait_for_present()
+
+        if element is None:
+            return True
+
+        for n in range(0, timeout):
+            if not element.is_displayed():
+                break
+            time.sleep(1)
+
+        return not element.is_displayed()
+
     def get_instance(self):
         instance = None
         #self.driver.implicitly_wait(0) ## set wait time to 0 in case not found
@@ -78,7 +125,8 @@ class Element:
 
     @property
     def exists(self):
-        element = self.get_instance()
+        #element = self.get_instance()
+        element = self.wait_for_present()
         if element is None:
             return False
         else:
