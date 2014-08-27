@@ -86,13 +86,15 @@ When step definitions
 #     world.find_element(pass_fields).SendKeys(account.password)
 #     world.find_element(login_buttons).Click()
 
-
 @step ("user enters '{value}' to the [{element_name}]") ##->when
 @step ("user enters '{value}' to [{element_name}]")
 def step_impl(context, element_name, value):
     element = world.find_element(element_name)
-    element.send_keys_by_script(value)
-    #element.send_keys(value)
+    #if not element.send_keys_by_script(value):
+    #    log.failed("Fail to enters value '%s' to '%s'" % (value, element.name))
+
+    if not element.send_keys(value):
+        log.failed("Fail to enters value '%s' to '%s'" % (value, element.name))
 
 
 @step ("user enters following lines to the [{element_name}]")
@@ -141,14 +143,16 @@ def step_impl(context, element_name):
 @step ("user clicks [{element_name}] button")
 def step_impl(context, element_name):
     element = world.find_element(element_name)
-    element.click()
+    if not element.click():
+        log.failed("Fail to clicks element '%s'" % element.name)
 
 
 @step ("user selects '{value}' on the [{element_name}]") ##->when
 @step ("user selects '{value}' in [{element_name}]")
 def step_impl(context, value, element_name):
     element = world.find_element(element_name)
-    element.select(value)
+    if not element.select(value):
+        log.failed("Fail to selects value '%s' on '%s'" % (value, element.name))
 
 
 @step ("user checks the [{element_name}]") ##->when
@@ -181,7 +185,6 @@ def step_impl(context, file_path, element_name):
 def step_impl(context, value):
     alert = world.get_alert()
     alert.send_keys(value)
-    #world.SendKeysToPopup(value)
 
 
 @step ("user accept the popup")
@@ -189,7 +192,6 @@ def step_impl(context, value):
 def step_impl(context):
     alert = world.get_alert()
     alert.accept()
-    #world.AcceptPopup()
 
 
 @step ("user cancel the popup")
@@ -197,7 +199,6 @@ def step_impl(context):
 def step_impl(context):
     alert = world.get_alert()
     alert.dismiss()
-    #world.DismissPopup()
 
 """
 Then step definitions

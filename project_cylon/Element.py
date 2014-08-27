@@ -74,7 +74,6 @@ class Element:
 
     def get_instance(self):
         instance = None
-        #self.driver.implicitly_wait(0) ## set wait time to 0 in case not found
 
         if self.name == "!!undefined":
             if instance is None:
@@ -96,7 +95,6 @@ class Element:
             try: instance = self.driver.find_element_by_xpath(self.identifier)
             except: pass
 
-        #self.driver.implicitly_wait(15) ## set wait time back
         return instance
 
     def get_instances(self):
@@ -104,13 +102,11 @@ class Element:
 
     @property
     def title(self):
-        #element = self.get_instance()
         element = self.wait_for_present()
         return element.get_attribute('title')
 
     @property
     def value(self):
-        #element = self.get_instance()
         element = self.wait_for_present()
 
         if element is None:
@@ -119,13 +115,13 @@ class Element:
         if element.tag_name in ['input', 'button', 'textarea']:
             return element.get_attribute('value')
         elif element.tag_name == 'select':
-            return Select(element).first_selected_option.get_attribute('value')
+            return Select(element).first_selected_option.get_attribute('innerHTML')
+            #return Select(element).first_selected_option.get_attribute('value')
         else:
             return element.get_attribute('innerHTML')
 
     @property
     def exists(self):
-        #element = self.get_instance()
         element = self.wait_for_present()
         if element is None:
             return False
@@ -134,7 +130,6 @@ class Element:
 
     @property
     def enabled(self):
-        #element = self.get_instance()
         element = self.wait_for_present()
         if element is None:
             return False
@@ -143,7 +138,6 @@ class Element:
 
     @property
     def visible(self):
-        #element = self.get_instance()
         element = self.wait_for_present()
         if element is None:
             return False
@@ -152,7 +146,6 @@ class Element:
 
     @property
     def selected(self):
-        #element = self.get_instance()
         element = self.wait_for_present()
         if element is None:
             return False
@@ -164,27 +157,39 @@ class Element:
         return len(self.get_instances())
 
     def send_keys(self, value):
-        #element = self.get_instance()
         element = self.wait_for_present()
+
+        if element is None:
+            return False
+
         element.send_keys(value)
         return True
 
     def send_keys_by_script(self, value):
-        #element = self.get_instance()
         element = self.wait_for_present()
+
+        if element is None:
+            return False
+
         script = "arguments[0].value = '" + value + "'"
         self.driver.execute_script(script, element)
         return True
 
     def click(self):
-        #element = self.get_instance()
         element = self.wait_for_present()
+
+        if element is None:
+            return False
+
         element.click()
         return True
 
     def select(self, value):
-        #element = Select(self.get_instance())
         element = Select(self.wait_for_present())
+
+        if element is None:
+            return False
+
         element.select_by_visible_text(value)
         return True
 
@@ -199,7 +204,6 @@ class Element:
         return True
 
     def move_mouse_over(self):
-        #element = self.get_instance()
         element = self.wait_for_present()
         action = ActionChains(self.driver).move_to_element(element)
         action.perform()

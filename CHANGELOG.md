@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.4 - 2014-08-27
+- Fixed code to check when enters, clicks and selects fail.
+- Fixed code to check selected text on select. 
+
 ## 1.1.3 - 2014-08-26
 - Fixed following keywords to wait for expected state (timeout 8 seconds).
 
