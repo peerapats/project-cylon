@@ -11,6 +11,7 @@ from Logger import Logger as log
 import re
 import datetime
 
+
 """
 For create combination steps
 """
@@ -49,6 +50,7 @@ Given step definitions
 def step_impl(context, page_name, path_name):
     page = world.find_page(page_name)
     page.go(path_name)
+    page.wait_for_loading()
 
 
 @step ("user has [{page_name}] page opened") ##->given
@@ -57,6 +59,7 @@ def step_impl(context, page_name, path_name):
 def step_impl(context, page_name):
     page = world.find_page(page_name)
     page.go()
+    page.wait_for_loading()
 
 
 @step ("user browse to url '{url}'") ##->given
@@ -65,26 +68,12 @@ def step_impl(context, url):
     page.url = url
     page.driver = world.driver
     page.go()
+    page.wait_for_loading()
 
 
 """
 When step definitions
 """
-
-# @step ("user login with '{AccountName}' account")
-# def step_impl(context, AccountName):
-#     account = world.FindAccount(AccountName)
-#
-#     page = world.Currentpage
-#     page.WaitForpageLoaded()
-#
-#     user_fields = "username input|username-input|username_input"
-#     pass_fields = "password input|password-input|password_input"
-#     login_buttons = "login button|login-button|login_button"
-#
-#     world.find_element(user_fields).SendKeys(account.username)
-#     world.find_element(pass_fields).SendKeys(account.password)
-#     world.find_element(login_buttons).Click()
 
 @step ("user enters '{value}' to the [{element_name}]") ##->when
 @step ("user enters '{value}' to [{element_name}]")
@@ -200,6 +189,7 @@ def step_impl(context):
     alert = world.get_alert()
     alert.dismiss()
 
+
 """
 Then step definitions
 """
@@ -208,7 +198,6 @@ Then step definitions
 def step_impl(context, page_name, path_name):
     page = world.find_page(page_name)
     page.wait_for_loading(path_name)
-    #page.Verifypage(path_name)
 
 
 @step ("the browser shows [{page_name}] page") ##->then
@@ -216,7 +205,6 @@ def step_impl(context, page_name, path_name):
 def step_impl(context, page_name):
     page = world.find_page(page_name)
     page.wait_for_loading()
-    #page.Verifypage()
 
 
 @step ("the page url is '{url}'") ##->then
@@ -232,8 +220,6 @@ def step_impl(context, url):
     else:
         log.failed("Verify url is?", world.driver.current_url, url)
 
-    #world.VerifyurlIs(url)
-
 
 @step ("the page url contains '{url}'") ##->then
 @step ("the system url contains '{url}'")
@@ -246,16 +232,6 @@ def step_impl(context, url):
         return True
     else:
         log.failed("Verify url contains?", world.driver.current_url, url)
-    #world.VerifyurlContains(url)
-
-    ## using regex
-    # actual = world.driver.current_url
-    # expect = re.compile(url)
-    #
-    # if expect.match(actual):
-    #     return True
-    # else:
-    #     log.failed("Verify url contains?", actual, url)
 
 
 @step ("the [{element_name}] value is '{value}'") ##->then
@@ -472,7 +448,6 @@ def step_impl(context, element_name):
 @step ("the popup message shows '{value}'") ##->then
 @step ("the popup shows '{value}'")
 def step_impl(context, value):
-    #world.VerifyPopupMessage(value)
     alert = world.get_alert()
 
     if alert.text == value:
