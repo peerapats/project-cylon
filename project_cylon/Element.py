@@ -212,6 +212,16 @@ class Element:
         element.click()
         return True
 
+    def click_by_script(self):
+        element = self.wait_for_present()
+
+        if element is None:
+            return False
+
+        script = "arguments[0].click()"
+        self.driver.execute_script(script, element)
+        return True
+
     def select(self, value):
         element = Select(self.wait_for_present())
 

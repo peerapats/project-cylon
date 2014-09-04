@@ -132,8 +132,13 @@ def step_impl(context, element_name):
 @step ("user clicks [{element_name}] button")
 def step_impl(context, element_name):
     element = world.find_element(element_name)
-    if not element.click():
-        log.failed("Fail to clicks element '%s'" % element.name)
+    if element.visible:
+        element.click()
+    else:
+        element.click_by_script()
+    #if not element.click():
+    #    log.failed("Fail to clicks element '%s'" % element.name)
+
 
 
 @step ("user selects '{value}' on the [{element_name}]") ##->when
