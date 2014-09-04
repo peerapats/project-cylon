@@ -423,6 +423,26 @@ def step_impl(context, element_name):
         log.failed("Verify element '%s' not visible?" % element.name, "visible", "not visible")
 
 
+@step ("the [{element_name}] is enabled") ##->then
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
+
+    if element.wait_for_enabled():
+        return True
+    else:
+        log.failed("Verify element '%s' enabled?" % element.name, "disabled", "enabled")
+
+
+@step ("the [{element_name}] is disabled") ##->then
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
+
+    if element.wait_for_disabled():
+        return True
+    else:
+        log.failed("Verify element '%s' disabled?" % element.name, "enabled", "disabled")
+
+
 @step ("the [{element_name}] is selected") ##->then
 @step ("the [{element_name}] is checked") ##->then
 def step_impl(context, element_name):

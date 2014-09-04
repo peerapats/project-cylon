@@ -72,6 +72,34 @@ class Element:
 
         return not element.is_displayed()
 
+    def wait_for_enabled(self, timeout=8):
+        result = False
+        element = self.wait_for_present()
+
+        if element is None:
+            return False
+
+        for n in range(0, timeout):
+            if element.is_enabled():
+                break
+            time.sleep(1)
+
+        return element.is_enabled()
+
+    def wait_for_disabled(self, timeout=8):
+        result = False
+        element = self.wait_for_present()
+
+        if element is None:
+            return True
+
+        for n in range(0, timeout):
+            if not element.is_enabled():
+                break
+            time.sleep(1)
+
+        return not element.is_enabled()
+
     def get_instance(self):
         instance = None
 

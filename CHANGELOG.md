@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.6 - 2014-09-04
+- Added following keywords.
+
+  ```feature
+  Then the [...] is enabled
+  Then the [...] is disabled
+  ```
+
 ## 1.1.5 - 2014-08-28
 - Fixed to wait and check url after open page.
 
