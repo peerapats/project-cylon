@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.8 - 2014-09-09
+- Removed specific selenium version in setup script.
+
 ## 1.1.7 - 2014-09-05
 - Fixed to wait popup appear in following keywords.
 

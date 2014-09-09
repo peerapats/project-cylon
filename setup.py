@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='project-cylon',
-      version='1.1.7',
+      version='1.1.8',
       description='Generic Web Acceptance Testing Framework',
       long_description=
       """
@@ -28,6 +28,6 @@ setup(name='project-cylon',
       install_requires=[
           'pyyaml',
           'behave',
-          'selenium==2.40'
+          'selenium'
       ],
       zip_safe=False)
