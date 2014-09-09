@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.1.7 - 2014-09-05
+- Fixed to wait popup appear in following keywords.
+
+  ```feature
+  When user accept the popup
+  When user cancel the popup
+  Then the popup message shows '...'
+  ```
+
+- Fixed fail report on following keywords.
+
+  ```feature
+  When user clicks the [...]
+  When user enters '...' to the [...]
+  ```
+
 ## 1.1.6 - 2014-09-04
 - Added following keywords.
 

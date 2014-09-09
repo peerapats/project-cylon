@@ -79,9 +79,6 @@ When step definitions
 @step ("user enters '{value}' to [{element_name}]")
 def step_impl(context, element_name, value):
     element = world.find_element(element_name)
-    #if not element.send_keys_by_script(value):
-    #    log.failed("Fail to enters value '%s' to '%s'" % (value, element.name))
-
     if not element.send_keys(value):
         log.failed("Fail to enters value '%s' to '%s'" % (value, element.name))
 
@@ -132,13 +129,8 @@ def step_impl(context, element_name):
 @step ("user clicks [{element_name}] button")
 def step_impl(context, element_name):
     element = world.find_element(element_name)
-    if element.visible:
-        element.click()
-    else:
-        element.click_by_script()
-    #if not element.click():
-    #    log.failed("Fail to clicks element '%s'" % element.name)
-
+    if not element.click():
+        log.failed("Fail to clicks element '%s'" % element.name)
 
 
 @step ("user selects '{value}' on the [{element_name}]") ##->when
@@ -184,15 +176,23 @@ def step_impl(context, value):
 @step ("user accept the popup")
 @step ('user clicks "OK" on the popup')
 def step_impl(context):
-    alert = world.get_alert()
-    alert.accept()
+    alert = world.get_alert_when_exist()
+
+    if alert is not None:
+        alert.accept()
+    else:
+        log.failed("Fail to accept popup alert")
 
 
 @step ("user cancel the popup")
 @step ('user clicks "Cancel" on the popup')
 def step_impl(context):
-    alert = world.get_alert()
-    alert.dismiss()
+    alert = world.get_alert_when_exist()
+
+    if alert is not None:
+        alert.dismiss()
+    else:
+        log.failed("Fail to cancel popup alert")
 
 
 """
@@ -473,7 +473,10 @@ def step_impl(context, element_name):
 @step ("the popup message shows '{value}'") ##->then
 @step ("the popup shows '{value}'")
 def step_impl(context, value):
-    alert = world.get_alert()
+    alert = world.get_alert_when_exist()
+
+    if alert is None:
+        log.failed("The popup alert not visible")
 
     if alert.text == value:
         return True

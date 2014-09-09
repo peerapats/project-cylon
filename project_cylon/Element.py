@@ -10,95 +10,15 @@ class Element:
     identifier = ""
 
     driver = None
+    wait_timeout = 8
 
     def __init__(self, name="!!undefined", identifier="!!undefined"):
         self.name = name
         self.identifier = identifier
+        self.wait_timeout = 8
 
-    def wait_for_present(self, timeout=8):
-        for n in range(0, timeout):
-            element = self.get_instance()
-
-            if element is None:
-                time.sleep(1)
-                continue
-
-        return element
-
-    def wait_for_exist(self, timeout=8):
-        for n in range(0, timeout):
-            element = self.get_instance()
-
-            if element is not None:
-                return True
-            time.sleep(1)
-
-        return False
-
-    def wait_for_not_exist(self, timeout=8):
-        for n in range(0, timeout):
-            element = self.get_instance()
-
-            if element is None:
-                return True
-            time.sleep(1)
-
-        return False
-
-    def wait_for_visible(self, timeout=8):
-        element = self.wait_for_present()
-
-        if element is None:
-            return False
-
-        for n in range(0, timeout):
-            if element.is_displayed():
-                break
-            time.sleep(1)
-
-        return element.is_displayed()
-
-    def wait_for_invisible(self, timeout=8):
-        result = False
-        element = self.wait_for_present()
-
-        if element is None:
-            return True
-
-        for n in range(0, timeout):
-            if not element.is_displayed():
-                break
-            time.sleep(1)
-
-        return not element.is_displayed()
-
-    def wait_for_enabled(self, timeout=8):
-        result = False
-        element = self.wait_for_present()
-
-        if element is None:
-            return False
-
-        for n in range(0, timeout):
-            if element.is_enabled():
-                break
-            time.sleep(1)
-
-        return element.is_enabled()
-
-    def wait_for_disabled(self, timeout=8):
-        result = False
-        element = self.wait_for_present()
-
-        if element is None:
-            return True
-
-        for n in range(0, timeout):
-            if not element.is_enabled():
-                break
-            time.sleep(1)
-
-        return not element.is_enabled()
+    def get_instances(self):
+        return self.driver.find_elements_by_xpath(self.identifier)
 
     def get_instance(self):
         instance = None
@@ -125,17 +45,96 @@ class Element:
 
         return instance
 
-    def get_instances(self):
-        return self.driver.find_elements_by_xpath(self.identifier)
+    def get_when_exist(self):
+        for n in range(0, self.wait_timeout):
+            element = self.get_instance()
+
+            if element is not None:
+                return element
+            time.sleep(1)
+
+        return None
+
+    def wait_for_exist(self):
+        for n in range(0, self.wait_timeout):
+            element = self.get_instance()
+
+            if element is not None:
+                return True
+            time.sleep(1)
+
+        return False
+
+    def wait_for_not_exist(self):
+        for n in range(0, self.wait_timeout):
+            element = self.get_instance()
+
+            if element is None:
+                return True
+            time.sleep(1)
+
+        return False
+
+    def wait_for_visible(self):
+        element = self.get_when_exist()
+
+        if element is None:
+            return False
+
+        for n in range(0, self.wait_timeout):
+            if element.is_displayed():
+                break
+            time.sleep(1)
+
+        return element.is_displayed()
+
+    def wait_for_invisible(self):
+        element = self.get_when_exist()
+
+        if element is None:
+            return True
+
+        for n in range(0, self.wait_timeout):
+            if not element.is_displayed():
+                break
+            time.sleep(1)
+
+        return not element.is_displayed()
+
+    def wait_for_enabled(self):
+        element = self.get_when_exist()
+
+        if element is None:
+            return False
+
+        for n in range(0, self.wait_timeout):
+            if element.is_enabled():
+                break
+            time.sleep(1)
+
+        return element.is_enabled()
+
+    def wait_for_disabled(self):
+        element = self.get_when_exist()
+
+        if element is None:
+            return True
+
+        for n in range(0, self.wait_timeout):
+            if not element.is_enabled():
+                break
+            time.sleep(1)
+
+        return not element.is_enabled()
 
     @property
     def title(self):
-        element = self.wait_for_present()
+        element = self.get_when_exist()
         return element.get_attribute('title')
 
     @property
     def value(self):
-        element = self.wait_for_present()
+        element = self.get_when_exist()
 
         if element is None:
             return ""
@@ -150,7 +149,7 @@ class Element:
 
     @property
     def exists(self):
-        element = self.wait_for_present()
+        element = self.get_when_exist()
         if element is None:
             return False
         else:
@@ -158,7 +157,7 @@ class Element:
 
     @property
     def enabled(self):
-        element = self.wait_for_present()
+        element = self.get_when_exist()
         if element is None:
             return False
         else:
@@ -166,7 +165,7 @@ class Element:
 
     @property
     def visible(self):
-        element = self.wait_for_present()
+        element = self.get_when_exist()
         if element is None:
             return False
         else:
@@ -174,7 +173,7 @@ class Element:
 
     @property
     def selected(self):
-        element = self.wait_for_present()
+        element = self.get_when_exist()
         if element is None:
             return False
         else:
@@ -185,16 +184,27 @@ class Element:
         return len(self.get_instances())
 
     def send_keys(self, value):
-        element = self.wait_for_present()
-
-        if element is None:
+        if not self.wait_for_exist():
+            return False
+        if not self.wait_for_visible():
+            return False
+        if not self.wait_for_enabled():
             return False
 
+        element = self.get_instance()
         element.send_keys(value)
+
         return True
+        # element = self.get_when_exist()
+        #
+        # if element is None:
+        #     return False
+        #
+        # element.send_keys(value)
+        # return True
 
     def send_keys_by_script(self, value):
-        element = self.wait_for_present()
+        element = self.get_when_exist()
 
         if element is None:
             return False
@@ -204,16 +214,27 @@ class Element:
         return True
 
     def click(self):
-        element = self.wait_for_present()
-
-        if element is None:
+        if not self.wait_for_exist():
+            return False
+        if not self.wait_for_visible():
+            return False
+        if not self.wait_for_enabled():
             return False
 
+        element = self.get_instance()
         element.click()
+
         return True
+        # element = self.get_when_exist()
+        #
+        # if element is None:
+        #     return False
+        #
+        # element.click()
+        # return True
 
     def click_by_script(self):
-        element = self.wait_for_present()
+        element = self.get_when_exist()
 
         if element is None:
             return False
@@ -223,12 +244,16 @@ class Element:
         return True
 
     def select(self, value):
-        element = Select(self.wait_for_present())
-
-        if element is None:
+        if not self.wait_for_exist():
+            return False
+        if not self.wait_for_visible():
+            return False
+        if not self.wait_for_enabled():
             return False
 
+        element = Select(self.get_instance())
         element.select_by_visible_text(value)
+        
         return True
 
     def check(self):
@@ -242,7 +267,7 @@ class Element:
         return True
 
     def move_mouse_over(self):
-        element = self.wait_for_present()
+        element = self.get_when_exist()
         action = ActionChains(self.driver).move_to_element(element)
         action.perform()
         return True

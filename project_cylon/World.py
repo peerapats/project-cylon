@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
 
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 from Element import *
 from Logger import Logger as log
 
@@ -41,6 +44,21 @@ class World:
             return None
 
     @classmethod
+    def find_page_by_url(cls, url):
+        for page in cls.pages:
+            if url in page.url or page.url in url:
+                page.driver = cls.driver
+                cls.current_page = page
+
+                log.warning("Current page was changed to: '%s'" % page.name)
+                return page
+
+        log.warning("Not found page match with url '%s'" % url)
+        cls.current_page = None
+        return None
+
+
+    @classmethod
     def find_element(cls, identifier):
         element = cls.current_page.find_element(identifier)
 
@@ -54,3 +72,14 @@ class World:
     @classmethod
     def get_alert(cls):
         return cls.driver.switch_to_alert()
+
+    @classmethod
+    def get_alert_when_exist(cls):
+        wait = WebDriverWait(cls.driver, 10)
+
+        try:
+            wait.until(EC.alert_is_present())
+            alert = cls.driver.switch_to_alert()
+            return alert
+        except:
+            return None
