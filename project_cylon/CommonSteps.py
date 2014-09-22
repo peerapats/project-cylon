@@ -412,7 +412,7 @@ def step_impl(context, element_name):
 def step_impl(context, element_name):
     element = world.find_element(element_name)
 
-    if element.wait_for_visible():
+    if element.wait_for_attribute('visible', True):
         return True
     else:
         log.failed("Verify element '%s' visible?" % element.name, "not visible", "visible")
@@ -422,7 +422,7 @@ def step_impl(context, element_name):
 def step_impl(context, element_name):
     element = world.find_element(element_name)
 
-    if element.wait_for_invisible():
+    if element.wait_for_attribute('visible', False):
         return True
     else:
         log.failed("Verify element '%s' not visible?" % element.name, "visible", "not visible")
@@ -432,7 +432,7 @@ def step_impl(context, element_name):
 def step_impl(context, element_name):
     element = world.find_element(element_name)
 
-    if element.wait_for_enabled():
+    if element.wait_for_attribute('enabled', True):
         return True
     else:
         log.failed("Verify element '%s' enabled?" % element.name, "disabled", "enabled")
@@ -442,7 +442,7 @@ def step_impl(context, element_name):
 def step_impl(context, element_name):
     element = world.find_element(element_name)
 
-    if element.wait_for_disabled():
+    if element.wait_for_attribute('enabled', False):
         return True
     else:
         log.failed("Verify element '%s' disabled?" % element.name, "enabled", "disabled")
@@ -453,7 +453,7 @@ def step_impl(context, element_name):
 def step_impl(context, element_name):
     element = world.find_element(element_name)
 
-    if element.selected:
+    if element.wait_for_attribute('selected', True):
         return True
     else:
         log.failed("Verify element '%s' checked?" % element.name, "unchecked", "checked")
@@ -464,7 +464,7 @@ def step_impl(context, element_name):
 def step_impl(context, element_name):
     element = world.find_element(element_name)
 
-    if not element.selected:
+    if element.wait_for_attribute('selected', False):
         return True
     else:
         log.failed("Verify element '%s' unchecked?" % element.name, "checked", "unchecked")
@@ -504,7 +504,7 @@ def step_impl(context, amount, element_name):
 def step_impl(context, element_name, value):
     element = world.find_element(element_name)
 
-    if element.title == value:
+    if element.get_attribute('title') == value:
         return True
     else:
         log.failed("Verify tooltip text is?", element.title, value)
