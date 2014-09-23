@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.9 - 2014-09-23
+- Improve element wait and synchronize.
+
 ## 1.1.8 - 2014-09-09
 - Removed specific selenium version in setup script.
 
