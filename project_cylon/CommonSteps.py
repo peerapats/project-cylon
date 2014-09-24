@@ -291,6 +291,15 @@ def step_impl(context, element_name):
         log.failed("Verify value contains? (multi-line)", element.value, value)
 
 
+@step ("the [{element_name}] value matches pattern '{pattern}'")
+def step_impl(context, element_name, pattern):
+    element = world.find_element(element_name)
+    if re.match(pattern, element.value):
+        return True
+    else:
+        log.failed("Verify value match with pattern?", element.value, pattern)
+
+
 @step ("the [{element_name}] value is more than '{value}'") ##->then
 @step ("the [{element_name}] more than '{value}'")
 def step_impl(context, element_name, value):
@@ -508,3 +517,13 @@ def step_impl(context, element_name, value):
         return True
     else:
         log.failed("Verify tooltip text is?", element.title, value)
+
+
+@step ("the [{element_name}] class contains '{value}'")
+def step_impl(context, element_name, value):
+    element = world.find_element(element_name)
+    classes = element.get_attribute('class')
+    if value in classes:
+        return True
+    else:
+        log.failed("Verify class contains?", classes, value)

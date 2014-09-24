@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.10 - 2014-09-24
+- Added following keywords.
+
+  ```feature
+  Then the [...] class contains '...'
+  Then the [...] value matches pattern '...' ## use regex pattern
+  ```
+
 ## 1.1.9 - 2014-09-23
 - Improve element wait and synchronize.
 
