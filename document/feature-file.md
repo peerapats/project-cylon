@@ -92,4 +92,4 @@ Scenario: scenario 2
      Then ...
 {% endhighlight %}
 
-For all available steps to write scenario please see: [Built-in steps]({{ site.baseurl }}document/built-in-steps.html)
+For all available steps to write scenario please see: [Built-in steps]({{ site.baseurl }}/document/built-in-steps.html)

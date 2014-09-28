@@ -68,9 +68,9 @@ This command will run scenario specified with tag `@mytag1`.
 
 For more documentation please see following pages.
 
-[Write test scenario in feature file.]({{ site.baseurl }}document/feature-file.html)  
-[Mapping elements in page object.]({{ site.baseurl }}document/page-object.html)  
-[Built-in steps.]({{ site.baseurl }}document/built-in-steps.html)
+[Write test scenario in feature file.]({{ site.baseurl }}/document/feature-file.html)  
+[Mapping elements in page object.]({{ site.baseurl }}/document/page-object.html)  
+[Built-in steps.]({{ site.baseurl }}/document/built-in-steps.html)
 
 
 ## FAQ
