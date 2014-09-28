@@ -8,9 +8,10 @@
         </h2>
         <p class="lead">{{ site.description }}</p>
     </div>
-
+    <hr/>
     <nav class="sidebar-nav">
         <!--<a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="{{ site.baseurl }}">Home</a>-->
+        <a class="sidebar-nav-item" href="{{ site.baseurl }}/document/installation.html">Installation</a>
         <a class="sidebar-nav-item" href="{{ site.baseurl }}">Quick-start guide</a>
         <a class="sidebar-nav-item" href="{{ site.baseurl }}/document/feature-file.html">Feature file</a>
         <a class="sidebar-nav-item" href="{{ site.baseurl }}/document/page-object.html">Page object</a>
@@ -40,7 +41,8 @@
           <a class="sidebar-nav-item" href="{{ site.github }}">GitHub project</a>
           <span class="sidebar-nav-item">Latest version {{ site.version }}</span>
       </nav>
-      <p>&copy; {{ site.time | date: '%Y' }}. All rights reserved.</p>
+      <hr/>
+      <span>&copy; {{ site.time | date: '%Y' }}. All rights reserved.</span>
   </div>
 
 </div>
