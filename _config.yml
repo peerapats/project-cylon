@@ -1,0 +1,13 @@
+# Build settings
+markdown: kramdown
+
+# Site settings
+title: Project-Cylon
+description: Don't coding, just testing.
+
+url: http://cylon.io # the base hostname & protocol for your site
+baseurl: / # the subpath of your site, e.g. /blog/
+
+# Custom variables
+version: 1.1.10
+github: https://github.com/gigapixel/project-cylon
