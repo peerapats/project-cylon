@@ -1,5 +1,5 @@
 # Build settings
-markdown: kramdown
+markdown: redcarpet
 
 # Site settings
 title: Project-Cylon

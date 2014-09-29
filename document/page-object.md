@@ -18,11 +18,11 @@ This section keep name and url for html page, require 2 fields in this section.
 
 Here is an example:
 
-{% highlight yaml %}
+```yaml
 page:
   name: GoogleHomePage
   url: https://www.google.com
-{% endhighlight %}
+```
 
 
 ## Elements
@@ -35,20 +35,20 @@ each elements require 2 fields following.
 
 Here is an example:
 
-{% highlight yaml %}
+```yaml
 elements:
 - name: txt_search
   xpath: //*[@id="gbqfq"]
 - name: btn_search
   xpath: //*[@id="gbqfb"]
-{% endhighlight %}
+```
 
 
 ## Put it all together
 
 When put it all together, the `GoogleHomePage.yaml` file will look like this example.
 
-{% highlight yaml %}
+```yaml
 --- ## Google Home Page
 page:
   name: GoogleHomePage
@@ -61,7 +61,7 @@ elements:
   xpath: //*[@id="gbqfb"]
 
 ...
-{% endhighlight %}
+```
 
 
 ## Multiple page in one file
@@ -69,7 +69,7 @@ elements:
 You can have multiple page store in the same file,
 separate each page by `---` like this example.
 
-{% highlight yaml %}
+```yaml
 --- # Google Home Page
 page:
   name: GoogleHomePage
@@ -93,7 +93,7 @@ elements:
   xpath: //*[@id="..."]
 
 ...
-{% endhighlight %}
+```
 
 
 ## References

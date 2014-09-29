@@ -10,16 +10,16 @@ This page lists all built-in steps in project-cylon, you can use steps below to 
 
 The purpose of __Given__ steps is __to put the system in a known state__ before the user (or external system) starts interacting with the system.
 
-{% highlight gherkin %}
+```gherkin
 Given user has [...] page open
-{% endhighlight %}
+```
 
 
 ## When
 
 The purpose of __When__ steps is __to describe an action__ that user performs.
 
-{% highlight gherkin %}
+```gherkin
 When user enters '...' to the [...]
 When user enters date '...' to the [...]
 When user clears value on the [...]
@@ -33,14 +33,14 @@ When user uploads file '...' to the [...]
 When user enters '...' to the popup
 When user accept the popup
 When user cancel the popup
-{% endhighlight %}
+```
 
 
 ## Then
 
 The purpose of __Then__ steps is __to observe outcomes__. The observations should be related to the business value/benefit in your feature description.
 
-{% highlight gherkin %}
+```gherkin
 Then the browser shows [...] page
 Then the page url is '...'
 Then the page url contains '...'
@@ -64,14 +64,14 @@ Then the [...] is selected
 Then the [...] is not selected
 Then the [...] tooltip text is '...'
 Then the popup message shows '...'
-{% endhighlight %}
+```
 
 
 ## And / But
 
 Purpose of __And__ / __But__ is to make scenario more readable rather than use multiple __Given__, __When__ or __Then__.
 
-{% highlight gherkin %}
+```gherkin
 Scenario: Search on google
     Given user has [Google Home] page open
      When user enters 'abc' to the [search input]
@@ -79,6 +79,6 @@ Scenario: Search on google
      Then the browser shows [Google Search Result] page
       And the [search input] is not empty
       And the [search button] exists
-{% endhighlight %}
+```
 
 Steps beginning with __And__ or __But__ are exactly the same kind of steps as all the others.

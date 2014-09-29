@@ -17,13 +17,13 @@ You can write whatever you want until the first scenario.
 
 Here is an example:
 
-{% highlight gherkin %}
+```gherkin
 Feature: Your feature name
     Write your feature description / documentation.
     You can write whatever you want up until the first scenario.
 Scenario:
     ...
-{% endhighlight %}
+```
 
 
 ## Scenario
@@ -33,14 +33,14 @@ it consists of a list of steps which must start with one of the keywords __Given
 
 Here is an example:
 
-{% highlight gherkin %}
+```gherkin
 Scenario: Verify stock info
     Given User has [Settrade Home] page open
      When User enters 'ICHI' to the [symbol input]
       And User clicks the [search button]
      Then The browser shows [Stock Details] page
       And The [symbol] value is 'ICHI'
-{% endhighlight %}
+```
 
 
 ## Scenario Outline
@@ -50,7 +50,7 @@ Instead of write several scenario for each data set, you can use a `Scenario Out
 
 Here is an example:
 
-{% highlight gherkin %}
+```gherkin
 Scenario Outline: Verify stock info
     Given User has [Settrade Home] page open
      When User enters '<symbol>' to the [symbol input]
@@ -65,7 +65,7 @@ Examples:
     | ADVANC | 171.00  | 317.00 |
     | INTUCH | 55.00   | 99.00  |
     | MCOT   | 20.20   | 37.25  |
-{% endhighlight %}
+```
 
 This will run scenario once for each line in the `Examples:` data tables.
 
@@ -77,7 +77,7 @@ when each scenario is run, steps under `Background:` will run before that scenar
 
 Here is an example:
 
-{% highlight gherkin %}
+```gherkin
 Background:
     Given User has [Settrade Home] page open
       And ...
@@ -90,6 +90,6 @@ Scenario: scenario 1
 Scenario: scenario 2
      When ...
      Then ...
-{% endhighlight %}
+```
 
 For all available steps to write scenario please see: [Built-in steps]({{ site.baseurl }}/document/built-in-steps.html)
