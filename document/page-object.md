@@ -6,7 +6,7 @@ title: Page object
 Page object is an object repository for project-cylon,
 we use yaml format to store identifier of page and elements.
 
-Page object basiacally require `page:` and `elements:` sections.
+Page object basically require `page:` and `elements:` sections.
 
 
 ## Page

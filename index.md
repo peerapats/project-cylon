@@ -15,9 +15,9 @@ NOTE: For Windows users, you need run under drive `C:\` (behave not support to i
 
 Firstly create new project directory use the command.
 
-{% highlight bash %}
+```
 $ cylon new project mytest
-{% endhighlight %}
+```
 
 The above command will create new directory name `mytest` in current directory.
 
@@ -26,10 +26,10 @@ The above command will create new directory name `mytest` in current directory.
 
 After project directory is ready, walk-in and create new feature file.
 
-{% highlight bash %}
+```
 $ cd mytest
 $ cylon new feature MyFeature
-{% endhighlight %}
+```
 
 This will create `MyFeaure.feature` in the `/features` directory (you can ommit `.feature` in file name).
 
@@ -38,9 +38,9 @@ This will create `MyFeaure.feature` in the `/features` directory (you can ommit 
 
 Then create new page object with following command.
 
-{% highlight bash %}
+```
 $ cylon new page MyWebPage
-{% endhighlight %}
+```
 
 This will create `MyWebPage.yaml` in the `pageobjects` directory (yes, you can ommit `.yaml` in file name also).
 
@@ -49,17 +49,17 @@ This will create `MyWebPage.yaml` in the `pageobjects` directory (yes, you can o
 
 After you have played around feature and page object, run tests with this command.
 
-{% highlight bash %}
+```
 $ cylon run all
-{% endhighlight %}
+```
 
 The above command will run all features in your project.
 
 If you want to run only tests with specified tag, use this command.
 
-{% highlight bash %}
+```
 $ cylon run tags=@mytag1
-{% endhighlight %}
+```
 
 This command will run scenario specified with tag `@mytag1`.
 
