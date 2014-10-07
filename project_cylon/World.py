@@ -18,6 +18,7 @@ class World:
     def open_browser(cls, browser="firefox"):
         if browser is "firefox":
             cls.driver = webdriver.Firefox()
+            cls.driver.maximize_window()
         elif browser is "chrome":
             cls.driver = webdriver.Chrome()
         else:
