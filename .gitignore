@@ -12,3 +12,7 @@
 
 # Tests __pycache__ folder.
 /tests/__pycache__/
+
+# gh-pages
+_sites
+*.lock
