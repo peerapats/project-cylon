@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.11 - 2014-10-07
+- Added to maximize browser when start run.
+
 ## 1.1.10 - 2014-09-24
 - Added following keywords.
 
