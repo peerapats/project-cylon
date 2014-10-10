@@ -16,13 +16,14 @@ class World:
 
     @classmethod
     def open_browser(cls, browser="firefox"):
-        if browser is "firefox":
+        if browser == "firefox":
             cls.driver = webdriver.Firefox()
-            cls.driver.maximize_window()
-        elif browser is "chrome":
+        elif browser == "chrome":
             cls.driver = webdriver.Chrome()
         else:
-            log.failed("The %s browser is not supported." % browser)
+            log.failed("The '%s' browser is not supported." % browser)
+
+        cls.driver.maximize_window()
 
     @classmethod
     def close_browser(cls):

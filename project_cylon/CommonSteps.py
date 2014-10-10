@@ -35,6 +35,11 @@ def step_impl(context, condition, execution):
         context.execute_steps(u"""Then %s""" % execution)
 
 
+@step ("repeat following steps '{times}' times")
+def step_impl(context, times):
+    for index in range(int(times)):
+        context.execute_steps(u"""%s""" % context.text)
+
 # @step ("[remote] {Statement}")
 # def step_impl(context, Statement):
 #     world.driver = world.secondary_driver

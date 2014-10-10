@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.12 - 2014-10-09
+- Fixed to open and close browser for each feature.
+- Fixed to support [chrome driver](https://sites.google.com/a/chromium.org/chromedriver/downloads).
+- Added debug mode to cylon command.
+
+NOTE: Need to run `cylon update project` command.
+
 ## 1.1.11 - 2014-10-07
 - Added to maximize browser when start run.
 

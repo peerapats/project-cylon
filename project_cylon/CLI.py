@@ -130,19 +130,6 @@ def get_options_string(options):
 def run_behook(options=""):
     return subprocess.call("behook --color --quiet --no-skipped %s" % options, shell=True)
 
-# def run_all():
-#     print "Running all features..."
-#     os.system("behave --color --quiet --no-skipped")
-
-# def run_tags(tags):
-#     print "Running with tags: %s" % tags
-#
-#     argtags = ""
-#     for tag in tags:
-#         argtags = "%s --tags=%s" % (argtags, tag)
-#
-#     os.system("behave --color --quiet --no-skipped %s" % argtags.strip())
-
 ###
 ### print instruction
 ###
@@ -168,18 +155,6 @@ def get_config_content():
     """
     return content
 
-# def get_accounts_content():
-#     content = """
-#     ### Define user accounts to use with login keyword ###
-#     ---
-#     accounts:
-#
-#     - name: pcms admin
-#       username: test@domain.com
-#       password: 123456
-#     ...
-#     """
-
 def get_steps_content():
     content = """
     ###
@@ -198,24 +173,28 @@ def get_environment_content():
 
     def before_all(context):
         Logger.tracebacklimit(0)
-
-        browser = "firefox"
-        pageobject_files = "./pageobjects/*.yaml"
+        if hasattr(context.config, "debug"):
+            Logger.tracebacklimit(1000)
 
         site = "default"
-
-        if hasattr(context.config, 'site') and context.config.site is not None:
+        if hasattr(context.config, "site") and context.config.site is not None:
             site = context.config.site
 
         domain = PageFactory.get_domain("./config.yaml", site)
 
-        if PageFactory.check_yaml_syntax(pageobject_files) == True:
-            world.pages = PageFactory.create_pages(pageobject_files, domain)
-            world.open_browser(browser)
+        pageobjects = "./pageobjects/*.yaml"
+        if PageFactory.check_yaml_syntax(pageobjects) == True:
+            world.pages = PageFactory.create_pages(pageobjects, domain)
         else:
             Logger.failed("Stop running.")
 
-    def after_all(context):
+    def before_feature(context, feature):
+        browser = "firefox"
+        if hasattr(context.config, "browser") and context.config.browser is not None:
+            browser = context.config.browser
+        world.open_browser(browser)
+
+    def after_feature(context, feature):
         world.close_browser()
     """
     return content
@@ -229,15 +208,20 @@ def get_environment_content():
 #     from project_cylon.World import World as world
 #
 #     def before_all(context):
-#         browser = "firefox"
-#
-#         site_config = "default"
-#         pageobject_files = "./pageobjects/*.yaml"
-#
 #         Logger.tracebacklimit(0)
 #
+#         browser = "firefox"
+#         pageobject_files = "./pageobjects/*.yaml"
+#
+#         site = "default"
+#
+#         if hasattr(context.config, 'site') and context.config.site is not None:
+#             site = context.config.site
+#
+#         domain = PageFactory.get_domain("./config.yaml", site)
+#
 #         if PageFactory.check_yaml_syntax(pageobject_files) == True:
-#             world.pages = PageFactory.create_pages(pageobject_files, site_config)
+#             world.pages = PageFactory.create_pages(pageobject_files, domain)
 #             world.open_browser(browser)
 #         else:
 #             Logger.failed("Stop running.")
@@ -251,19 +235,12 @@ def get_shell_runall_content():
     content = """
     #!/bin/bash
     echo "Running all features..."
-    behave --quiet --no-skipped
+    cylon run all
     """
     return content
 
 # def get_shell_runtags_content():
 #     content = """
-#     #!/bin/bash
-#
-#     echo -n "Please specify tags to run >> "
-#     read tags
-#     echo "Running with tags: $tags"
-#
-#     behave --quiet --no-skipped --tags=$tags
 #     """
 #     return content
 
@@ -271,7 +248,7 @@ def get_batch_runall_content():
     content = """
     @echo off
     echo "Running all features..."
-    behave --color --quiet --no-skipped
+    cylon run all
     pause
     """
     return content
@@ -300,6 +277,7 @@ def get_instruction():
     Options:
     tags=<tags>                       Specified tags to run.
     site=<site>                       Specified site to run (see in config.yaml).
+    debug                             Specified to run in debug mode (show all traceback).
     """
     return content
 
@@ -331,7 +309,6 @@ def main():
 
             options = get_options_string(args)
             return run_behook(options)
-
 
         elif command == "update":
             sub = sys.argv[2].lower()
