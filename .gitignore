@@ -15,4 +15,6 @@
 
 # gh-pages
 _sites
+
+# Lock files
 *.lock

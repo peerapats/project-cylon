@@ -9,6 +9,7 @@ from World import World as world
 from Logger import Logger as log
 
 import re
+import time
 import datetime
 
 
@@ -39,6 +40,30 @@ def step_impl(context, condition, execution):
 def step_impl(context, times):
     for index in range(int(times)):
         context.execute_steps(u"""%s""" % context.text)
+
+
+@step ("user waits for '{timeout}' seconds")
+def step_impl(context, timeout):
+    time.sleep(float(timeout))
+
+
+@step ("user waits [{element_name}] appear for '{timeout}' seconds")
+def step_impl(context, element_name, timeout):
+    element = world.find_element(element_name)
+    element.wait_timeout = int(timeout)
+
+    if not element.wait_for_attribute('visible', True):
+        log.failed("Element '%s' not appear in %s seconds" % (element_name, timeout))
+
+
+@step ("user waits [{element_name}] disappear for '{timeout}' seconds")
+def step_impl(context, element_name, timeout):
+    element = world.find_element(element_name)
+    element.wait_timeout = int(timeout)
+
+    if not element.wait_for_attribute('visible', False):
+        log.failed("Element '%s' not disappear in %s seconds" % (element_name, timeout))
+
 
 # @step ("[remote] {Statement}")
 # def step_impl(context, Statement):

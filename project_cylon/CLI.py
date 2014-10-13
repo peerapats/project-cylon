@@ -150,7 +150,6 @@ def get_config_content():
 
       ## add your sites domain here ##
       # develop: http://dev.yoursite.com
-
     ...
     """
     return content

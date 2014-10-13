@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.1.14 - 2014-10-13
+- Fixed bug in wait.
+
+## 1.1.13 - 2014-10-13
+- Added following steps.
+
+  ```feature
+  When user waits for '...' seconds
+  When user waits [...] appear for '...' seconds
+  When user waits [...] disappear for '...' seconds
+  ```
+
 ## 1.1.12 - 2014-10-09
 - Fixed to open and close browser for each feature.
 - Fixed to support [chrome driver](https://sites.google.com/a/chromium.org/chromedriver/downloads).

@@ -14,7 +14,7 @@ class Element:
     identifier = ""
 
     driver = None
-    wait_timeout = 8
+    wait_timeout = 0
 
     def __init__(self, name="!!undefined", identifier="!!undefined"):
         self.name = name
@@ -75,16 +75,15 @@ class Element:
         for n in range(0, self.wait_timeout * 2):
             element = self.get_instance()
 
-            if element is None: continue
-
-            if attr == 'enabled' and element.is_enabled() == expected:
-                return True
-            elif attr == 'visible' and element.is_displayed() == expected:
-                return True
-            elif attr == 'selected' and element.is_selected() == expected:
-                return True
-            elif element.get_attribute(attr) == expected:
-                return True
+            if element is not None:
+                if attr == 'enabled' and element.is_enabled() == expected:
+                    return True
+                elif attr == 'visible' and element.is_displayed() == expected:
+                    return True
+                elif attr == 'selected' and element.is_selected() == expected:
+                    return True
+                elif element.get_attribute(attr) == expected:
+                    return True
 
             time.sleep(0.5)
 
