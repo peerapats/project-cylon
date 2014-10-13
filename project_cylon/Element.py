@@ -190,12 +190,15 @@ class Element:
         return True
 
     def click_by_script(self):
-        element = self.get_instance_on_exist()
-
-        if element is None:
+        if not self.wait_for_exist():
+            return False
+        if not self.wait_for_attribute('visible', True):
+            return False
+        if not self.wait_for_attribute('enabled', True):
             return False
 
-        script = "arguments[0].click()"
+        element = self.get_instance()
+        script = "document.evaluate('" + self.identifier + "', document, null, 9, null).singleNodeValue.click();"
         self.driver.execute_script(script, element)
         return True
 
