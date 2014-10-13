@@ -154,8 +154,6 @@ def step_impl(context, element_name):
 
 
 @step ("user clicks the [{element_name}] by script") ##->when
-@step ("user clicks [{element_name}] link by script")
-@step ("user clicks [{element_name}] button by script")
 def step_impl(context, element_name):
     element = world.find_element(element_name)
     if not element.click_by_script():

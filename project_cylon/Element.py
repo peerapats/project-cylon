@@ -197,8 +197,9 @@ class Element:
             return False
 
         element = self.get_instance()
-        script = "document.evaluate('" + self.identifier + "', document, null, 9, null).singleNodeValue.click();"
+        script = "document.evaluate('%s', document, null, 9, null).singleNodeValue.click();" % self.identifier
         self.driver.execute_script(script, element)
+
         return True
 
     def select(self, value):

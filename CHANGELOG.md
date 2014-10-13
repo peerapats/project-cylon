@@ -1,7 +1,12 @@
 # Changelog
 
 ## 1.1.14 - 2014-10-13
-- Fixed bug in wait.
+- Fixed bug in wait for element visible.
+- Added click element by script step (used for some javascript element).
+
+  ```feature
+  When user clicks the [...] by script
+  ```
 
 ## 1.1.13 - 2014-10-13
 - Added following steps.
