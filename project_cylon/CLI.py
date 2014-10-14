@@ -127,8 +127,11 @@ def get_options_string(options):
         command = "%s %s" % (command, option)
     return command
 
-def run_behook(options=""):
-    return subprocess.call("behook --color --quiet --no-skipped %s" % options, shell=True)
+# def run_behook(options=""):
+#     return subprocess.call("behook --color --quiet --no-skipped %s" % options, shell=True)
+
+def run_shell(command, options=""):
+    return subprocess.call("%s %s" % (command, options), shell=True)
 
 ###
 ### print instruction
@@ -263,6 +266,8 @@ def get_instruction():
     cylon <command> [options]
 
     Commands:
+    version                           Check project-cylon version.
+
     new project <name>                Create new project directory.
     new feature <name>                Create new feature file.
     new pageobject <name>             Create new pageobject file.
@@ -307,12 +312,16 @@ def main():
                 args = sys.argv[2:]
 
             options = get_options_string(args)
-            return run_behook(options)
+            return run_shell("behook --color --quiet --no-skipped", options)
 
         elif command == "update":
             sub = sys.argv[2].lower()
 
             if sub == "project":
                 update_project()
+
+        elif command == "version":
+            return run_shell("pip freeze | grep project-cylon")
+
 
     except: print_instruction()

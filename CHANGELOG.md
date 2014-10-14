@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.15 - 2014-10-14
+- Added command `cylon version`.
+- Added step to repeat user steps.
+
+  ```feature
+  Given user repeat following steps '...' times
+    """
+    ...
+    """
+  ```
+
 ## 1.1.14 - 2014-10-13
 - Fixed bug in wait for element visible.
 - Added click element by script step (used for some javascript element).
