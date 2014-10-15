@@ -175,8 +175,11 @@ def get_environment_content():
 
     def before_all(context):
         Logger.tracebacklimit(0)
-        if hasattr(context.config, "debug"):
+        if context.config.debug == True:
             Logger.tracebacklimit(1000)
+
+        if context.config.screenshot == True:
+            Logger.enable_screenshots()
 
         site = "default"
         if hasattr(context.config, "site") and context.config.site is not None:
@@ -195,6 +198,8 @@ def get_environment_content():
         if hasattr(context.config, "browser") and context.config.browser is not None:
             browser = context.config.browser
         world.open_browser(browser)
+
+        Logger.driver = world.driver
 
     def after_feature(context, feature):
         world.close_browser()

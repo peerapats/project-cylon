@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.0 - 2014-10-15
+- Fixed bug for debug mode.
+- Added `screenshot` mode to save screenshots when step failed.
+
+  ```
+  cylon run all screenshot
+  ```
+
+NOTE: Need to run `cylon update project` command.
+
 ## 1.1.15 - 2014-10-14
 - Added command `cylon version`.
 - Added step to repeat user steps.
