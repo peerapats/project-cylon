@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.2.1 - 2014-10-28
+- Added following steps.
+
+  ```feature
+  When user scrolls to [...]
+  Then the [...] value is equal to [...] value
+  Then the [...] value is greater than [...] value
+  Then the [...] value is greater than or equal to [...] value
+  Then the [...] value is less than [...] value
+  Then the [...] value is less than or equal to [...] value
+  ```
+
 ## 1.2.0 - 2014-10-15
 - Fixed bug for debug mode.
 - Added `screenshot` mode to save screenshots when step failed.

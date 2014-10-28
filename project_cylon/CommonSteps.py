@@ -450,7 +450,7 @@ def step_impl(context, element_name1, element_name2):
     else:
         log.failed(
             "Verify element1 value is equal to element2 value?",
-            "element1 value = '%s', element2 value = '%s'" % (element1.value, element2.value),
+            "element1 value = %s , element2 value = %s" % (element1.value, element2.value),
             "element1 value = element2 value"
         )
 
@@ -466,7 +466,7 @@ def step_impl(context, element_name1, element_name2):
     else:
         log.failed(
             "Verify element1 value is greater than element2 value?",
-            "element1 value = '%s', element2 value = '%s'" % (element1.value, element2.value),
+            "element1 value = %s , element2 value = %s" % (element1.value, element2.value),
             "element1 value > element2 value"
         )
 
@@ -482,7 +482,7 @@ def step_impl(context, element_name1, element_name2):
     else:
         log.failed(
             "Verify element1 value is greater than or equal to element2 value?",
-            "element1 value = '%s', element2 value = '%s'" % (element1.value, element2.value),
+            "element1 value = %s , element2 value = %s" % (element1.value, element2.value),
             "element1 value >= element2 value"
         )
 
@@ -497,7 +497,7 @@ def step_impl(context, element_name1, element_name2):
     else:
         log.failed(
             "Verify element1 value is less than element2 value?",
-            "element1 value = '%s', element2 value = '%s'" % (element1.value, element2.value),
+            "element1 value = %s , element2 value = %s" % (element1.value, element2.value),
             "element1 value < element2 value"
         )
 
@@ -512,7 +512,7 @@ def step_impl(context, element_name1, element_name2):
     else:
         log.failed(
             "Verify element1 value is less than or equal to element2 value?",
-            "element1 value = %s and element2 value = %s" % (element1.value, element2.value),
+            "element1 value = %s , element2 value = %s" % (element1.value, element2.value),
             "element1 value <= element2 value"
         )
 

@@ -48,6 +48,6 @@ class Logger:
             cls.driver.save_screenshot(filename)
             cls.screenshot_number += 1
 
-            print "Save screenshot to '%s'" % filename
+            print "screenshot: '%s'" % filename
 
         raise RuntimeError
