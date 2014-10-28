@@ -204,6 +204,34 @@ def step_impl(context):
         log.failed("Fail to cancel popup alert")
 
 
+@step ("user waits for '{timeout}' seconds")
+def step_impl(context, timeout):
+    time.sleep(float(timeout))
+
+
+@step ("user waits [{element_name}] appear for '{timeout}' seconds")
+def step_impl(context, element_name, timeout):
+    element = world.find_element(element_name)
+    element.wait_timeout = int(timeout)
+
+    if not element.wait_for_attribute('visible', True):
+        log.failed("Element '%s' not appear in %s seconds" % (element_name, timeout))
+
+
+@step ("user waits [{element_name}] disappear for '{timeout}' seconds")
+def step_impl(context, element_name, timeout):
+    element = world.find_element(element_name)
+    element.wait_timeout = int(timeout)
+
+    if not element.wait_for_attribute('visible', False):
+        log.failed("Element '%s' not disappear in %s seconds" % (element_name, timeout))
+
+# Scroll to element
+@step ("user scrolls to [{element_name}]")
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
+    element.send_keys(' ')
+
 """
 Then step definitions
 """
