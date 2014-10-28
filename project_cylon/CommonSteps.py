@@ -334,6 +334,36 @@ def step_impl(context, element_name, pattern):
     else:
         log.failed("Verify value match with pattern?", element.value, pattern)
 
+@step ("the [{element_name1}] value is equal to [{element_name2}] value") ##->then
+def step_impl(context, element_name1,element_name2):
+    element1 = world.find_element(element_name1)
+    element2 = world.find_element(element_name2)
+
+    if element1.value == element2.value:
+        return True
+    else:
+        log.failed(
+            "Verify first element value is equal to second element value?",
+            "first element value = %s and second element value = %s" % (element1.value,element2.value),
+            "first element value = second element value"
+        )
+
+
+@step ("the [{element_name1}] value is more than [{element_name2}] value") ##->then
+@step ("the [{element_name1}] value is greater than [{element_name2}] value") 
+def step_impl(context, element_name1,element_name2):
+    element1 = world.find_element(element_name1)
+    element2 = world.find_element(element_name2)
+
+    if element1.value |more_than| element2.value:
+        return True
+    else:
+        log.failed(
+            "Verify first element value is greater than second element value?",
+            "first element value = %s and second element value = %s" % (element1.value,element2.value),
+            "first element value > second element value"
+        )
+
 
 @step ("the [{element_name}] value is more than '{value}'") ##->then
 @step ("the [{element_name}] more than '{value}'")
@@ -347,6 +377,21 @@ def step_impl(context, element_name, value):
             "Verify value is more than?",
             "value = %s" % element.value,
             "value > %s" % value
+        )
+
+@step ("the [{element_name1}] value is more than or equal to [{element_name2}] value") ##->then
+@step ("the [{element_name1}] value is greater than or equal to [{element_name2}] value")
+def step_impl(context, element_name1,element_name2):
+    element1 = world.find_element(element_name1)
+    element2 = world.find_element(element_name2)
+
+    if element1.value |more_than_or_equal| element2.value:
+        return True
+    else:
+        log.failed(
+            "Verify first element value is greater than or equal to second element value?",
+            "first element value = %s and second element value = %s" % (element1.value,element2.value),
+            "first element value >= second element value"
         )
 
 
@@ -365,6 +410,21 @@ def step_impl(context, element_name, value):
         )
 
 
+@step ("the [{element_name1}] value is less than [{element_name2}] value") ##->then
+def step_impl(context, element_name1,element_name2):
+    element1 = world.find_element(element_name1)
+    element2 = world.find_element(element_name2)
+
+    if element1.value |less_than| element2.value:
+        return True
+    else:
+        log.failed(
+            "Verify first element value is less than second element value?",
+            "first element value = %s and second element value = %s" % (element1.value,element2.value),
+            "first element value < second element value"
+        )
+
+
 @step ("the [{element_name}] value is less than '{value}'") ##->then
 @step ("the [{element_name}] less than '{value}'")
 def step_impl(context, element_name, value):
@@ -377,6 +437,21 @@ def step_impl(context, element_name, value):
             "Verify value is less than?",
             "value = %s" % element.value,
             "value < %s" % value
+        )
+
+
+@step ("the [{element_name1}] value is less than or equal to [{element_name2}] value") ##->then
+def step_impl(context, element_name1,element_name2):
+    element1 = world.find_element(element_name1)
+    element2 = world.find_element(element_name2)
+
+    if element1.value |less_than_or_qual| element2.value:
+        return True
+    else:
+        log.failed(
+            "Verify first element value is less than or equal to second element value?",
+            "first element value = %s and second element value = %s" % (element1.value,element2.value),
+            "first element value <= second element value"
         )
 
 
