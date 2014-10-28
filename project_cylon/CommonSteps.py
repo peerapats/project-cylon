@@ -129,6 +129,8 @@ def step_impl(context, element_name):
 
 
 @step ("user clicks the [{element_name}] by script") ##->when
+@step ("user clicks [{element_name}] link by script")
+@step ("user clicks [{element_name}] button by script")
 def step_impl(context, element_name):
     element = world.find_element(element_name)
     if not element.click_by_script():
@@ -229,6 +231,11 @@ def step_impl(context, element_name, timeout):
     if not element.wait_for_attribute('visible', False):
         log.failed("Element '%s' not disappear in %s seconds" % (element_name, timeout))
 
+# Scroll to element
+@step ("user scrolls to [{element_name}]")
+def step_impl(context, element_name):
+    element = world.find_element(element_name)
+    element.send_keys(' ')
 
 """
 Then step definitions
