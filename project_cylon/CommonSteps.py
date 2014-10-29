@@ -241,6 +241,8 @@ def step_impl(context, element_name):
 
 @step ("user saves current page to file '{value}'")
 def step_impl(context, value):
+    if not value[:-5].lower() == '.html':
+        value = value + '.html'
     folder = os.path.dirname(value)
     if not folder == '':
         if not os.path.exists(folder):
@@ -254,7 +256,6 @@ def step_impl(context, value):
 def step_impl(context, value):
     if not value[:-4].lower() == '.png':
         value = value + '.png'
-        print value
     folder = os.path.dirname(value)
     if not folder == '':
         if not os.path.exists(folder):
