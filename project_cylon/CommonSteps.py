@@ -11,6 +11,8 @@ from Logger import Logger as log
 import re
 import time
 import datetime
+import os
+import shutil
 
 
 """
@@ -237,6 +239,28 @@ def step_impl(context, element_name):
     element = world.find_element(element_name)
     element.send_keys(' ')
 
+@step ("user saves current page to file '{value}'")
+def step_impl(context, value):
+    folder = os.path.dirname(value)
+    if not folder == '':
+        if not os.path.exists(folder):
+             os.makedirs(folder)
+    filename = open(value + '.html','w')
+    page_source = world.get_current_page_source()
+    filename.write(page_source.encode('utf8'))
+    filename.close()
+
+@step ("user saves screenshot to file '{value}'")
+def step_impl(context, value):
+    if not value[:-4].lower() == '.png':
+        value = value + '.png'
+        print value
+    folder = os.path.dirname(value)
+    if not folder == '':
+        if not os.path.exists(folder):
+             os.makedirs(folder)
+    if not world.save_current_page_screenshot(value):
+        log.failed("Could not save a screenshot.")
 
 """
 Then step definitions
@@ -647,3 +671,4 @@ def step_impl(context, element_name, value):
         return True
     else:
         log.failed("Verify class contains?", classes, value)
+

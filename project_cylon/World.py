@@ -85,3 +85,11 @@ class World:
             return alert
         except:
             return None
+
+    @classmethod
+    def get_current_page_source(cls):
+        return cls.current_page.driver.page_source
+
+    @classmethod
+    def save_current_page_screenshot(cls, file_name):
+        return cls.current_page.driver.save_screenshot(file_name)
