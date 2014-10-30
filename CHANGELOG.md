@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.2 - 2014-10-30
+- Added following steps.
+
+  ```feature
+  When user saves current page to file '...'
+  When user saves screenshot to file '...'
+  Then the [...] placeholder text is '...'
+  ```
+
 ## 1.2.1 - 2014-10-28
 - Added following steps.
 

@@ -664,6 +664,17 @@ def step_impl(context, element_name, value):
         log.failed("Verify tooltip text is?", element.title, value)
 
 
+@step ("the [{element_name}] placeholder text is '{value}'")
+def step_impl(context, element_name, value):
+    element = world.find_element(element_name)
+    placeholder = element.get_attribute('placeholder')
+
+    if placeholder == value:
+        return True
+    else:
+        log.failed("Verify placeholder text is?", placeholder, value)
+
+
 @step ("the [{element_name}] class contains '{value}'")
 def step_impl(context, element_name, value):
     element = world.find_element(element_name)
@@ -672,4 +683,7 @@ def step_impl(context, element_name, value):
         return True
     else:
         log.failed("Verify class contains?", classes, value)
+
+
+
 
