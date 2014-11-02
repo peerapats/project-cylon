@@ -127,9 +127,6 @@ def get_options_string(options):
         command = "%s %s" % (command, option)
     return command
 
-# def run_behook(options=""):
-#     return subprocess.call("behook --color --quiet --no-skipped %s" % options, shell=True)
-
 def run_shell(command, options=""):
     return subprocess.call("%s %s" % (command, options), shell=True)
 
@@ -167,42 +164,16 @@ def get_steps_content():
 
 def get_environment_content():
     content = """
-    from project_cylon.Logger import *
-    from project_cylon.PageFactory import *
-    from project_cylon.CommonSteps import *
-
-    from project_cylon.World import World as world
+    from project_cylon.BehaveController import *
 
     def before_all(context):
-        Logger.tracebacklimit(0)
-        if context.config.debug == True:
-            Logger.tracebacklimit(1000)
-
-        if context.config.screenshot == True:
-            Logger.enable_screenshots()
-
-        site = "default"
-        if hasattr(context.config, "site") and context.config.site is not None:
-            site = context.config.site
-
-        domain = PageFactory.get_domain("./config.yaml", site)
-
-        pageobjects = "./pageobjects/*.yaml"
-        if PageFactory.check_yaml_syntax(pageobjects) == True:
-            world.pages = PageFactory.create_pages(pageobjects, domain)
-        else:
-            Logger.failed("Stop running.")
+        BehaveController.before_all(context)
 
     def before_feature(context, feature):
-        browser = "firefox"
-        if hasattr(context.config, "browser") and context.config.browser is not None:
-            browser = context.config.browser
-        world.open_browser(browser)
-
-        Logger.driver = world.driver
+        BehaveController.before_feature(context, feature)
 
     def after_feature(context, feature):
-        world.close_browser()
+        BehaveController.after_feature(context, feature)
     """
     return content
 
@@ -211,29 +182,38 @@ def get_environment_content():
 #     from project_cylon.Logger import *
 #     from project_cylon.PageFactory import *
 #     from project_cylon.CommonSteps import *
-#
+
 #     from project_cylon.World import World as world
-#
+
 #     def before_all(context):
 #         Logger.tracebacklimit(0)
-#
-#         browser = "firefox"
-#         pageobject_files = "./pageobjects/*.yaml"
-#
+#         if context.config.debug == True:
+#             Logger.tracebacklimit(1000)
+
+#         if context.config.screenshot == True:
+#             Logger.enable_screenshots()
+
 #         site = "default"
-#
-#         if hasattr(context.config, 'site') and context.config.site is not None:
+#         if hasattr(context.config, "site") and context.config.site is not None:
 #             site = context.config.site
-#
+
 #         domain = PageFactory.get_domain("./config.yaml", site)
-#
-#         if PageFactory.check_yaml_syntax(pageobject_files) == True:
-#             world.pages = PageFactory.create_pages(pageobject_files, domain)
-#             world.open_browser(browser)
+
+#         pageobjects = "./pageobjects/*.yaml"
+#         if PageFactory.check_yaml_syntax(pageobjects) == True:
+#             world.pages = PageFactory.create_pages(pageobjects, domain)
 #         else:
 #             Logger.failed("Stop running.")
-#
-#     def after_all(context):
+
+#     def before_feature(context, feature):
+#         browser = "firefox"
+#         if hasattr(context.config, "browser") and context.config.browser is not None:
+#             browser = context.config.browser
+#         world.open_browser(browser)
+
+#         Logger.driver = world.driver
+
+#     def after_feature(context, feature):
 #         world.close_browser()
 #     """
 #     return content
