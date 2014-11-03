@@ -532,7 +532,7 @@ def step_impl(context, element_name1, element_name2):
     element1 = world.find_element(element_name1)
     element2 = world.find_element(element_name2)
 
-    if element1.value |less_than_or_qual| element2.value:
+    if element1.value |less_than_or_equal| element2.value:
         return True
     else:
         log.failed(
