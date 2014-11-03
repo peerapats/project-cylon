@@ -11,6 +11,7 @@ from Logger import Logger as log
 class World:
 
     driver = None
+    size = { "width":"max", "height":"max" }
     pages = {}
     current_page = None
 
@@ -23,7 +24,13 @@ class World:
         else:
             log.failed("The '%s' browser is not supported." % browser)
 
-        cls.driver.maximize_window()
+        width = cls.size['width']
+        height = cls.size['height']
+
+        if width == "max" and height == "max":
+            cls.driver.maximize_window()
+        else:
+            cls.driver.set_window_size(width, height)
 
     @classmethod
     def close_browser(cls):

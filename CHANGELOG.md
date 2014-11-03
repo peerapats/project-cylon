@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0 - 2014-11-04
+- Fixed bug on new steps in v1.2.1
+- Added feature to test responsive windows, please follow these steps.
+  1. run `cylon update project` command
+  2. configure your browser size in `responsive.yaml`
+  3. add option `browser-size=<name>` when run `cylon` command
+
+
 ## 1.2.2 - 2014-10-30
 - Added following steps.
 

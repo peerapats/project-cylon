@@ -22,6 +22,10 @@ def new_project(directory):
         content = get_config_content()
         new_file(directory, "config.yaml", textwrap.dedent(content))
 
+        ## create responsive.yaml
+        content = get_responsive_content()
+        new_file(directory, "responsive.yaml", textwrap.dedent(content))
+
         ## create environment.py
         content = get_environment_content()
         new_file("%s/features" % directory, "environment.py", textwrap.dedent(content))
@@ -113,6 +117,11 @@ def update_project():
         content = get_config_content()
         update_file("./", "config.yaml", textwrap.dedent(content))
 
+    ## update responsive.yaml
+    if not os.path.exists("./responsive.yaml"):
+        content = get_responsive_content()
+        update_file("./", "responsive.yaml", textwrap.dedent(content))
+
     ## update environment.py
     content = get_environment_content()
     update_file("./features", "environment.py", textwrap.dedent(content))
@@ -122,9 +131,14 @@ def update_project():
 ###
 def get_options_string(options):
     command = ""
+
     for option in options:
-        option = "--" + option
+        name = option.split('=')[0].strip()
+        value = option.split('=')[1].strip()
+
+        option = '--%s="%s"' % (name, value)
         command = "%s %s" % (command, option)
+
     return command
 
 def run_shell(command, options=""):
@@ -140,10 +154,19 @@ def print_instruction():
 ###
 ### get content functions
 ###
+def get_responsive_content():
+    content = """
+    ---
+    browser_sizes:
+    - name: my device
+      size: 360 x 640
+    ...
+    """
+    return content
+
 def get_config_content():
     content = """
     --- ## run configurations
-
     sites:
       ## at least we must have "default" site, dont't delete it ##
       default: http://www.yoursite.com
@@ -264,9 +287,10 @@ def get_instruction():
     run [options]                     Run with specified options.
 
     Options:
-    tags=<tags>                       Specified tags to run.
-    site=<site>                       Specified site to run (see in config.yaml).
-    debug                             Specified to run in debug mode (show all traceback).
+    tags=<tags>                       Set tags to run.
+    site=<site>                       Set site to run (see config.yaml).
+    browser-size=<name>               Set browser size to run (see responsive.yaml).
+    debug                             Set to run in debug mode (show all traceback).
     """
     return content
 
@@ -297,6 +321,7 @@ def main():
                 args = sys.argv[2:]
 
             options = get_options_string(args)
+            print args
             return run_shell("behook --color --quiet --no-skipped", options)
 
         elif command == "update":
