@@ -133,10 +133,12 @@ def get_options_string(options):
     command = ""
 
     for option in options:
-        name = option.split('=')[0].strip()
-        value = option.split('=')[1].strip()
-
-        option = '--%s="%s"' % (name, value)
+        if "=" in option:
+            name = option.split('=')[0].strip()
+            value = option.split('=')[1].strip()
+            option = '--%s="%s"' % (name, value)
+        else:
+            option = '--%s' % option
         command = "%s %s" % (command, option)
 
     return command

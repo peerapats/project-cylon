@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.1 - 2014-11-07
+- Fixed bug cylon command fail when specify some options.
+
 ## 1.3.0 - 2014-11-04
 - Fixed bug on new steps in v1.2.1
 - Added feature to test responsive windows, please follow these steps.
