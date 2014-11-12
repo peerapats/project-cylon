@@ -576,6 +576,9 @@ def step_impl(context, element_name):
 def step_impl(context, element_name):
     element = world.find_element(element_name)
 
+    if element.wait_for_not_exist():
+        return True
+
     if element.wait_for_attribute('visible', False):
         return True
     else:
