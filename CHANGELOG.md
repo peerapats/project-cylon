@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.2 - 2014-11-13
+- Fixed bug when check element is invisible.
+
 ## 1.3.1 - 2014-11-07
 - Fixed bug cylon command fail when specify some options.
 
@@ -9,7 +12,6 @@
   1. run `cylon update project` command
   2. configure your browser size in `responsive.yaml`
   3. add option `browser-size=<name>` when run `cylon` command
-
 
 ## 1.2.2 - 2014-10-30
 - Added following steps.
