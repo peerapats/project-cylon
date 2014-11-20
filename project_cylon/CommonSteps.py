@@ -559,7 +559,7 @@ def step_impl(context, element_name):
     if element.wait_for_not_exist():
         return True
     else:
-        log.failed("Verify element '%s' exists?" % element.name, "not exists", "exists")
+        log.failed("Verify element '%s' exists?" % element.name, "exists", "not exists")
 
 
 @step ("the [{element_name}] is visible") ##->then
