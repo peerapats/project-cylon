@@ -549,7 +549,7 @@ def step_impl(context, element_name):
     if element.wait_for_exist():
         return True
     else:
-        log.failed("Verify element '%s' exists?" % element_name, "not exists", "exists")
+        log.failed("Verify element '%s' exists?" % element.name, "not exists", "exists")
 
 
 @step ("the [{element_name}] does not exist") ##->then
@@ -559,7 +559,7 @@ def step_impl(context, element_name):
     if element.wait_for_not_exist():
         return True
     else:
-        log.failed("Verify element '%s' exists?" % element_name, "exists", "not exists")
+        log.failed("Verify element '%s' exists?" % element.name, "exists", "not exists")
 
 
 @step ("the [{element_name}] is visible") ##->then
@@ -569,7 +569,7 @@ def step_impl(context, element_name):
     if element.wait_for_attribute('visible', True):
         return True
     else:
-        log.failed("Verify element '%s' visible?" % element_name, "not visible", "visible")
+        log.failed("Verify element '%s' visible?" % element.name, "not visible", "visible")
 
 
 @step ("the [{element_name}] is invisible") ##->then
@@ -582,7 +582,7 @@ def step_impl(context, element_name):
     if element.wait_for_attribute('visible', False):
         return True
     else:
-        log.failed("Verify element '%s' not visible?" % element_name, "visible", "not visible")
+        log.failed("Verify element '%s' not visible?" % element.name, "visible", "not visible")
 
 
 @step ("the [{element_name}] is enabled") ##->then
@@ -592,7 +592,7 @@ def step_impl(context, element_name):
     if element.wait_for_attribute('enabled', True):
         return True
     else:
-        log.failed("Verify element '%s' enabled?" % element_name, "disabled", "enabled")
+        log.failed("Verify element '%s' enabled?" % element.name, "disabled", "enabled")
 
 
 @step ("the [{element_name}] is disabled") ##->then
@@ -602,7 +602,7 @@ def step_impl(context, element_name):
     if element.wait_for_attribute('enabled', False):
         return True
     else:
-        log.failed("Verify element '%s' disabled?" % element_name, "enabled", "disabled")
+        log.failed("Verify element '%s' disabled?" % element.name, "enabled", "disabled")
 
 
 @step ("the [{element_name}] is selected") ##->then
