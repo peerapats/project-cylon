@@ -55,8 +55,8 @@ class PageFactory:
         if "url" in doc['page']:
             page.url = doc['page']['url']
 
-        if "route" in doc['page']:
-            page.route = doc['page']['route']
+        # if "route" in doc['page']:
+        #     page.route = doc['page']['route']
 
         if "url_paths" in doc['page']:
             for item in doc['page']['url_paths']:
@@ -95,14 +95,14 @@ class PageFactory:
                         'element': element.name
                     })
 
-        if "site_url" in doc:
-            page.site_config = doc['site_url']
-            page.site_config['default'] = page.url
+        # if "site_url" in doc:
+        #     page.site_config = doc['site_url']
+        #     page.site_config['default'] = page.url
 
         return page
 
     @classmethod
-    def create_pages(cls, path, domain):
+    def create_pages(cls, path):
         pages = {}
 
         for filename in glob.glob(path):
@@ -112,9 +112,6 @@ class PageFactory:
             for doc in docs:
                 page = cls.create_page(doc)
 
-                if page.url == "!!undefined":
-                    page.url = cls.build_url(domain, page.route)
-
                 if not page.name in pages:
                     pages[page.name] = page
                 else:
@@ -122,20 +119,20 @@ class PageFactory:
 
         return pages
 
-    @classmethod
-    def get_domain(cls, filename, site):
-        content = open(filename, "r")
-        doc = yaml.load(content)
-
-        if site in doc['sites']:
-            return doc['sites'][site]
-        else:
-            log.failed("Not found site '%s' in config.yaml" % site)
-
-    @classmethod
-    def build_url(cls, domain, path):
-        if domain == "": return domain
-        if domain[-1] == '/': domain = domain[:-1]
-        if path[0] == '/': path = path[1:]
-
-        return "%s/%s" % (domain, path)
+    # @classmethod
+    # def get_domain(cls, filename, site):
+    #     content = open(filename, "r")
+    #     doc = yaml.load(content)
+    #
+    #     if site in doc['sites']:
+    #         return doc['sites'][site]
+    #     else:
+    #         log.failed("Not found site '%s' in config.yaml" % site)
+    #
+    # @classmethod
+    # def build_url(cls, domain, path):
+    #     if domain == "": return domain
+    #     if domain[-1] == '/': domain = domain[:-1]
+    #     if path[0] == '/': path = path[1:]
+    #
+    #     return "%s/%s" % (domain, path)

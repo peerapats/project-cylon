@@ -20,10 +20,8 @@ class Page:
     url = ""
     url_paths = {}
 
+    domains = {}
     elements = {}
-
-    #site = ""
-    #site_config = {}
 
     def __init__(self, name="!!undefined", url="!!undefined"):
         self.name = name
@@ -32,25 +30,11 @@ class Page:
         self.url = url
         self.url_paths = {}
 
+        self.domains = {}
         self.elements = {}
-
-        #self.site = "default"
-        #self.site_config = {}
-
-
-    # def switch_site(self, site):
-    #     if self.site == "default":
-    #         return True
-    #
-    #     if self.site in self.site_config:
-    #         self.url = self.site_config[self.site]
-    #     else:
-    #         log.warning("Not found site config '%s' in '%s'" % (self.site, self.name))
 
 
     def find_element(self, name):
-        #names = name.split("|")
-        #for name in names:
         if name in self.elements:
             element = self.elements[name]
             element.driver = self.driver
@@ -61,22 +45,24 @@ class Page:
 
 
     def get_url(self, pathname=""):
-        url = ""
+        prefix = self.url
+        middle = ""
+        suffix = ""
 
-        if pathname == "":
-            url = self.url
-        elif pathname in self.url_paths:
-            domain = self.url
-            path = self.url_paths[pathname]
+        # get domain
+        if '::' in self.url:
+            prefix = self.url.split('::')[0]
+            middle = self.url.split('::')[1]
+            prefix = self.domains[prefix]
 
-            if domain[-1] == '/': domain = domain[:-1]
-            if path[0] == '/': path = path[1:]
+        # get path
+        if pathname != "":
+            if pathname in self.url_paths:
+                suffix = self.url_paths[pathname]
+            else:
+                log.warning("Not found url path '%s' in '%s'" % (pathname, self.name))
 
-            url = "%s/%s" % (domain, path)
-        else:
-            log.warning("Not found url path '%s' in '%s'" % (pathname, self.name))
-
-        return url
+        return "%s%s%s" % (prefix, middle, suffix)
 
 
     def go(self, pathname=""):

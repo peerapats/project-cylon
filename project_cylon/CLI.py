@@ -170,11 +170,17 @@ def get_config_content():
     content = """
     --- ## run configurations
     sites:
-      ## at least we must have "default" site, dont't delete it ##
-      default: http://www.yoursite.com
+      ## default site to use when omit option site=<site name> ##
+      default: production
 
-      ## add your sites domain here ##
-      # develop: http://dev.yoursite.com
+      ## config your site domain ##
+      production:
+        web: http://www.yourdomain.com
+        mobile: http://m.yourdomain.com
+
+      develop:
+        web: http://dev.yourdomain.com
+        mobile: http://dev.m.yourdomain.com
     ...
     """
     return content

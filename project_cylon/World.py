@@ -14,6 +14,7 @@ class World:
     size = { "width":"max", "height":"max" }
     pages = {}
     current_page = None
+    domains = {}
 
     @classmethod
     def open_browser(cls, browser="firefox"):
@@ -44,6 +45,7 @@ class World:
         if name in cls.pages:
             page = cls.pages[name]
             page.driver = cls.driver
+            page.domains = cls.domains
 
             cls.current_page = page
             return page

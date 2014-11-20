@@ -2,10 +2,12 @@
 from Logger import *
 from Responsive import *
 
-from CommonSteps import *
+from SiteConfig import *
 from PageFactory import *
+from CommonSteps import *
 
 from World import World as world
+
 
 class BehaveController:
 
@@ -23,17 +25,20 @@ class BehaveController:
         site = "default"
         if hasattr(context.config, "site") and context.config.site is not None:
             site = context.config.site
-        domain = PageFactory.get_domain("./config.yaml", site)
+
+        world.domains = SiteConfig.get_site_config("./config.yaml", site)
 
         pageobjects = "./pageobjects/*.yaml"
         if PageFactory.check_yaml_syntax(pageobjects) == True:
-            world.pages = PageFactory.create_pages(pageobjects, domain)
+            world.pages = PageFactory.create_pages(pageobjects)
         else:
             Logger.failed("Stop running.")
+
 
     @classmethod
     def after_all(cls, context):
         pass
+
 
     @classmethod
     def before_feature(cls, context, feature):
@@ -48,6 +53,7 @@ class BehaveController:
 
         world.open_browser(browser)
         Logger.driver = world.driver
+
 
     @classmethod
     def after_feature(cls, context, feature):

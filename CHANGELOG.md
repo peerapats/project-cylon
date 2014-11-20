@@ -1,5 +1,39 @@
 # Changelog
 
+## 2.0.0 - 2014-11-20
+- Drop `title:` config in page object file.
+- Drop `route:` config in page object file, use new feature instead.
+- Updated site config to support multiple sites.
+
+  New site configuration example.
+
+  ```yaml
+  ## file config.yaml
+  sites:
+    default: develop
+    develop:
+      web: http://www.dev.yourdomain.com
+      mobile: http://m.dev.yourdomain.com
+    production:
+      web: http://www.yourdomain.com
+      mobile: http://m.yourdomain.com
+  ```
+
+  Usage in page object file with `<config name>::/path/...`.
+
+  ```yaml
+  ## file xxx.yaml
+  page:
+    name: WebPageName
+    url: mobile::/product/12345 ## browse to http://m.dev.yourdomain.com/product/12345
+  ```
+
+  Switch site to run test with command option `site=<site name>`.
+
+  ```
+  $ cylon run all site=production
+  ```
+
 ## 1.3.2 - 2014-11-13
 - Fixed bug when check element is invisible.
 
