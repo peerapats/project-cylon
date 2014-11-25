@@ -1,6 +1,13 @@
 # Changelog
 
-## 2.1.0 - 2014-11-21
+## 2.1.1 - 2014-11-25
+- Added following step.
+
+  ```feature
+  Then the [...] style contains '...'
+  ```
+
+## 2.1.0 - 2014-11-24
 - Added feature to config variable in site config.
 - Re-arrange `config.yaml` fields as following example.
 

@@ -698,8 +698,21 @@ def step_impl(context, element_name, value):
     value = world.replace_variables(value)
     element = world.find_element(element_name)
     classes = element.get_attribute('class')
-    
+
     if value in classes:
         return True
     else:
         log.failed("Verify class contains?", classes, value)
+
+
+@step ("the [{element_name}] style contains '{value}'")
+def step_impl(context, element_name, value):
+    value = world.replace_variables(value)
+    element = world.find_element(element_name)
+    styles = element.get_attribute('style')
+    print styles
+
+    if value in styles:
+        return True
+    else:
+        log.failed("Verify style contains?", styles, value)
