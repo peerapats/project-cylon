@@ -85,6 +85,7 @@ When step definitions
 @step ("user enters '{value}' to the [{element_name}]") ##->when
 @step ("user enters '{value}' to [{element_name}]")
 def step_impl(context, element_name, value):
+    value = world.replace_variables(value)
     element = world.find_element(element_name)
     if not element.send_keys(value):
         log.failed("Fail to enters value '%s' to '%s'" % (value, element.name))
@@ -152,6 +153,7 @@ def step_impl(context, element_name):
 @step ("user selects '{value}' on the [{element_name}]") ##->when
 @step ("user selects '{value}' in [{element_name}]")
 def step_impl(context, value, element_name):
+    value = world.replace_variables(value)
     element = world.find_element(element_name)
     if not element.select(value):
         log.failed("Fail to selects value '%s' on '%s'" % (value, element.name))
@@ -185,6 +187,7 @@ def step_impl(context, file_path, element_name):
 
 @step ("user enters '{value}' to the popup")
 def step_impl(context, value):
+    value = world.replace_variables(value)
     alert = world.get_alert()
     alert.send_keys(value)
 
@@ -241,6 +244,7 @@ def step_impl(context, element_name):
 
 @step ("user saves current page to file '{value}'")
 def step_impl(context, value):
+    value = world.replace_variables(value)
     if not value[:-5].lower() == '.html':
         value = value + '.html'
     folder = os.path.dirname(value)
@@ -254,6 +258,7 @@ def step_impl(context, value):
 
 @step ("user saves screenshot to file '{value}'")
 def step_impl(context, value):
+    value = world.replace_variables(value)
     if not value[:-4].lower() == '.png':
         value = value + '.png'
     folder = os.path.dirname(value)
@@ -310,6 +315,7 @@ def step_impl(context, url):
 @step ("the [{element_name}] value is '{value}'") ##->then
 @step ("the [{element_name}] shows '{value}'")
 def step_impl(context, element_name, value):
+    value = world.replace_variables(value)
     element = world.find_element(element_name)
 
     if element.value == value:
@@ -330,6 +336,7 @@ def step_impl(context, element_name):
 
 @step ("the [{element_name}] value is not '{value}'") ##->then
 def step_impl(context, element_name, value):
+    value = world.replace_variables(value)
     element = world.find_element(element_name)
 
     if element.value != value:
@@ -341,6 +348,7 @@ def step_impl(context, element_name, value):
 @step ("the [{element_name}] value contains '{value}'") ##->then
 @step ("the [{element_name}] contains '{value}'")
 def step_impl(context, element_name, value):
+    value = world.replace_variables(value)
     element = world.find_element(element_name)
 
     if value in element.value:
@@ -371,6 +379,7 @@ def step_impl(context, element_name, pattern):
 @step ("the [{element_name}] value is more than '{value}'") ##->then
 @step ("the [{element_name}] more than '{value}'")
 def step_impl(context, element_name, value):
+    value = world.replace_variables(value)
     element = world.find_element(element_name)
 
     if element.value |more_than| value:
@@ -386,6 +395,7 @@ def step_impl(context, element_name, value):
 @step ("the [{element_name}] value is more than or equal '{value}'") ##->then
 @step ("the [{element_name}] more than or equal '{value}'")
 def step_impl(context, element_name, value):
+    value = world.replace_variables(value)
     element = world.find_element(element_name)
 
     if element.value |more_than_or_equal| value:
@@ -401,6 +411,7 @@ def step_impl(context, element_name, value):
 @step ("the [{element_name}] value is less than '{value}'") ##->then
 @step ("the [{element_name}] less than '{value}'")
 def step_impl(context, element_name, value):
+    value = world.replace_variables(value)
     element = world.find_element(element_name)
 
     if element.value |less_than| value:
@@ -416,6 +427,7 @@ def step_impl(context, element_name, value):
 @step ("the [{element_name}] value is less than or equal '{value}'") ##->then
 @step ("the [{element_name}] less than or equal '{value}'")
 def step_impl(context, element_name, value):
+    value = world.replace_variables(value)
     element = world.find_element(element_name)
 
     if element.value |less_than_or_equal| value:
@@ -630,6 +642,7 @@ def step_impl(context, element_name):
 @step ("the popup message shows '{value}'") ##->then
 @step ("the popup shows '{value}'")
 def step_impl(context, value):
+    value = world.replace_variables(value)
     alert = world.get_alert_when_exist()
 
     if alert is None:
@@ -659,6 +672,7 @@ def step_impl(context, amount, element_name):
 @step ("the [{element_name}] tooltip text is '{value}'") ##->then
 @step ("the [{element_name}] tooltip is '{value}'")
 def step_impl(context, element_name, value):
+    value = world.replace_variables(value)
     element = world.find_element(element_name)
 
     if element.get_attribute('title') == value:
@@ -669,6 +683,7 @@ def step_impl(context, element_name, value):
 
 @step ("the [{element_name}] placeholder text is '{value}'")
 def step_impl(context, element_name, value):
+    value = world.replace_variables(value)
     element = world.find_element(element_name)
     placeholder = element.get_attribute('placeholder')
 
@@ -680,13 +695,11 @@ def step_impl(context, element_name, value):
 
 @step ("the [{element_name}] class contains '{value}'")
 def step_impl(context, element_name, value):
+    value = world.replace_variables(value)
     element = world.find_element(element_name)
     classes = element.get_attribute('class')
+    
     if value in classes:
         return True
     else:
         log.failed("Verify class contains?", classes, value)
-
-
-
-

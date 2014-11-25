@@ -168,19 +168,29 @@ def get_responsive_content():
 
 def get_config_content():
     content = """
-    --- ## run configurations
-    sites:
-      ## default site to use when omit option site=<site name> ##
-      default: production
+    --- ## site configurations
+    global_config:
+      variables:
+        var1: test
+        var2: 1234
 
-      ## config your site domain ##
-      production:
-        web: http://www.yourdomain.com
-        mobile: http://m.yourdomain.com
+    site_config:
+      default: develop
 
       develop:
-        web: http://dev.yourdomain.com
-        mobile: http://dev.m.yourdomain.com
+        urls:
+          web: http://dev.yourdomain.com
+          mobile: http://m-dev.yourdomain.com
+        variables:
+          var1: dev
+
+      production:
+        urls:
+          web: http://www.yourdomain.com
+          mobile: http://m.yourdomain.com
+        variables:
+          var1: prod
+          var2: 5678
     ...
     """
     return content

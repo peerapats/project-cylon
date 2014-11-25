@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='project-cylon',
-      version='2.0.0',
+      version='2.1.0',
       description='Generic Web Acceptance Testing Framework',
       long_description=
       """

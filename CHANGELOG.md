@@ -1,5 +1,36 @@
 # Changelog
 
+## 2.1.0 - 2014-11-21
+- Added feature to config variable in site config.
+- Re-arrange `config.yaml` fields as following example.
+
+  ```yaml
+  ## file config.yaml
+  site_config:
+    default: develop
+    develop:
+      urls:
+        web: http://dev.yourdomain.com
+        mobile: http://m-dev.yourdomain.com
+      variables:
+        var1: test
+        var2: 1234
+
+    production:
+      urls:
+        web: http://www.yourdomain.com
+        mobile: http://m.yourdomain.com
+      variables:
+        var1: test
+        var2: 5678
+  ```
+
+  To use variables in feature steps, use syntax `${var_name}`, for example:
+
+  ```feature
+  When user enters 'hello ${var1} and ${var2}' to the [search_box]
+  ```
+
 ## 2.0.0 - 2014-11-20
 - Drop `title:` config in page object file.
 - Drop `route:` config in page object file, use new feature instead.

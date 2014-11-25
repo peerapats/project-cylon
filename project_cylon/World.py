@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import re
+
 from selenium import webdriver
 
 from selenium.webdriver.support.ui import WebDriverWait
@@ -14,7 +16,9 @@ class World:
     size = { "width":"max", "height":"max" }
     pages = {}
     current_page = None
-    domains = {}
+
+    urls = {}
+    variables = {}
 
     @classmethod
     def open_browser(cls, browser="firefox"):
@@ -45,7 +49,7 @@ class World:
         if name in cls.pages:
             page = cls.pages[name]
             page.driver = cls.driver
-            page.domains = cls.domains
+            page.urls = cls.urls
 
             cls.current_page = page
             return page
@@ -68,6 +72,18 @@ class World:
         cls.current_page = None
         return None
 
+    @classmethod
+    def replace_variables(cls, text):
+        pattern = '\${([^}]*)}'
+        names = re.findall(pattern, text)
+
+        for name in names:
+            if name in cls.variables:
+                value = str(cls.variables[name])
+                variable = '${%s}' % name
+                text = text.replace(variable, value)
+
+        return text
 
     @classmethod
     def find_element(cls, identifier):

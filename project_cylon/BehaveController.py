@@ -20,14 +20,19 @@ class BehaveController:
         if context.config.screenshot == True:
             Logger.enable_screenshots()
 
+        ## load responsive config
         Responsive.load_browser_sizes("./responsive.yaml")
 
+        ## load site config
         site = "default"
         if hasattr(context.config, "site") and context.config.site is not None:
             site = context.config.site
 
-        world.domains = SiteConfig.get_site_config("./config.yaml", site)
+        SiteConfig.load_config("./config.yaml", site)
+        world.urls = SiteConfig.get_urls()
+        world.variables = SiteConfig.get_variables()
 
+        ## load page objects
         pageobjects = "./pageobjects/*.yaml"
         if PageFactory.check_yaml_syntax(pageobjects) == True:
             world.pages = PageFactory.create_pages(pageobjects)
@@ -47,6 +52,7 @@ class BehaveController:
             size = Responsive.get_browser_size(name)
             world.size = size
 
+        ## setup browser
         browser = "firefox"
         if hasattr(context.config, "browser") and context.config.browser is not None:
             browser = context.config.browser

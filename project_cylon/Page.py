@@ -20,7 +20,7 @@ class Page:
     url = ""
     url_paths = {}
 
-    domains = {}
+    urls = {}
     elements = {}
 
     def __init__(self, name="!!undefined", url="!!undefined"):
@@ -30,7 +30,7 @@ class Page:
         self.url = url
         self.url_paths = {}
 
-        self.domains = {}
+        urls = {}
         self.elements = {}
 
 
@@ -53,7 +53,7 @@ class Page:
         if '::' in self.url:
             prefix = self.url.split('::')[0]
             middle = self.url.split('::')[1]
-            prefix = self.domains[prefix]
+            prefix = self.urls[prefix]
 
         # get path
         if pathname != "":
