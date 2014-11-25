@@ -79,8 +79,8 @@ class World:
 
         for name in names:
             if name in cls.variables:
-                value = str(cls.variables[name])
-                variable = '${%s}' % name
+                value = "%s" % cls.variables[name]
+                variable = "${%s}" % name
                 text = text.replace(variable, value)
 
         return text

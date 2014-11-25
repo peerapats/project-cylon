@@ -169,11 +169,6 @@ def get_responsive_content():
 def get_config_content():
     content = """
     --- ## site configurations
-    global_config:
-      variables:
-        var1: test
-        var2: 1234
-
     site_config:
       default: develop
 
