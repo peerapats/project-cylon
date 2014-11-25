@@ -1,6 +1,7 @@
 # Changelog
 
-## 2.1.1 - 2014-11-25
+## 2.1.2 - 2014-11-25
+- Fixed bug that not replace variables in when check url.
 - Added following step.
 
   ```feature
