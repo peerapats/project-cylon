@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.3 - 2014-12-02
+- Added Web GUI tests runner (experimental).
+  1. run command `cylon server` at project directory
+  2. open browser and goto `localhost:8080`
+
 ## 2.1.2 - 2014-11-25
 - Fixed bug that not replace variables in when check url.
 - Added following step.
