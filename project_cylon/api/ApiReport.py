@@ -4,6 +4,11 @@ import glob
 import json
 import cherrypy
 
+from xml.dom import minidom
+
+from ..TestSuite import *
+
+
 class ApiReport(object):
 
     def __init__(self):
@@ -16,10 +21,16 @@ class ApiReport(object):
             'path': '/project/reports/html',
             'files': []
         }
-        html_files = os.path.join(self.project, 'reports', 'html', '*.html')
 
-        for file in glob.glob(html_files):
+        xml_files = os.path.join(self.project, 'reports', '*.xml')
+
+        for file in glob.glob(xml_files):
+            xmldoc = minidom.parse(file)
+            testsuite = TestSuite(xmldoc)
+
             filepath, filename = os.path.split(file)
-            info['files'].append(filename)
+            filename = filename.replace('.xml', '.html')
+
+            info['files'].append({ 'filename': filename, 'status': testsuite.status })
 
         return json.dumps(info)

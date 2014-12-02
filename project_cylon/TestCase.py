@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-#import os
-#import glob
-
-#from xml.dom import minidom
-
+from xml.dom import minidom
 
 class TestCase:
     testcase = None

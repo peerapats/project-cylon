@@ -33,11 +33,6 @@ class Reporter:
 
         feature = testsuite.attributes['name'].value.replace(filename + '.', '')
 
-        # print "testsuite: %s" % testsuite.attributes['name'].value
-        # print "failed: %s" % testsuite.attributes['failures'].value
-        # print "skipped: %s" % testsuite.attributes['skipped'].value
-        # print "total: %s" % testsuite.attributes['tests'].value
-
         testcases = xmldoc.getElementsByTagName('testcase')
         scenarios = []
 

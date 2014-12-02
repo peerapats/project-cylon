@@ -62,16 +62,24 @@ function displayReports() {
         if (response.files.length > 0) {
             $('#pnl_reports').text('');
 
+            var path = response.path;
             for (i = 0; i < response.files.length; i++) {
-                filepath = response.path;
-                filename = response.files[i];
+                var filename = response.files[i].filename;
+                var status = response.files[i].status;
+
+                var color = {
+                    "passed": "text-success",
+                    "failed": "text-danger",
+                    "skipped": "text-info"
+                }[status];
+
                 link = ' \
                 <div class="row"> \
                   <div class="col-lg-8"> \
-                    <a href="' + filepath + '/' + filename + '" class="btn btn-link" style="padding: 3px;">' + filename + '</a> \
+                    <a target="_blank" href="' + path + '/' + filename + '" class="btn btn-link" style="padding: 3px;">' + filename + '</a> \
                   </div> \
                   <div class="col-lg-4"> \
-                    <div class="text-success pull-right" style="padding: 3px"></div> \
+                    <div class="' + color + ' pull-right" style="padding: 3px">' + status + '</div> \
                   </div> \
                 </div>';
 
