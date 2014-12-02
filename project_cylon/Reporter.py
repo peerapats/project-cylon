@@ -1,15 +1,26 @@
 # -*- coding: utf-8 -*-
 import os
 import glob
+import shutil
 
 from xml.dom import minidom
 from TestCase import *
 
 class Reporter:
-    def generate_reports(self, srcfiles, destination):
+
+    def __init__(self, srcpath):
+        self.srcpath = srcpath
+
+    def clear_reports(self):
+        if os.path.exists(self.srcpath):
+            shutil.rmtree(self.srcpath)
+
+    def generate_reports(self):
+        destination = os.path.join(self.srcpath, 'html')
         if not os.path.exists(destination):
             os.makedirs(destination)
 
+        srcfiles = os.path.join(self.srcpath, '*.xml')
         for file in glob.glob(srcfiles):
             self.generate_report(file, destination)
 
@@ -38,7 +49,7 @@ class Reporter:
         html = """
         <html>
         <head>
-            <title>Test report</title>
+            <title>%s</title>
             <link rel="stylesheet" href="http://localhost:8080/css/bootstrap.css"/>
         </head>
         <body>
@@ -55,7 +66,7 @@ class Reporter:
             </div>
         </body>
         </html>
-        """ % (feature, '\n'.join(scenarios))
+        """ % (filename, feature, '\n'.join(scenarios))
 
         filepath, filename = os.path.split(srcfile)
         filename = filename.replace('.xml', '.html')

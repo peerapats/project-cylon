@@ -1,18 +1,16 @@
 $( document ).ready( function() {
     /// get project info ///
     request = $.ajax({
-        url: "/info",
+        url: "/api/project/info",
         type: "get",
         dataType: 'json'
     })
-    .done( function(response, textStatus, jqXHR) {
+    .done( function(response) {
         $('#lbl_project').text(response.project);
     })
-    .fail(function(jqXHR, textStatus, errorThrown){
+    .fail( function(jqXHR, textStatus, errorThrown){
         console.error("The following error occurred: " + textStatus, errorThrown);
     });
-
-    displayReports();
 });
 
 $('#btn_run').on('click', function() {
@@ -25,7 +23,7 @@ $('#btn_run').on('click', function() {
 
     /// start run ///
     request = $.ajax({
-        url: "/run",
+        url: "/api/run/start",
         type: "get",
         data: {
             "options": options
@@ -56,7 +54,7 @@ $('#btn_run').on('click', function() {
 
 function displayReports() {
     request = $.ajax({
-        url: "/reports",
+        url: "/api/report/info",
         type: "get",
         dataType: 'json'
     })

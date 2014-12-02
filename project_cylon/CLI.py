@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import os
 import sys
 import textwrap
@@ -8,6 +7,10 @@ import subprocess
 import cherrypy
 
 from TestServer import *
+
+from api.ApiRun import *
+from api.ApiReport import *
+from api.ApiProject import *
 
 ###
 ### command: cylon new ...
@@ -373,6 +376,13 @@ def main():
 
         elif command == "server":
             config = get_server_config()
-            return cherrypy.quickstart(TestServer(), '/', config)
+            cherrypy.tree.mount(TestServer(), '/', config)
+
+            cherrypy.tree.mount(ApiRun(), '/api/run')
+            cherrypy.tree.mount(ApiReport(), '/api/report')
+            cherrypy.tree.mount(ApiProject(), '/api/project')
+
+            cherrypy.engine.start()
+            cherrypy.engine.block()
 
     except: print_instruction()
