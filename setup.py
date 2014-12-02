@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='project-cylon',
-      version='2.1.3',
+      version='2.1.4',
       description='Generic Web Acceptance Testing Framework',
       long_description=
       """
@@ -20,7 +20,11 @@ setup(name='project-cylon',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Software Development :: Testing'
       ],
-      packages=['project_cylon'],
+      packages=[
+        'project_cylon', 'project_cylon/api'
+      ],
+      package_dir={'project_cylon': 'project_cylon'},
+      package_data={'project_cylon': [ 'public/*.*', 'public/css/*.*', 'public/js/*.*' ]},
       entry_points={
           'console_scripts': [
           'cylon=project_cylon.CLI:main', 'behook=project_cylon.behook:main'
