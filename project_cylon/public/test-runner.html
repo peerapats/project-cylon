@@ -1,0 +1,40 @@
+<html>
+
+<head>
+  <title>project-cylon</title>
+  <link rel="stylesheet" href="/css/bootstrap.css"/>
+</head>
+
+<body>
+  <div class="navbar navbar-inverse navbar-static-top">
+    <div class="navbar-header">
+      <a class="navbar-brand" id="lbl_project" href="#">undefined</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label class="control-label" for="txt_options">Run Options:</label>
+          <input id="txt_options" class="form-control" type="text" placeholder="Specify run options..."/>
+        </div>
+        <a id="btn_run" href="#" class="btn btn-primary">Run Cylon</a>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="panel panel-default">
+          <div class="panel-heading"><strong>Test Reports:</strong></div>
+          <div class="panel-body" id="pnl_reports">
+            Not found report files.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/jquery-2.1.1.min.js"></script>
+  <script src="/js/test-runner.js"></script>
+</body>
+
+</html>

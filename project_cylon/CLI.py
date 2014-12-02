@@ -5,6 +5,9 @@ import sys
 import textwrap
 
 import subprocess
+import cherrypy
+
+from TestServer import *
 
 ###
 ### command: cylon new ...
@@ -307,6 +310,28 @@ def get_instruction():
     """
     return content
 
+def get_server_config():
+    project_dir = os.getcwd()
+
+    filepath, filename = os.path.split(__file__)
+    public_dir = os.path.join(filepath, "public")
+
+    config = {
+        '/css': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': os.path.join(public_dir, "css")
+        },
+        '/js': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': os.path.join(public_dir, "js")
+        },
+        '/project': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': os.path.join(project_dir)
+        }
+    }
+    return config
+
 ###
 ### start script
 ###
@@ -346,5 +371,8 @@ def main():
         elif command == "version":
             return run_shell("pip freeze | grep project-cylon")
 
+        elif command == "server":
+            config = get_server_config()
+            return cherrypy.quickstart(TestServer(), '/', config)
 
     except: print_instruction()

@@ -28,6 +28,7 @@ setup(name='project-cylon',
       install_requires=[
           'pyyaml',
           'behave',
-          'selenium'
+          'selenium',
+          'cherrypy'
       ],
       zip_safe=False)
