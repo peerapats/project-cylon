@@ -14,27 +14,76 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-lg-6">
+      <div class="col-lg-4">
         <div class="form-group">
-          <label class="control-label" for="txt_options">Run Options:</label>
+          <label class="control-label">Run Options:</label>
           <input id="txt_options" class="form-control" type="text" placeholder="Specify run options..."/>
         </div>
-        <a id="btn_run" href="#" class="btn btn-primary">Run Cylon</a>
+        <div class="form-group">
+          <label class="control-label">Tags:</label>
+          <input id="txt_tags" class="form-control" type="text" placeholder="Specify tags..."/>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Site:</label>
+          <select class="form-control" id="select">
+            <option>develop</option>
+            <option>staging</option>
+            <option>production</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <a id="btn_run" href="#" class="btn btn-primary">Run Cylon</a>
+          <a id="btn_update" href="#" class="btn btn-warning">Update Project</a>
+        </div>
       </div>
 
-      <div class="col-lg-6">
+      <div class="col-lg-8" id="div-component-2">
+        <div class="form-group">
+          <pre id="hidden" style="overflow-y: auto; height:450px;"></pre>
+        </div>
+      </div>
+
+      <!--<div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading"><strong>Test Summary:</strong></div>
+            <div class="panel-body">
+              <h5>Total: 100</h5>
+              <div class="progress">
+                <div class="progress-bar progress-bar-success" style="width: 35%"></div>
+                <div class="progress-bar progress-bar-danger" style="width: 20%"></div>
+                <div class="progress-bar progress-bar-primary" style="width: 10%"></div>
+              </div>
+              <span class="label label-success pull-right" style="margin-left: 5px;">Passed: 35</span>
+              <span class="label label-danger pull-right" style="margin-left: 5px;">Failed: 20</span>
+              <span class="label label-primary pull-right" style="margin-left: 5px;">Skipped: 10</span>
+            </div>
+        </div>
+      </div>-->
+
+      <div class="col-lg-12" id="div-component-3">
+      </div>
+
+      <!-- <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-heading"><strong>Test Reports:</strong></div>
           <div class="panel-body" id="pnl_reports">
             Not found report files.
           </div>
         </div>
-      </div>
+      </div> -->
+    </div>
+  </div>
+
+  <div class="footer" style="margin-top: 10px;">
+    <div class="container">
+      <p class="text-muted pull-right">project-cylon ver. 2.1.4</p>
     </div>
   </div>
 
   <script src="/js/jquery-2.1.1.min.js"></script>
+  <script src="/js/test-report.js"></script>
   <script src="/js/test-runner.js"></script>
+
 </body>
 
 </html>

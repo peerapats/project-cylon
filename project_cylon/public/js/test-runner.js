@@ -1,104 +1,155 @@
 $( document ).ready( function() {
     /// get project info ///
-    request = $.ajax({
-        url: "/api/project/info",
-        type: "get",
-        dataType: 'json'
-    })
-    .done( function(response) {
-        $('#lbl_project').text(response.project);
-    })
-    .fail( function(jqXHR, textStatus, errorThrown){
-        console.error("The following error occurred: " + textStatus, errorThrown);
-    });
+    // request = $.ajax({
+    //     url: "/api/project/info",
+    //     type: "get",
+    //     dataType: 'json'
+    // })
+    // .done( function(response) {
+    //     $('#lbl_project').text(response.project);
+    // })
+    // .fail( function(jqXHR, textStatus, errorThrown){
+    //     console.error("The following error occurred: " + textStatus, errorThrown);
+    // });
+
+    // console.log('show test report');
+    // var report = new TestReport();
+    // report.getInfo();
+    // report.renderHead();
+    // report.renderBody();
+    //
+    // var output = new ConsoleOutput();
+    // output.getInfo();
+    // output.render();
+
+    //var runPanel = new RunPanel();
+    //content = runPanel.renderPanel();
+    //$('#div-component-2').html(content);
+
+    var report = new TestReport();
+    report.getInfo();
+    content = report.renderPanel();
+    $('#div-component-3').html(content);
+
+    //$('#spn-report-badge').text('123');
+
+    //$("#div-component-2").text('');
+    //$("#div-component-2").load("/project/reports/html/TESTS-Sf02_AddProduct.html .container .panel-default");
+
+    console.log($('#lnk-abc').attr('data-path'));
+});
+
+$("#lnk-load-config").on("click", function() {
+    //console.log('load config');
+    $('#file-config').click();
+    //$('#frm-load-config').submit();
+});
+
+$("#file-config").on("change", function() {
+    $('#frm-load-config').submit();
 });
 
 $('#btn_run').on('click', function() {
-    $('#pnl_reports').text('Waiting...');
-
     $('#btn_run').attr('disabled', 'disabled');
     $('#btn_run').text('Running...');
 
     options = $('#txt_options').val();
 
-    /// start run ///
-    request = $.ajax({
-        url: "/api/run/start",
-        type: "get",
+    var report = new TestReport();
+    report.clear();
+
+    timer = setInterval( function() {
+        cout = new ConsoleOutput();
+        cout.getInfo()
+        cout.render();
+    }, 1000);
+
+    $.ajax({
+        type: 'get',
+        url: '/api/run/start',
         data: {
             "options": options
-        }
-    })
-    .done( function(response, textStatus, jqXHR) {
-        $('#btn_run').text('Run');
-        $('#btn_run').removeAttr('disabled');
+        },
+        success: function (data) {
+            console.log('run tests success');
 
-        //generateReports();
-        displayReports();
-    })
-    .fail(function (jqXHR, textStatus, errorThrown){
-        console.error("The following error occurred: " + textStatus, errorThrown);
+            $('#btn_run').text('Run Cylon');
+            $('#btn_run').removeAttr('disabled');
+
+            report.getInfo();
+            report.renderHead();
+            report.renderBody();
+
+            clearInterval(timer);
+        }
     });
 });
 
-
-// function generateReports() {
+// $('#btn_run').on('click', function() {
+//     $('#pnl_reports').text('Waiting...');
+//
+//     $('#btn_run').attr('disabled', 'disabled');
+//     $('#btn_run').text('Running...');
+//
+//     options = $('#txt_options').val();
+//
+//     //var interval = 1000;
+//     //var timer = setTimeout(doAjax, interval);
+//
+//     /// start run ///
 //     request = $.ajax({
-//         url: "/gen_reports",
-//         type: "get"
-//         //dataType: 'json'
+//         url: "/api/run/start",
+//         type: "get",
+//         data: {
+//             "options": options
+//         }
 //     })
 //     .done( function(response, textStatus, jqXHR) {
+//         $('#btn_run').text('Run Cylon');
+//         $('#btn_run').removeAttr('disabled');
+//
+//         //clearTimeout(timer);
+//         //generateReports();
+//         //displayReports();
+//     })
+//     .fail(function (jqXHR, textStatus, errorThrown) {
+//         console.error("The following error occurred: " + textStatus, errorThrown);
 //     });
-// }
+// });
 
-function displayReports() {
-    request = $.ajax({
-        url: "/api/report/info",
-        type: "get",
-        dataType: 'json'
-    })
-    .done( function(response, textStatus, jqXHR) {
-        if (response.files.length > 0) {
-            $('#pnl_reports').text('');
 
-            var path = response.path;
-            for (i = 0; i < response.files.length; i++) {
-                var filename = response.files[i].filename;
-                var status = response.files[i].status;
+function ConsoleOutput() {
+    this.info = undefined;
 
-                var color = {
-                    "passed": "text-success",
-                    "failed": "text-danger",
-                    "skipped": "text-info"
-                }[status];
+    this.getInfo = function() {
+        var response = undefined;
 
-                link = ' \
-                <div class="row"> \
-                  <div class="col-lg-8"> \
-                    <a target="_blank" href="' + path + '/' + filename + '" class="btn btn-link" style="padding: 3px;">' + filename + '</a> \
-                  </div> \
-                  <div class="col-lg-4"> \
-                    <div class="' + color + ' pull-right" style="padding: 3px">' + status + '</div> \
-                  </div> \
-                </div>';
-
-                $('#pnl_reports').append(link);
+        $.ajax({
+            type: 'get',
+            url: '/api/run/console',
+            dataType: 'text',
+            async: false,
+            success: function (data) {
+                console.log(data);
+                response = data;
             }
-        }
-    });
+        });
+
+        this.info = response;
+    }
+
+    this.render = function() {
+        $('#hidden').html(this.info.toString());
+    }
+
+    // this.start = function() {
+    //     this.timer = setInterval(this.render, this.interval);
+    // }
+    //
+    // this.stop = function() {
+    //     clearInterval(this.timer);
+    // }
 }
-
-
-/// tmp timer ///
-/*$('#btn_timer').on('click', function() {
-    if (tm.isStarted) {
-        tm.stop();
-    }
-    else {
-        tm.start();
-    }
-});
 
 
 function Timer() {
@@ -123,12 +174,17 @@ tm = new Timer();
 tm.interval = 3000;
 tm.fncall = function() {
     request = $.ajax({
-        url: "/getlog",
-        type: "get"
+        url: "/api/run/console",
+        type: "get",
+        dataType: "text"
     })
     .done( function (response, textStatus, jqXHR) {
-        console.log(response.toString());
+        content = response.toString();
+        //content = content.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+        //content = content.replace(/(?:\s)/g, '&nbsp;&nbsp;');
+        //content = content;
+        $('#hidden').html(content);
     });
-};*/
+};
 
 //tm.start();

@@ -1,0 +1,102 @@
+<html>
+
+<head>
+  <title>project-cylon</title>
+  <link rel="stylesheet" href="/css/bootstrap.css"/>
+</head>
+
+<body>
+  <div class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" id="lbl_project" href="#">undefined</a>
+      </div>
+      <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Switch Project <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a id="lnk-abc" href="#" data-path="/abc/def">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a id="lnk-load-config" href="#">Load config file...</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <form id="frm-load-config" method="post" enctype="multipart/form-data" action="/api/project/load_config" style="display:none">
+      <input type="file" name="configfile" id="file-config">
+    </form>
+  </div>
+
+  <div class="container">
+    <div class="row">
+
+      <div class="col-lg-3" id="div-component-1">
+        <div>
+          <ul class="nav nav-pills nav-stacked">
+            <li class="active"><a href="#">Run</a></li>
+            <li><a href="#">Reports<span class="badge pull-right" id="spn-report-badge"></span></a></li>
+            <li><a href="#">About</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-lg-9" id="div-component-2">
+        <div class="panel panel-default">
+          <div class="panel-heading"><strong>Run Options:</strong></div>
+
+            <!--<div class="form-group">
+              <label class="control-label">Run Options:</label>
+              <input id="txt_options" class="form-control" type="text" placeholder="Specify run options..."/>
+            </div>-->
+
+            <div class="panel-body">
+              <div class="form-group">
+                <pre id="hidden" style="overflow-y:auto; height:300px;"></pre>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label">Tags:</label>
+                <input id="txt_tags" class="form-control" type="text" placeholder="Specify tags..."/>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label">Site:</label>
+                <select class="form-control" id="select">
+                  <option>develop</option>
+                  <option>staging</option>
+                  <option>production</option>
+                </select>
+              </div><hr>
+
+              <div class="form-group pull-right">
+                <a id="btn_run" href="#" class="btn btn-primary">Run Tests</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-9" id="div-component-3" style="display:none">
+      </div>
+    </div>
+  </div>
+
+  <div class="footer" style="margin-bottom:15px;">
+    <div class="container">
+      <p class="text-muted pull-right">project-cylon ver. 2.1.4</p>
+    </div>
+  </div>
+
+  <script src="/js/jquery-2.1.1.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/test-report.js"></script>
+  <script src="/js/test-runner.js"></script>
+
+</body>
+
+</html>

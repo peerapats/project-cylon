@@ -3,6 +3,8 @@ import sys
 import time
 
 from urlparse import urlparse
+
+from selenium.common.exceptions import *
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
 
@@ -67,11 +69,13 @@ class Page:
 
     def go(self, pathname=""):
         url = self.get_url(pathname)
-        self.driver.get(url)
+        try:
+            self.driver.get(url)
+        except TimeoutException:
+            log.failed("Page load timeout (15 sec).")
         return True
 
-
-    def wait_for_loading(self, pathname="", timeout=15):
+    def wait_for_url(self, pathname="", timeout=15):
         self.driver.switch_to_window(self.driver.window_handles[-1])
 
         url = self.get_url(pathname)
@@ -85,6 +89,6 @@ class Page:
         try:
             wait.until(lambda driver : self.driver.current_url.find(url) != -1)
             return True
-        except:
+        except TimeoutException:
             log.failed("Page load timeout (%s sec)." % timeout, self.driver.current_url, url)
             return False

@@ -37,6 +37,8 @@ class World:
         else:
             cls.driver.set_window_size(width, height)
 
+        cls.driver.set_page_load_timeout(15)
+
     @classmethod
     def close_browser(cls):
         if cls.driver is not None:

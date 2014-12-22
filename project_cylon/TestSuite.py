@@ -28,7 +28,7 @@ class TestSuite:
 
     @property
     def time(self):
-        return self.testsuite.attributes['time'].value
+        return float(self.testsuite.attributes['time'].value)
 
     @property
     def failed(self):

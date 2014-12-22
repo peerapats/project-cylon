@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.5 - 2014-12-22
+- Fixed timeout 15 sec while wait for page loading.
+- Tempolary remove Web GUI tests runner.
+
 ## 2.1.4 - 2014-12-02
 - Added Web GUI tests runner (experimental).
   1. run command `cylon server` at project directory

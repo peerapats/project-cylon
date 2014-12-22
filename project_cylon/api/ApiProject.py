@@ -32,3 +32,9 @@ class ApiProject(object):
             info['page_objects'].append(filename)
 
         return json.dumps(info)
+
+    @cherrypy.expose
+    @cherrypy.tools.allow(methods=['POST'])
+    def load_config(self, configfile):
+        content = configfile.file.read()
+        return content

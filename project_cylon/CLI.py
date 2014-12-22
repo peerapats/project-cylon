@@ -268,11 +268,6 @@ def get_shell_runall_content():
     """
     return content
 
-# def get_shell_runtags_content():
-#     content = """
-#     """
-#     return content
-
 def get_batch_runall_content():
     content = """
     @echo off
@@ -281,11 +276,6 @@ def get_batch_runall_content():
     pause
     """
     return content
-
-# def get_batch_runtags_content():
-#     content = """
-#     """
-#     return content
 
 def get_instruction():
     content = """
@@ -374,15 +364,15 @@ def main():
         elif command == "version":
             return run_shell("pip freeze | grep project-cylon")
 
-        elif command == "server":
-            config = get_server_config()
-            cherrypy.tree.mount(TestServer(), '/', config)
+        # elif command == "server":
+        #     config = get_server_config()
+        #     cherrypy.tree.mount(TestServer(), '/', config)
 
-            cherrypy.tree.mount(ApiRun(), '/api/run')
-            cherrypy.tree.mount(ApiReport(), '/api/report')
-            cherrypy.tree.mount(ApiProject(), '/api/project')
+        #     cherrypy.tree.mount(ApiRun(), '/api/run')
+        #     cherrypy.tree.mount(ApiReport(), '/api/report')
+        #     cherrypy.tree.mount(ApiProject(), '/api/project')
 
-            cherrypy.engine.start()
-            cherrypy.engine.block()
+        #     cherrypy.engine.start()
+        #     cherrypy.engine.block()
 
     except: print_instruction()

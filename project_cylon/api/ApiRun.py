@@ -18,7 +18,7 @@ class ApiRun(object):
         reporter = Reporter(path)
         reporter.clear_reports()
 
-        subprocess.call("cd %s && cylon run %s junit" % (self.project, options), shell=True)
+        subprocess.call("cd %s && cylon run %s junit outfile=console.txt" % (self.project, options), shell=True)
         reporter.generate_reports()
 
     def generate_reports(self):
@@ -30,3 +30,16 @@ class ApiRun(object):
         path = os.path.join(self.project, 'reports')
         reporter = Reporter(path)
         reporter.clear_reports()
+
+    @cherrypy.expose
+    @cherrypy.tools.allow(methods=['GET'])
+    def console(self):
+        content = ""
+        filename = os.path.join(self.project, 'console.txt')
+
+        if os.path.exists(filename):
+            f = open(filename, 'r')
+            content = f.read()
+            f.close()
+
+        return content

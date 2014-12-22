@@ -57,7 +57,7 @@ def step_impl(context, times):
 def step_impl(context, page_name, path_name):
     page = world.find_page(page_name)
     page.go(path_name)
-    page.wait_for_loading()
+    #page.wait_for_loading()
 
 
 @step ("user has [{page_name}] page opened") ##->given
@@ -66,7 +66,7 @@ def step_impl(context, page_name, path_name):
 def step_impl(context, page_name):
     page = world.find_page(page_name)
     page.go()
-    page.wait_for_loading()
+    #page.wait_for_loading()
 
 
 @step ("user browse to url '{url}'") ##->given
@@ -76,7 +76,7 @@ def step_impl(context, url):
     page.url = url
     page.driver = world.driver
     page.go()
-    page.wait_for_loading()
+    #page.wait_for_loading()
 
 
 """
@@ -276,14 +276,14 @@ Then step definitions
 @step ("the browser shows [{page_name}/{path_name}] page") ##->then
 def step_impl(context, page_name, path_name):
     page = world.find_page(page_name)
-    page.wait_for_loading(path_name)
+    page.wait_for_url(path_name)
 
 
 @step ("the browser shows [{page_name}] page") ##->then
 @step ("the system displays [{page_name}]")
 def step_impl(context, page_name):
     page = world.find_page(page_name)
-    page.wait_for_loading()
+    page.wait_for_url()
 
 
 @step ("the page url is '{url}'") ##->then
@@ -293,7 +293,7 @@ def step_impl(context, url):
     url = world.replace_variables(url)
     page = Page(url=url)
     page.driver = world.driver
-    page.wait_for_loading()
+    page.wait_for_url()
 
     if url == world.driver.current_url:
         return True
@@ -307,7 +307,7 @@ def step_impl(context, url):
     url = world.replace_variables(url)
     page = Page(url=url)
     page.driver = world.driver
-    page.wait_for_loading()
+    page.wait_for_url()
 
     if url in world.driver.current_url:
         return True
